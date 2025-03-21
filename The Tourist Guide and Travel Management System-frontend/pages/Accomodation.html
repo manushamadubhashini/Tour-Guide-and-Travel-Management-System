@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TravelPro - Accommodation Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .sidebar {
+      background-color: white;
+      height: 100vh;
+      position: fixed;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 260px;
+      z-index: 100;
+    }
+
+    .main-content {
+      margin-left: 260px;
+      padding: 20px;
+    }
+
+    .nav-item {
+      padding: 12px 20px;
+      color: #6c757d;
+      transition: all 0.3s;
+      border-left: 4px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .nav-item:hover {
+      background-color: #f8f9fa;
+      color: #0d6efd;
+    }
+
+    .nav-item.active {
+      background-color: #e9f0ff;
+      color: #0d6efd;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .card {
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      border-radius: 10px;
+      border: none;
+      transition: transform 0.3s;
+      margin-bottom: 20px;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .form-container {
+      background-color: white;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .stats-card {
+      position: relative;
+      overflow: hidden;
+      padding: 20px;
+    }
+
+    .stats-card .icon {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    .header-bar {
+      background: #ffffff;
+      padding: 15px 25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .accommodation-card {
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .accommodation-card img {
+      transition: transform 0.3s;
+    }
+
+    .accommodation-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .no-image-placeholder {
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f8f9fa;
+    }
+
+    .btn-primary {
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+    }
+
+    .accommodation-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .stats-container {
+      margin-bottom: 25px;
+    }
+
+    /* Modal styles */
+    .custom-modal {
+      display: none;
+      position: fixed;
+      z-index: 1050;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 800px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: black;
+    }
+  </style>
+</head>
+<body>
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="p-4 d-flex align-items-center">
+    <i class="fas fa-plane-departure text-primary me-2 fs-4"></i>
+    <h3 class="m-0">TravelPro</h3>
+  </div>
+  <hr>
+  <nav>
+    <a href="http://localhost:63342/The%20Tourist%20Guide%20and%20Travel%20Management%20System/The%20Tourist%20Guide%20and%20Travel%20Management%20System-frontend/pages/Dashbaord.html?_" class="block nav-item bg-blue-100 py-3 px-4 text-blue-700 rounded-r-lg border-l-4 border-blue-600" target="_blank">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-th-large"></i>
+        <span>Dashboard</span>
+      </div>
+    </a>
+    <a href="http://localhost:63342/The%20Tourist%20Guide%20and%20Travel%20Management%20System/The%20Tourist%20Guide%20and%20Travel%20Management%20System-frontend/pages/tour.html?_ijt=7a" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50" target="_blank">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-map-marked-alt"></i>
+        <span>Tours</span>
+      </div>
+    </a>
+    <a href="" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50" target="_blank">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-users"></i>
+        <span>Guides</span>
+      </div>
+    </a>
+    <a href="billing.html" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-credit-card"></i>
+        <span>Trasport</span>
+      </div>
+    </a>
+    <a href="http://localhost:63342/The%20Tourist%20Guide%20and%20Travel%20Management%20System/The%20Tourist%20Guide%20and%20Travel%20Management%20System-frontend/pages/Accomodation.html?_ijt=3e7ujvq411m94dbsc7854e02gh&_ij_reload=RELOAD_ON_SAVE#" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50" target="_blank">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-vr-cardboard"></i>
+        <span>Accommodation</span>
+      </div>
+    </a>
+    <a href="guides.html" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-users"></i>
+        <span>Tourist</span>
+      </div>
+    </a>
+    <a href="http://localhost:63342/The%20Tourist%20Guide%20and%20Travel%20Management%20System/The%20Tourist%20Guide%20and%20Travel%20Management%20System-frontend/pages/destination.html?_ijt=es95c4jb89qqle5o1jrl63p0bl&_ij_reload=RELOAD_ON_SAVE" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-globe"></i>
+        <span>Destination</span>
+      </div>
+    </a>
+    <div class="py-3 px-4 text-gray-600 hover:bg-gray-50">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-vr-cardboard"></i>
+        <span>Notification</span>
+      </div>
+    </div>
+    <div class="py-3 px-4 text-gray-600 hover:bg-gray-50">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-globe"></i>
+        <span>Review</span>
+      </div>
+    </div>
+
+    <div class="mt-8 px-4 py-2 text-sm text-gray-400 uppercase font-semibold">
+      Account Pages
+    </div>
+
+    <div class="mt-5 p-3">
+      <div class="bg-light p-4 rounded-3 text-center mb-3">
+        <i class="fas fa-question-circle text-primary fs-3"></i>
+      </div>
+      <h5 class="text-center">Need help?</h5>
+      <p class="text-center small text-muted">Check our documentation</p>
+      <button class="btn btn-dark w-100 mb-2">Documentation</button>
+      <button class="btn btn-primary w-100">Upgrade to Pro</button>
+    </div>
+  </nav>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <!-- Header -->
+  <div class="header-bar mb-4">
+    <div>
+      <h4 class="m-0">Accommodation Management</h4>
+      <p class="text-muted m-0 small">Manage your hotels, resorts, and homestays</p>
+    </div>
+    <div>
+      <button class="btn btn-primary" id="add-accommodation-btn">
+        <i class="fas fa-plus me-2"></i>Add New Accommodation
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="row stats-container">
+    <div class="col-md-3">
+      <div class="card stats-card">
+        <div class="icon bg-primary">
+          <i class="fas fa-bed"></i>
+        </div>
+        <h6 class="text-muted">TOTAL ACCOMMODATIONS</h6>
+        <h3 class="mt-2" id="total-accommodations">0</h3>
+        <p class="text-success small">+3% from last month</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card stats-card">
+        <div class="icon bg-success">
+          <i class="fas fa-hotel"></i>
+        </div>
+        <h6 class="text-muted">HOTELS</h6>
+        <h3 class="mt-2">0</h3>
+        <p class="text-success small">+2 new this month</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card stats-card">
+        <div class="icon bg-warning">
+          <i class="fas fa-umbrella-beach"></i>
+        </div>
+        <h6 class="text-muted">RESORTS</h6>
+        <h3 class="mt-2">0</h3>
+        <p class="text-success small">+1 from last month</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card stats-card">
+        <div class="icon bg-info">
+          <i class="fas fa-home"></i>
+        </div>
+        <h6 class="text-muted">HOMESTAYS</h6>
+        <h3 class="mt-2">0</h3>
+        <p class="text-success small">+4 from last month</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Accommodations List -->
+  <div class="card">
+    <div class="card-header bg-white py-3">
+      <h5 class="m-0">Accommodation Listings</h5>
+    </div>
+    <div class="card-body">
+      <div id="accommodationList">
+        <!-- Accommodation list will load here -->
+        <div class="text-center">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Accommodation Modal -->
+<div id="accommodationModal" class="custom-modal">
+  <div class="modal-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 id="modal-title">Add New Accommodation</h3>
+      <span class="close">&times;</span>
+    </div>
+
+    <form id="accommodation-form">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="accommodationId" class="form-label">Accommodation ID</label>
+            <input type="text" class="form-control" id="accommodationId" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="destinationId" class="form-label">Destination ID</label>
+            <div class="input-group">
+              <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" id="load-destination-id">Select</button>
+              <ul class="dropdown-menu" id="destination-dropdown"></ul>
+              <input type="text" class="form-control" id="destinationId" readonly>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="accommodationName" class="form-label">Accommodation Name</label>
+            <input type="text" class="form-control" id="accommodationName" required maxlength="50">
+          </div>
+
+          <div class="mb-3">
+            <label for="accommodationAddress" class="form-label">Address</label>
+            <input type="text" class="form-control" id="accommodationAddress" required maxlength="100">
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="accommodationDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="accommodationDescription" rows="3" maxlength="200" required></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label for="accommodationType" class="form-label">Accommodation Type</label>
+            <div class="input-group">
+              <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" id="loadAccommodationType">Select Type</button>
+              <ul class="dropdown-menu" id="type-dropdown">
+                <li><a class="dropdown-item" href="#" onclick="setAccommodationType('Hotels')">Hotels</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setAccommodationType('Resorts')">Resorts</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setAccommodationType('Homestays')">Homestays</a></li>
+              </ul>
+              <input type="text" class="form-control" id="accommodationType" readonly>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="accommodationPrice" class="form-label">Price per Night</label>
+            <div class="input-group">
+              <span class="input-group-text">RS.</span>
+              <input type="text" class="form-control" id="accommodationPrice" required maxlength="50">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="accommodationImage" class="form-label">Accommodation Image</label>
+            <input type="file" class="form-control" id="accommodationImage" accept="image/jpeg,image/png,image/jpg">
+            <div class="form-text">Upload an image of the accommodation (JPEG, PNG formats only)</div>
+          </div>
+
+          <div class="mt-2">
+            <img id="imagePreview" src="" alt="Accommodation Image" style="max-width: 100%; display: none; border-radius: 5px;">
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <button type="button" class="btn btn-secondary me-2" id="btn-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="btn-save">Save Accommodation</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Load accommodations function
+  function loadAccommodation() {
+    const accommodationList = document.getElementById('accommodationList');
+
+    accommodationList.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+
+    $.ajax({
+      url: "http://localhost:8080/api/v1/accommodation",
+      method: "GET",
+      dataType: "json",
+      success: (res) => {
+        const accommodations = res.data;
+        if (accommodations.length === 0) {
+          accommodationList.innerHTML = '<div class="alert alert-info">No accommodations found.</div>';
+          return;
+        }
+
+        // Update total accommodations count
+        document.getElementById('total-accommodations').textContent = accommodations.length;
+
+        let html = '<div class="row">';
+        accommodations.forEach(accommodation => {
+          html += `
+              <div class="col-lg-6 col-xl-4">
+                <div class="card accommodation-card">
+                  <div class="card-img-top">
+                    ${accommodation.image ?
+            `<img src="data:image/jpeg;base64,${accommodation.image}" class="img-fluid" alt="${accommodation.name}" style="height: 200px; width: 100%; object-fit: cover;">` :
+            `<div class="no-image-placeholder bg-light text-center" style="height: 200px;">
+                        <span class="text-muted">No Image</span>
+                      </div>`
+          }
+                  </div>
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <h5 class="card-title">${accommodation.name}</h5>
+                      <span class="badge bg-primary rounded-pill">ID: ${accommodation.id}</span>
+                    </div>
+                    <p class="card-text text-muted small">${accommodation.description}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <span class="d-block"><i class="fas fa-map-marker-alt text-danger me-1"></i> Destination: ${accommodation.destinationId}</span>
+                        <span class="d-block"><i class="fas fa-building text-warning me-1"></i> Type: ${accommodation.type}</span>
+                      </div>
+                      <h5 class="text-primary m-0">RS.${accommodation.price}/night</h5>
+                    </div>
+                  </div>
+                  <div class="card-footer bg-white border-top-0">
+                    <div class="accommodation-actions">
+                      <button type="button" class="btn btn-outline-primary btn-sm flex-grow-1"
+                        onclick="editAccommodation('${accommodation.id}','${accommodation.destinationId}' ,'${accommodation.name}', '${accommodation.description}', '${accommodation.type}', '${accommodation.address}', '${accommodation.price}', '${accommodation.image}')">
+                        <i class="fas fa-edit me-1"></i> Edit
+                      </button>
+                      <button type="button" class="btn btn-outline-danger btn-sm flex-grow-1" onclick="deleteAccommodation('${accommodation.id}')">
+                        <i class="fas fa-trash me-1"></i> Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+        });
+        html += '</div>';
+
+        accommodationList.innerHTML = html;
+      },
+      error: (err) => {
+        console.error('Error loading accommodations:', err);
+        accommodationList.innerHTML = '<div class="alert alert-danger">Failed to load accommodations.</div>';
+      }
+    });
+  }
+
+  // Initialize page
+  loadAccommodation();
+
+  // Modal functionality
+  const modal = document.getElementById("accommodationModal");
+  const addAccommodationBtn = document.getElementById("add-accommodation-btn");
+  const closeBtn = document.getElementsByClassName("close")[0];
+  const cancelBtn = document.getElementById("btn-cancel");
+
+  addAccommodationBtn.onclick = function() {
+    document.getElementById("modal-title").textContent = "Add New Accommodation";
+    document.getElementById("accommodation-form").reset();
+    document.getElementById("accommodationId").value = "";
+    document.getElementById("btn-save").textContent = "Save Accommodation";
+    document.getElementById("imagePreview").style.display = "none";
+    modal.style.display = "block";
+  }
+
+  closeBtn.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  cancelBtn.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+
+  // Save/Update accommodation
+  $("#btn-save").off("click").on("click", (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("id", $("#accommodationId").val());
+    formData.append("destinationId", $("#destinationId").val());
+    formData.append("name", $("#accommodationName").val());
+    formData.append("description", $("#accommodationDescription").val());
+    formData.append("type", $("#accommodationType").val());
+    formData.append("address", $("#accommodationAddress").val());
+    formData.append("price", $("#accommodationPrice").val());
+
+    const imageFile = $("#accommodationImage")[0].files[0];
+    if (imageFile) {
+      formData.append("image", imageFile);
+    }
+
+    $.ajax({
+      url: "http://localhost:8080/api/v1/accommodation",
+      method: "POST",
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: (res) => {
+        console.log("Success:", res);
+        $("#accommodation-form")[0].reset();
+        $("#accommodationId").val("");
+        $("#btn-save").text("Save Accommodation");
+        modal.style.display = "none";
+        loadAccommodation();
+      },
+      error: (err) => {
+        console.error("Error:", err);
+        alert("Error saving accommodation data. Please try again.");
+      },
+    });
+  });
+
+  // Load destination dropdown
+  $("#load-destination-id").click((e) => {
+    e.preventDefault()
+    $.ajax({
+      url: "http://localhost:8080/api/v1/destination",
+      method: "GET",
+      success: (res) => {
+        console.log(res)
+        $("#destination-dropdown").empty()
+        res.data.forEach(destination => {
+          $("#destination-dropdown").append(`
+              <li><a class="dropdown-item" href="#" onclick="setDestination('${destination.id}')">${destination.id}</a></li>
+            `)
+        })
+      },
+      error: (err) => {
+        console.error(err);
+        alert("Error loading destinations. Please try again.");
+      }
+    })
+  });
+
+  // Set destination ID
+  function setDestination(destinationId) {
+    $("#destinationId").val(destinationId)
+  }
+
+  // Set accommodation type
+  function setAccommodationType(type) {
+    $("#accommodationType").val(type);
+  }
+
+  // Edit accommodation
+  function editAccommodation(id, destinationId, name, description, type, address, price, image) {
+    document.getElementById("modal-title").textContent = "Edit Accommodation";
+    $("#accommodationId").val(id)
+    $("#destinationId").val(destinationId)
+    $("#accommodationName").val(name)
+    $("#accommodationDescription").val(description)
+    $("#accommodationType").val(type)
+    $("#accommodationAddress").val(address)
+    $("#accommodationPrice").val(price)
+    $("#btn-save").text("Update Accommodation");
+
+    // Show image preview if available
+    if (image) {
+      $("#imagePreview").attr("src", `data:image/jpeg;base64,${image}`);
+      $("#imagePreview").css("display", "block");
+    } else {
+      $("#imagePreview").css("display", "none");
+    }
+
+    modal.style.display = "block";
+  }
+
+  // Delete accommodation
+  function deleteAccommodation(id) {
+    if (confirm("Are you sure you want to delete this accommodation?")) {
+      $.ajax({
+        url: `http://localhost:8080/api/v1/accommodation/delete/${id}`,
+        method: "DELETE",
+        success: (res) => {
+          loadAccommodation()
+          console.log(res)
+        },
+        error: (err) => {
+          console.log(err)
+          alert("Error deleting accommodation. Please try again.");
+        }
+      })
+    }
+  }
+
+  // Preview image before upload
+  $("#accommodationImage").change(function() {
+    const file = this.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        $("#imagePreview").attr("src", e.target.result);
+        $("#imagePreview").css("display", "block");
+      }
+      reader.readAsDataURL(file);
+    }
+  });
+</script>
+</body>
+</html>

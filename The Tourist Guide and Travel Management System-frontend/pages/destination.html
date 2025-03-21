@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tourist Guide - Destination Management</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .destination-image {
+      transition: height 0.3s ease;
+      min-height: 200px;
+    }
+
+    .destination-card:hover .destination-image {
+      max-height: 400px;
+    }
+
+    @media (min-width: 768px) {
+      .destination-image {
+        max-height: 350px;
+      }
+    }
+    .destination-card {
+      transition: transform 0.3s;
+      margin-bottom: 20px;
+    }
+    .destination-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .header {
+      background: linear-gradient(135deg, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+      color: white;
+      padding: 20px 0;
+      margin-bottom: 30px;
+    }
+    .weather-widget {
+      background-color: #f0f8ff;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .form-container {
+      background-color: white;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    #map {
+      height: 300px;
+      width: 100%;
+      border-radius: 8px;
+      margin-top: 10px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .map-container {
+      background-color: #f0f8ff;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .map-actions {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="header text-center">
+  <h1>Destination Management Portal</h1>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="form-container">
+        <h3 class="mb-4">Add New Destination</h3>
+        <form id="destinationForm">
+          <div class="mb-3">
+            <label for="destinationId" class="form-label">Destination ID</label>
+            <input type="text" class="form-control" id="destinationId" required>
+          </div>
+          <div class="mb-3">
+            <label for="destinationName" class="form-label">Destination Name</label>
+            <input type="text" class="form-control" id="destinationName" required maxlength="50">
+          </div>
+          <div class="mb-3">
+            <label for="destinationDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="destinationDescription" rows="3" maxlength="200" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="destinationImage" class="form-label">Destination Image</label>
+            <input type="file" class="form-control" id="destinationImage" accept="image/jpeg,image/png,image/jpg">
+            <div class="form-text">Upload an image of the destination (JPEG, PNG formats only)</div>
+          </div>
+          <div class="mb-3">
+            <label for="destinationLocation" class="form-label">Location</label>
+            <input type="text" class="form-control" id="destinationLocation" required maxlength="400">
+            <div class="form-text">Enter a city, region or landmark</div>
+            <div class="d-flex gap-2 mt-2">
+              <button type="button" class="btn btn-outline-primary" id="fetchWeatherBtn">Fetch Weather Info</button>
+              <button type="button" class="btn btn-outline-success" id="showMapBtn">Show on Map</button>
+            </div>
+          </div>
+
+          <!-- Map Container -->
+          <div class="map-container" id="mapContainer" style="display: none;">
+            <h5>Location Map</h5>
+            <div id="map"></div>
+            <div class="map-actions">
+              <div class="row">
+                <div class="col-md-6">
+                  <input type="text" class="form-control" id="latitudeInput" placeholder="Latitude" readonly>
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" id="longitudeInput" placeholder="Longitude" readonly>
+                </div>
+              </div>
+              <div class="d-flex justify-content-between mt-2">
+                <button type="button" class="btn btn-outline-primary btn-sm" id="captureMapBtn">Use as Destination Image</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" id="resetMapBtn">Reset Map</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Weather Widget (initially hidden) -->
+          <div class="weather-widget" id="weatherWidget" style="display: none;">
+            <h5>Weather Information</h5>
+            <div class="row">
+              <div class="col-md-6">
+                <div id="currentWeather">
+                  <p><strong>Current:</strong> <span id="currentTemp"></span>°C, <span id="currentCondition"></span></p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div id="forecastWeather">
+                  <p><strong>Forecast:</strong> <span id="forecastDesc"></span></p>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <label for="weatherInfo" class="form-label">Weather Info Summary</label>
+            <textarea class="form-control" id="weatherInfo" rows="2" required maxlength="200"></textarea>
+          </div>
+
+          <div class="mb-3 mt-3">
+            <label for="bestTimeToVisit" class="form-label">Best Time to Visit</label>
+            <select class="form-select" id="bestTimeToVisit" required>
+              <option value="">Select season...</option>
+              <option value="Spring (March to May)">Spring (March to May)</option>
+              <option value="Summer (June to August)">Summer (June to August)</option>
+              <option value="Fall (September to November)">Fall (September to November)</option>
+              <option value="Winter (December to February)">Winter (December to February)</option>
+              <option value="Year-round">Year-round</option>
+              <option value="custom">Custom (specify below)</option>
+            </select>
+            <textarea class="form-control mt-2" id="customBestTime" style="display: none;" maxlength="200" placeholder="Specify best time to visit..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="btn-save">Save Destination</button>
+          <button type="reset" class="btn btn-secondary">Reset</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+      <h3 class="mb-4">Existing Destinations</h3>
+      <div id="destinationsList">
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-providers/1.13.0/leaflet-providers.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="../js/destination.js"></script>
+
+<script>
+
+  let map;
+  let marker;
+  let capturedMapImage;
+
+  $(document).ready(function() {
+    $("#bestTimeToVisit").change(function() {
+      if ($(this).val() === "custom") {
+        $("#customBestTime").show();
+      } else {
+        $("#customBestTime").hide();
+      }
+    });
+
+    $("#showMapBtn").click(function() {
+      const location = $("#destinationLocation").val();
+      if (location) {
+        $("#mapContainer").show();
+        initMap(location);
+      } else {
+        alert("Please enter a location first");
+      }
+    });
+
+    $("#resetMapBtn").click(function() {
+      $("#mapContainer").hide();
+      $("#latitudeInput").val("");
+      $("#longitudeInput").val("");
+      capturedMapImage = null;
+      if (document.getElementById('mapImagePreview')) {
+        document.getElementById('mapImagePreview').remove();
+      }
+    });
+
+    // Capture map as image
+    $("#captureMapBtn").click(function() {
+      // Wait for map tiles to fully load
+      setTimeout(() => captureMap(), 500);
+    });
+
+    // Handle form submission
+    $("#destinationForm").submit(function(event) {
+      event.preventDefault(); // Prevent default form submission
+
+      // Get form data
+      const destinationData = {
+        id: $("#destinationId").val(),
+        name: $("#destinationName").val(),
+        description: $("#destinationDescription").val(),
+        location: $("#destinationLocation").val(),
+        bestTime: $("#bestTimeToVisit").val() === "custom" ? $("#customBestTime").val() : $("#bestTimeToVisit").val()
+      };
+
+      const latitude = $("#latitudeInput").val();
+      const longitude = $("#longitudeInput").val();
+      if (latitude && longitude) {
+        destinationData.latitude = latitude;
+        destinationData.longitude = longitude;
+      }
+      if (capturedMapImage) {
+        destinationData.imageUrl = capturedMapImage;
+        saveDestination(destinationData);
+      } else {
+        const fileInput = document.getElementById("destinationImage");
+        if (fileInput.files && fileInput.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            destinationData.imageUrl = e.target.result;
+            saveDestination(destinationData);
+          };
+          reader.readAsDataURL(fileInput.files[0]);
+          return;
+        } else {
+
+          saveDestination(destinationData);
+        }
+      }
+    });
+  });
+
+
+  function initMap(location) {
+
+    if (map) {
+      map.remove();
+    }
+
+
+    map = L.map('map').setView([0, 0], 2);
+
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 19
+    }).addTo(map);
+
+    geocodeLocation(location);
+  }
+
+
+  function geocodeLocation(location) {
+    const nominatimUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}`;
+
+    fetch(nominatimUrl)
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.length > 0) {
+          const result = data[0];
+          const lat = parseFloat(result.lat);
+          const lon = parseFloat(result.lon);
+
+
+          map.setView([lat, lon], 13);
+
+          if (marker) {
+            marker.setLatLng([lat, lon]);
+          } else {
+            marker = L.marker([lat, lon], {
+              draggable: true
+            }).addTo(map);
+
+
+            marker.on('dragend', function(event) {
+              const position = marker.getLatLng();
+              $("#latitudeInput").val(position.lat.toFixed(6));
+              $("#longitudeInput").val(position.lng.toFixed(6));
+            });
+          }
+
+
+          $("#latitudeInput").val(lat.toFixed(6));
+          $("#longitudeInput").val(lon.toFixed(6));
+
+
+          map.on('click', function(event) {
+            const position = event.latlng;
+            marker.setLatLng(position);
+            $("#latitudeInput").val(position.lat.toFixed(6));
+            $("#longitudeInput").val(position.lng.toFixed(6));
+          });
+        } else {
+          alert("Location not found. Please try a different search term.");
+        }
+      })
+      .catch(error => {
+        console.error("Error geocoding location:", error);
+        alert("Failed to geocode location. Please try again.");
+      });
+  }
+
+
+  function captureMap() {
+    if (!map) return;
+
+    console.log("Capturing map...");
+
+
+    map.whenReady(function() {
+      setTimeout(() => {
+        html2canvas(document.getElementById('map'), {
+          useCORS: true,
+          allowTaint: true,
+          logging: true
+        }).then(canvas => {
+          console.log("Map captured successfully");
+
+
+          const dataURL = canvas.toDataURL('image/png');
+
+
+          capturedMapImage = dataURL;
+
+
+          const imgPreview = document.createElement('img');
+          imgPreview.src = dataURL;
+          imgPreview.style.maxWidth = '100%';
+          imgPreview.style.display = 'block';
+          imgPreview.style.marginTop = '10px';
+          imgPreview.id = 'mapImagePreview';
+
+
+          const existingPreview = document.getElementById('mapImagePreview');
+          if (existingPreview) existingPreview.remove();
+
+
+          document.getElementById('mapContainer').appendChild(imgPreview);
+
+
+          const downloadLink = document.createElement('a');
+          downloadLink.href = dataURL;
+          downloadLink.download = 'map_' + $("#destinationLocation").val().replace(/\s+/g, '_') + '.png';
+          downloadLink.className = 'btn btn-sm btn-outline-info mt-2';
+          downloadLink.textContent = 'Download Map Image';
+          downloadLink.id = 'downloadMapBtn';
+
+
+          const existingDownloadBtn = document.getElementById('downloadMapBtn');
+          if (existingDownloadBtn) existingDownloadBtn.remove();
+
+
+          document.getElementById('mapContainer').appendChild(downloadLink);
+
+          const fileInput = document.getElementById('destinationImage');
+
+
+          fileInput.value = '';
+
+
+          const fileInputLabel = document.createElement('div');
+          fileInputLabel.className = 'alert alert-success mt-2';
+          fileInputLabel.innerHTML = '<strong>Map image captured!</strong> Click "Save Destination" to use this image.';
+          fileInputLabel.id = 'mapImageMessage';
+
+
+          const existingMessage = document.getElementById('mapImageMessage');
+          if (existingMessage) existingMessage.remove();
+
+
+          fileInput.parentNode.appendChild(fileInputLabel);
+
+
+          downloadLink.addEventListener('click', function() {
+
+            console.log("Downloading map image...");
+
+
+            setTimeout(() => {
+              fileInputLabel.innerHTML = '<strong>Map image downloaded!</strong> File saved to your downloads folder.';
+            }, 500);
+          });
+
+          alert("Map image captured! You can now download it or save the destination.");
+        }).catch(error => {
+          console.error("Error capturing map:", error);
+          alert("Failed to capture map image: " + error.message);
+        });
+      }, 1000);
+    });
+  }
+
+
+  $("#destinationForm").submit(function(event) {
+    event.preventDefault();
+
+    console.log("Form submitted");
+
+
+    const destinationData = {
+      id: $("#destinationId").val(),
+      name: $("#destinationName").val(),
+      description: $("#destinationDescription").val(),
+      location: $("#destinationLocation").val(),
+      bestTime: $("#bestTimeToVisit").val() === "custom" ? $("#customBestTime").val() : $("#bestTimeToVisit").val()
+    };
+
+
+    const latitude = $("#latitudeInput").val();
+    const longitude = $("#longitudeInput").val();
+    if (latitude && longitude) {
+      destinationData.latitude = latitude;
+      destinationData.longitude = longitude;
+    }
+
+    console.log("Captured map image exists:", !!capturedMapImage);
+
+    if (capturedMapImage) {
+      destinationData.imageUrl = capturedMapImage;
+      console.log("Using captured map image");
+      saveDestination(destinationData);
+    } else {
+
+      const fileInput = document.getElementById("destinationImage");
+      if (fileInput.files && fileInput.files[0]) {
+        console.log("Using uploaded image file");
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          destinationData.imageUrl = e.target.result;
+          saveDestination(destinationData);
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        // No image selected
+        console.log("No image selected");
+        saveDestination(destinationData);
+      }
+    }
+  });
+
+  $("#showMapBtn").click(function() {
+    const location = $("#destinationLocation").val();
+    if (location) {
+      $("#mapContainer").show();
+      console.log("Initializing map for location:", location);
+      initMap(location);
+    } else {
+      alert("Please enter a location first");
+    }
+  });
+
+
+  $("#resetMapBtn").click(function() {
+    $("#mapContainer").hide();
+    $("#latitudeInput").val("");
+    $("#longitudeInput").val("");
+    capturedMapImage = null;
+
+    if (document.getElementById('mapImagePreview')) {
+      document.getElementById('mapImagePreview').remove();
+    }
+    if (document.getElementById('downloadMapBtn')) {
+      document.getElementById('downloadMapBtn').remove();
+    }
+    if (document.getElementById('mapImageMessage')) {
+      document.getElementById('mapImageMessage').remove();
+    }
+
+    console.log("Map reset");
+  });
+
+
+  function saveDestination(destinationData) {
+    console.log("Saving destination:", destinationData);
+
+    addDestinationToList(destinationData);
+
+
+    $("#destinationForm")[0].reset();
+    $("#mapContainer").hide();
+    $("#weatherWidget").hide();
+    $("#customBestTime").hide();
+    if (document.getElementById('mapImagePreview')) {
+      document.getElementById('mapImagePreview').remove();
+    }
+    capturedMapImage = null;
+
+    alert("Destination saved successfully!");
+  }
+
+</script>
+</body>
+</html>

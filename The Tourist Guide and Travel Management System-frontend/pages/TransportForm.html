@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tourist Guide - Destination Management</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Leaflet CSS (for OpenStreetMap) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <!-- Custom CSS -->
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .tour-image {
+      transition: height 0.3s ease;
+      min-height: 200px;
+    }
+
+    .tour-card:hover .tour-image {
+      max-height: 400px; /* Increase on hover if desired */
+    }
+
+    /* If you want all images to be taller by default */
+    @media (min-width: 768px) {
+      .destination-image {
+        max-height: 350px;
+      }
+    }
+    .tour-card {
+      transition: transform 0.3s;
+      margin-bottom: 20px;
+    }
+    .tour-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .header {
+      background: linear-gradient(135deg, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
+      color: white;
+      padding: 20px 0;
+      margin-bottom: 30px;
+    }
+    .form-container {
+      background-color: white;
+      border-radius: 10px;
+      padding: 25px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+<div class="header text-center">
+  <h1>Transport Management Portal</h1>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="form-container">
+        <h3 class="mb-4">Add New Transport</h3>
+        <form id="tourForm">
+          <div class="mb-3">
+            <label for="transportId" class="form-label">Transport ID</label>
+            <input type="text" class="form-control" id="transportId" required>
+          </div>
+          <label for="transportId" class="form-label">Distance</label>
+          <div class="input-group mb-3">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" id="load-destination-id">Destination ID</button>
+            <ul class="dropdown-menu" id="destination-dropdown">
+            </ul>
+            <input type="text" class="form-control" id="destinationId" readonly >
+          </div>
+          <div class="mb-3">
+            <label for="tourName" class="form-label">Tour Name</label>
+            <input type="text" class="form-control" id="tourName" required maxlength="50">
+          </div>
+          <div class="mb-3">
+            <label for="tourDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="tourDescription" rows="3" maxlength="200" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="tourDuration" class="form-label">Tour Duration</label>
+            <input type="text" class="form-control" id="tourDuration" required maxlength="50">
+          </div>
+          <div class="mb-3">
+            <label for="tourImage" class="form-label">Tour Image</label>
+            <input type="file" class="form-control" id="tourImage" accept="image/jpeg,image/png,image/jpg">
+            <div class="form-text">Upload an image of the tour (JPEG, PNG formats only)</div>
+            <input type="hidden" id="existingImage" name="existingImage">
+
+            <div class="mt-2">
+              <img id="imagePreview" src="" alt="Tour Image" style="max-width: 100%; display: none; border-radius: 5px;">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="tourName" class="form-label">Tour Price</label>
+            <input type="text" class="form-control" id="tourPrice" required maxlength="50">
+          </div>
+          <button type="submit" class="btn btn-primary" id="btn-save">Save Tour</button>
+          <button type="reset" class="btn btn-secondary">Reset</button>
+        </form>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <h3 class="mb-4">Existing Tour</h3>
+      <div id="tourList">
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../js/tour.js"></script>
+</body>
+</html>

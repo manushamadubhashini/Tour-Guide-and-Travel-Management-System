@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FlightBook - Amazing Travel Deals</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #0275d8;
+      --secondary-color: #f8f9fa;
+      --accent-color: #fd7e14;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .navbar {
+      background-color: var(--primary-color);
+      padding: 15px 0;
+    }
+
+    .navbar-brand {
+      font-size: 24px;
+      font-weight: bold;
+      color: white !important;
+    }
+
+    .nav-link {
+      color: white !important;
+      font-weight: 500;
+      margin: 0 10px;
+    }
+
+    .hero-section {
+      background-image: url('../img/slide1.jpg');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      padding: 310px 0;
+      position: relative;
+      min-height: 300px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero-subtitle {
+      font-size: 1.8rem;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+
+    .trip-type-toggle label {
+      margin: 0;
+      padding: 8px 15px;
+      border-radius: 20px;
+      color: white;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .trip-type-toggle input[type="radio"] {
+      display: none;
+    }
+
+    .trip-type-toggle input[type="radio"]:checked + label {
+      background-color: var(--primary-color);
+    }
+    .form-control {
+      padding: 13px;
+      border-radius: 5px;
+    }
+
+
+    .input-with-icon i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6c757d;
+    }
+
+    .input-with-icon input {
+      padding-left: 40px;
+    }
+
+    .footer {
+      background-color: #003366;
+      color: white;
+      padding: 40px 0 20px;
+    }
+
+    .footer-title {
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: #ccc;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: white;
+      text-decoration: none;
+    }
+
+    .social-icons a {
+      color: white;
+      font-size: 20px;
+      margin-right: 15px;
+      transition: all 0.2s;
+    }
+
+    .social-icons a:hover {
+      color: var(--accent-color);
+    }
+
+    .copyright {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    #register-btn{
+      background-color: rgba(0, 47, 108, 0.85);
+      border-radius: 20px;
+      width: 100px;
+      height: 35px;
+      color: white;
+      border-color:rgba(0, 47, 108, 0.85) ;
+      margin-top: -4px;
+
+    }
+
+
+    @keyframes pulse {
+      0% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.7;
+      }
+      100% {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">
+      <i class="fas fa-plane-departure me-2"></i>FlightBook
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="loginForm.html" target="_blank"> Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="registerForm.html" target="_blank"><button id="register-btn"> Register</button></a>
+      </ul>
+  </div>
+  </div>
+</nav>
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="hero-content">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-6 mb-4">
+        <h4 class="footer-title">About FlightBook</h4>
+        <p>We offer the best deals on flights, hotels, and holiday packages. Our mission is to make travel accessible and enjoyable for everyone.</p>
+        <div class="social-icons mt-3">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h4 class="footer-title">Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">Flights</a></li>
+          <li><a href="#">Holidays</a></li>
+          <li><a href="#">Hotels</a></li>
+          <li><a href="#">Car Rentals</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-6 mb-4">
+        <h4 class="footer-title">Support</h4>
+        <ul class="footer-links">
+          <li><a href="#">FAQs</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms & Conditions</a></li>
+          <li><a href="#">Sitemap</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4 col-md-6 mb-4">
+        <h4 class="footer-title">Newsletter</h4>
+        <p>Subscribe to our newsletter and get exclusive deals you won't find anywhere else.</p>
+        <div class="input-group mt-3">
+          <input type="email" class="form-control" placeholder="Your email address">
+          <button class="btn btn-primary">Subscribe</button>
+        </div>
+      </div>
+    </div>
+    <div class="row copyright text-center">
+      <div class="col-md-12">
+        <p>&copy; 2025 FlightBook. All rights reserved.</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
