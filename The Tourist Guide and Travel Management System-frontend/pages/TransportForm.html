@@ -1,119 +1,713 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tourist Guide - Destination Management</title>
-  <!-- Bootstrap CSS -->
+  <title>TravelPro - Transport Management Dashboard</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Leaflet CSS (for OpenStreetMap) -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-  <!-- Custom CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     body {
       background-color: #f8f9fa;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    .tour-image {
-      transition: height 0.3s ease;
-      min-height: 200px;
+
+    .sidebar {
+      background-color: white;
+      height: 100vh;
+      position: fixed;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 260px;
+      z-index: 100;
     }
 
-    .tour-card:hover .tour-image {
-      max-height: 400px; /* Increase on hover if desired */
+    .main-content {
+      margin-left: 260px;
+      padding: 20px;
     }
 
-    /* If you want all images to be taller by default */
-    @media (min-width: 768px) {
-      .destination-image {
-        max-height: 350px;
-      }
+    .nav-item {
+      padding: 12px 20px;
+      color: #6c757d;
+      transition: all 0.3s;
+      border-left: 4px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
     }
-    .tour-card {
+
+    .nav-item:hover {
+      background-color: #f8f9fa;
+      color: #0d6efd;
+    }
+
+    .nav-item.active {
+      background-color: #e9f0ff;
+      color: #0d6efd;
+      border-left: 4px solid #0d6efd;
+    }
+
+    .card {
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      border-radius: 10px;
+      border: none;
       transition: transform 0.3s;
       margin-bottom: 20px;
     }
-    .tour-card:hover {
+
+    .card:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     }
-    .header {
-      background: linear-gradient(135deg, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-      color: white;
-      padding: 20px 0;
-      margin-bottom: 30px;
-    }
+
     .form-container {
       background-color: white;
       border-radius: 10px;
       padding: 25px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .stats-card {
+      position: relative;
+      overflow: hidden;
+      padding: 20px;
+    }
+
+    .stats-card .icon {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+
+    .header-bar {
+      background: #ffffff;
+      padding: 15px 25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .transport-card {
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .btn-primary {
+      background-color: #0d6efd;
+      border-color: #0d6efd;
+    }
+
+    .tour-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .stats-container {
+      margin-bottom: 25px;
+    }
+
+    .custom-modal {
+      display: none;
+      position: fixed;
+      z-index: 1050;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 800px;
+      border-radius: 10px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: black;
+    }
+
+    .form-label {
+      font-weight: 500;
+      color: #495057;
+    }
+
+    .form-control:focus {
+      border-color: #80bdff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .input-group-text {
+      background-color: #f8f9fa;
+      border-color: #ced4da;
+    }
+
+    .form-section {
+      border-left: 3px solid #0d6efd;
+      padding-left: 15px;
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      color: #0d6efd;
+      font-size: 18px;
+      margin-bottom: 15px;
+    }
+
+    .form-floating {
+      margin-bottom: 15px;
+    }
+
+    .icon-input {
+      position: relative;
+    }
+
+    .icon-input i {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6c757d;
+    }
+
+    .icon-input input {
+      padding-left: 35px;
+    }
+
+    .dropdown-menu {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .transport-type-selection {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .transport-type-option {
+      flex: 1;
+      text-align: center;
+      padding: 15px;
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .transport-type-option:hover {
+      border-color: #80bdff;
+    }
+
+    .transport-type-option.selected {
+      border-color: #0d6efd;
+      background-color: #e9f0ff;
+    }
+
+    .transport-type-option i {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #6c757d;
+    }
+
+    .transport-type-option.selected i {
+      color: #0d6efd;
     }
   </style>
 </head>
 <body>
-<div class="header text-center">
-  <h1>Transport Management Portal</h1>
-</div>
-
-<div class="container">
-  <div class="row">
-    <div class="col-lg-6">
-      <div class="form-container">
-        <h3 class="mb-4">Add New Transport</h3>
-        <form id="tourForm">
-          <div class="mb-3">
-            <label for="transportId" class="form-label">Transport ID</label>
-            <input type="text" class="form-control" id="transportId" required>
-          </div>
-          <label for="transportId" class="form-label">Distance</label>
-          <div class="input-group mb-3">
-            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" id="load-destination-id">Destination ID</button>
-            <ul class="dropdown-menu" id="destination-dropdown">
-            </ul>
-            <input type="text" class="form-control" id="destinationId" readonly >
-          </div>
-          <div class="mb-3">
-            <label for="tourName" class="form-label">Tour Name</label>
-            <input type="text" class="form-control" id="tourName" required maxlength="50">
-          </div>
-          <div class="mb-3">
-            <label for="tourDescription" class="form-label">Description</label>
-            <textarea class="form-control" id="tourDescription" rows="3" maxlength="200" required></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="tourDuration" class="form-label">Tour Duration</label>
-            <input type="text" class="form-control" id="tourDuration" required maxlength="50">
-          </div>
-          <div class="mb-3">
-            <label for="tourImage" class="form-label">Tour Image</label>
-            <input type="file" class="form-control" id="tourImage" accept="image/jpeg,image/png,image/jpg">
-            <div class="form-text">Upload an image of the tour (JPEG, PNG formats only)</div>
-            <input type="hidden" id="existingImage" name="existingImage">
-
-            <div class="mt-2">
-              <img id="imagePreview" src="" alt="Tour Image" style="max-width: 100%; display: none; border-radius: 5px;">
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="tourName" class="form-label">Tour Price</label>
-            <input type="text" class="form-control" id="tourPrice" required maxlength="50">
-          </div>
-          <button type="submit" class="btn btn-primary" id="btn-save">Save Tour</button>
-          <button type="reset" class="btn btn-secondary">Reset</button>
-        </form>
+<div class="sidebar">
+  <div class="p-4 d-flex align-items-center">
+    <i class="fas fa-plane-departure text-primary me-2 fs-4"></i>
+    <h3 class="m-0">TravelPro</h3>
+  </div>
+  <hr>
+  <nav>
+    <a href="http://localhost:63342/The%20Tourist%20Guide%20and%20Travel%20Management%20System/The%20Tourist%20Guide%20and%20Travel%20Management%20System-frontend/pages/Dashbaord.html?_" class="block nav-item bg-blue-100 py-3 px-4 text-blue-700 rounded-r-lg border-l-4 border-blue-600" target="_blank">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-th-large"></i>
+        <span>Dashboard</span>
+      </div>
+    </a>
+    <a href="http://localhost:63342/The%20Tourist%20Guide%20and%20Travel%20Management%20System/The%20Tourist%20Guide%20and%20Travel%20Management%20System-frontend/pages/tour.html?_ijt=7a" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50" target="_blank">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-map-marked-alt"></i>
+        <span>Tours</span>
+      </div>
+    </a>
+    <a href="" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50" target="_blank">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-users"></i>
+        <span>Guides</span>
+      </div>
+    </a>
+    <a href="billing.html" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-credit-card"></i>
+        <span>Trasport</span>
+      </div>
+    </a>
+    <a href="http://localhost:63342/The%20Tourist%20Guide%20and%20Travel%20Management%20System/The%20Tourist%20Guide%20and%20Travel%20Management%20System-frontend/pages/Accomodation.html?_ijt=3e7ujvq411m94dbsc7854e02gh&_ij_reload=RELOAD_ON_SAVE#" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50" target="_blank">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-vr-cardboard"></i>
+        <span>Accommodation</span>
+      </div>
+    </a>
+    <a href="guides.html" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-users"></i>
+        <span>Tourist</span>
+      </div>
+    </a>
+    <a href="http://localhost:63342/The%20Tourist%20Guide%20and%20Travel%20Management%20System/The%20Tourist%20Guide%20and%20Travel%20Management%20System-frontend/pages/destination.html?_ijt=es95c4jb89qqle5o1jrl63p0bl&_ij_reload=RELOAD_ON_SAVE" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-globe"></i>
+        <span>Destination</span>
+      </div>
+    </a>
+    <div class="py-3 px-4 text-gray-600 hover:bg-gray-50">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-vr-cardboard"></i>
+        <span>Notification</span>
       </div>
     </div>
-    <div class="col-lg-6">
-      <h3 class="mb-4">Existing Tour</h3>
-      <div id="tourList">
+    <div class="py-3 px-4 text-gray-600 hover:bg-gray-50">
+      <div class="flex items-center gap-3">
+        <i class="fas fa-globe"></i>
+        <span>Review</span>
+      </div>
+    </div>
+
+    <div class="mt-5 p-3">
+      <div class="bg-light p-4 rounded-3 text-center mb-3">
+        <i class="fas fa-question-circle text-primary fs-3"></i>
+      </div>
+      <h5 class="text-center">Need help?</h5>
+      <p class="text-center small text-muted">Check our documentation</p>
+      <button class="btn btn-dark w-100 mb-2">Documentation</button>
+      <button class="btn btn-primary w-100">Upgrade to Pro</button>
+    </div>
+  </nav>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  <!-- Header -->
+  <div class="header-bar mb-4">
+    <div>
+      <h4 class="m-0">Transport Management</h4>
+      <p class="text-muted m-0 small">Manage your transport and packages</p>
+    </div>
+    <div>
+      <button class="btn btn-primary" id="add-tour-btn">
+        <i class="fas fa-plus me-2"></i>Add New Transport
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Cards -->
+  <div class="row stats-container">
+    <div class="col-md-3">
+      <div class="card stats-card">
+        <div class="icon bg-primary">
+          <i class="fas fa-map-marked-alt"></i>
+        </div>
+        <h6 class="text-muted">TOTAL TRANSPORT</h6>
+        <h3 class="mt-2" id="total-tours">0</h3>
+        <p class="text-success small">+5% from last month</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card stats-card">
+        <div class="icon bg-success">
+          <i class="fas fa-users"></i>
+        </div>
+        <h6 class="text-muted">TOTAL TRAVELERS</h6>
+        <h3 class="mt-2">0</h3>
+        <p class="text-success small">+12% from last month</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card stats-card">
+        <div class="icon bg-warning">
+          <i class="fas fa-star"></i>
+        </div>
+        <h6 class="text-muted">AVG RATING</h6>
+        <h3 class="mt-2">0</h3>
+        <p class="text-success small">+0.2 from last month</p>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card stats-card">
+        <div class="icon bg-danger">
+          <i class="fas fa-dollar-sign"></i>
+        </div>
+        <h6 class="text-muted">TOTAL REVENUE</h6>
+        <h3 class="mt-2">0</h3>
+        <p class="text-success small">+8% from last month</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header bg-white py-3">
+      <h5 class="m-0">Transport Listings</h5>
+    </div>
+    <div class="card-body">
+      <div id="transportList">
+        <div class="text-center">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+<div id="tourModal" class="custom-modal">
+  <div class="modal-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3 id="modal-title">Add New Transport</h3>
+      <span class="close">&times;</span>
+    </div>
+
+    <form id="transport-form">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-section">
+            <div class="section-title">Basic Information</div>
+
+            <div class="mb-3">
+              <label for="transportId" class="form-label">Transport ID</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-hashtag"></i></span>
+                <input type="text" class="form-control" id="transportId" placeholder="e.g. TR001" required>
+              </div>
+              <div class="form-text">Unique identifier for this transport option</div>
+            </div>
+
+            <div class="mb-3">
+              <label for="location" class="form-label">Location</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                <input type="text" class="form-control" id="location" placeholder="e.g. Colombo, Kandy" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="section-title">Transport Details</div>
+
+            <div class="mb-4">
+              <label class="form-label d-block mb-2">Transport Type</label>
+              <div class="transport-type-selection">
+                <div class="transport-type-option" onclick="selectTransportType('CAR', this)">
+                  <i class="fas fa-car"></i>
+                  <div>CAR</div>
+                </div>
+                <div class="transport-type-option" onclick="selectTransportType('VAN', this)">
+                  <i class="fas fa-shuttle-van"></i>
+                  <div>Van</div>
+                </div>
+                <div class="transport-type-option" onclick="selectTransportType('BUS', this)">
+                  <i class="fas fa-bus"></i>
+                  <div>TRISHOW</div>
+                </div>
+              </div>
+              <input type="hidden" id="transportType" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="form-section">
+            <div class="section-title">Pricing</div>
+
+            <div class="mb-3">
+              <label for="pricePerKm" class="form-label">Price Per Km</label>
+              <div class="input-group">
+                <span class="input-group-text">RS.</span>
+                <input type="number" class="form-control" id="pricePerKm" placeholder="Price Per Km" required min="0">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="distance" class="form-label">Distance</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-road"></i></span>
+                <input type="number" class="form-control" id="distance" placeholder="Distance in kilometers" required min="1">
+                <span class="input-group-text">km</span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="totalPrice" class="form-label">Total Price</label>
+              <div class="input-group">
+                <span class="input-group-text">RS.</span>
+                <input type="number" class="form-control" id="totalPrice" placeholder="Total price" required min="0">
+              </div>
+              <div class="form-text">Final price to be charged to customers</div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <div class="section-title">Additional Information</div>
+
+            <div class="mb-3">
+              <label for="capacity" class="form-label">Passenger Capacity</label>
+              <div class="input-group">
+                <span class="input-group-text"><i class="fas fa-users"></i></span>
+                <input type="number" class="form-control" id="capacity" placeholder="Maximum number of passengers" min="1">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <button type="button" class="btn btn-secondary me-2" id="btn-cancel">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="btn-save">
+          <i class="fas fa-save me-2"></i>Save Transport
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="../js/tour.js"></script>
+<script>
+
+  function loadTransport() {
+    const transportList = document.getElementById('transportList');
+
+    transportList.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+
+    $.ajax({
+      url: "http://localhost:8080/api/v1/transport",
+      method: "GET",
+      dataType: "json",
+      success: (res) => {
+        const transport = res.data;
+        if (transport.length === 0) {
+          transportList.innerHTML = '<div class="alert alert-info">No transport found.</div>';
+          return;
+        }
+
+        // document.getElementById('total-tours').textContent = tour.length;
+
+        let html = '<div class="row">';
+        transport.forEach(transport => {
+          html += `
+                <div class="col-lg-6 col-xl-4">
+                <div class="card transport-card">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <h5 class="card-title"><i class="fas fa-truck-moving"></i> ${transport.type}</h5>
+                      <span class="badge bg-primary rounded-pill">ID: ${transport.id}</span>
+                    </div>
+                    <p class="card-text text-muted small">${transport.distance} km</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div>
+                        <span class="d-block"><i class="fas fa-map-marker-alt text-danger me-1"></i> Location: ${transport.location}</span>
+                        <span class="d-block"><i class="fas fa-users text-warning me-1"></i> Passengers: ${transport.passengers}</span>
+                         <span class="d-block"><i class="fa-solid fa-money-bill-wave" style="color: #4e1ac7;"></i> Price Per Km: RS.${transport.pricePerKM}</span>
+                      </div>
+                      <h5 class="text-primary m-0">RS.${transport.price}</h5>
+                    </div>
+
+                  </div>
+                  <div class="card-footer bg-white border-top-0">
+                    <div class="tour-actions">
+                      <button type="button" class="btn btn-outline-primary btn-sm flex-grow-1"
+                        onclick="editTransport('${transport.id}','${transport.type}' ,'${transport.location}', '${transport.distance}','${transport.pricePerKM}' ,'${transport.price}','${transport.passengers}')">
+                        <i class="fas fa-edit me-1"></i> Edit
+                      </button>
+                      <button type="button" class="btn btn-outline-danger btn-sm flex-grow-1" onclick="deleteTransport('${transport.id}')">
+                        <i class="fas fa-trash me-1"></i> Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `;
+        });
+        html += '</div>';
+
+        transportList.innerHTML = html;
+      },
+      error: (err) => {
+        console.error('Error loading tour:', err);
+        tourList.innerHTML = '<div class="alert alert-danger">Failed to load tours.</div>';
+      }
+    });
+  }
+
+  loadTransport();
+  function editTransport(id,type,location,distance,pricePerKm,price,passengers) {
+    document.getElementById("modal-title").textContent = "Edit Transport";
+
+    $("#transportId").val(id);
+    $("#transportType").val(type);
+    $("#location").val(location);
+    $("#distance").val(distance);
+    $("#pricePerKm").val(pricePerKm)
+    $("#totalPrice").val(price);
+    $("#capacity").val(passengers);
+    document.querySelectorAll('.transport-type-option').forEach(option => {
+      option.classList.remove('selected');
+    });
+
+    document.querySelectorAll('.transport-type-option').forEach(option => {
+      const optionType = option.querySelector('div').textContent.trim().toUpperCase();
+      if (optionType === type.toUpperCase()) {
+        option.classList.add('selected');
+      }
+
+    });
+    $("#btn-save").text("Update Transport")
+
+
+    modal.style.display = "block";
+  }
+  function deleteTransport(id) {
+    if (confirm("Are you sure you want to delete this transport?")) {
+      $.ajax({
+        url: `http://localhost:8080/api/v1/transport/delete/${id}`,
+        method: "DELETE",
+        success: (res) => {
+          loadTransport()
+          console.log(res)
+        },
+        error: (err) => {
+          console.log(err)
+          alert("Error deleting tranport. Please try again.");
+        }
+      })
+    }
+  }
+  const modal = document.getElementById("tourModal");
+  const addTourBtn = document.getElementById("add-tour-btn");
+  const closeBtn = document.getElementsByClassName("close")[0];
+  const cancelBtn = document.getElementById("btn-cancel");
+
+  // Open modal
+  addTourBtn.onclick = function () {
+    document.getElementById("modal-title").textContent = "Add New Transport";
+    document.getElementById("transport-form").reset();
+    resetTransportTypeSelection();
+    modal.style.display = "block";
+  }
+
+  // Close modal
+  closeBtn.onclick = function () {
+    modal.style.display = "none";
+  }
+
+  // Cancel button
+  cancelBtn.onclick = function () {
+    modal.style.display = "none";
+  }
+
+  // Close if clicking outside modal
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+
+  function resetTransportTypeSelection() {
+    document.querySelectorAll('.transport-type-option').forEach(option => {
+      option.classList.remove('selected');
+    });
+    document.getElementById('transportType').value = '';
+  }
+
+  function selectTransportType(type, element) {
+    // Reset all options
+    document.querySelectorAll('.transport-type-option').forEach(option => {
+      option.classList.remove('selected');
+    });
+
+    // Select the clicked option
+    element.classList.add('selected');
+
+    // Update the hidden input value
+    document.getElementById('transportType').value = type;
+
+    console.log('Selected transport type:', type);
+  }
+  $("#btn-save").off("click").on("click", (e) => {
+    e.preventDefault();
+
+    // const formData = new FormData();
+    const id = $("#transportId").val();
+    const type=$("#transportType").val();
+    const location=$("#location").val();
+    const distance=$("#distance").val();
+    const pricePerKM=$("#pricePerKm").val()
+    // const price=$("#totalPrice").val()
+    const passengers=$("#capacity").val();
+    const  price=$("#totalPrice").val()
+
+    const isUpdate=id.trim() !== "";
+
+    const json={
+      "id":id,
+      "type":type,
+      "location":location,
+      "distance":distance,
+      "pricePerKM":pricePerKM,
+      "price":price,
+      "passengers":passengers
+    }
+    const method= isUpdate ? "PUT" : "POST"
+
+    $.ajax({
+      url: "http://localhost:8080/api/v1/transport",
+      method: method,
+      data: JSON.stringify(
+        json
+      ),
+      contentType: "application/json",
+      success: (res) => {
+        console.log("Success:", res);
+        $("#transport-form")[0].reset();
+        $("#transportId").val("");
+        $("#btn-save").text("Save Transport");
+        modal.style.display = "none";
+        loadTransport();
+      },
+      error: (err) => {
+        console.error("Error:", err);
+        alert("Error saving transport data. Please try again.");
+      },
+    });
+  });
+
+</script>
 </body>
 </html>

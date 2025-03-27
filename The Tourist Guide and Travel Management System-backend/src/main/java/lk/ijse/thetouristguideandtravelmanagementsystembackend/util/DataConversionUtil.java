@@ -4,50 +4,129 @@ import lk.ijse.thetouristguideandtravelmanagementsystembackend.advicer.FileConve
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Base64;
+import java.util.UUID;
 
 /**
  * Utility class for data conversion operations in the Tourist Guide and Travel Management System.
- * Provides methods for converting between different data formats, such as files to Base64.
+ * Provides methods for converting between different data formats, managing file storage operations.
  */
 public class DataConversionUtil {
 
+    // Define the directory where images will be stored
+    private static final String IMAGE_UPLOAD_PATH = System.getProperty("user.home") + "/touristapp/upload/tour-images/";
+
     /**
-     * Converts a MultipartFile to a Base64 encoded string.
+     * Saves a MultipartFile to the file system and returns the file path
      *
-     * @param file The MultipartFile to convert
-     * @return Base64 encoded string representation of the file
-     * @throws FileConversionException if the file cannot be converted
+     * @param file The MultipartFile to save
+     * @return String containing the relative path to the saved file
+     * @throws FileConversionException if the file cannot be saved
      */
-    public static String toBase64(MultipartFile file) {
+    public static String saveToFileSystem(MultipartFile file) {
         try {
             if (file == null || file.isEmpty()) {
                 return null;
             }
-            byte[] fileContent = file.getBytes();
-            return Base64.getEncoder().encodeToString(fileContent);
+
+            // Create directories if they don't exist
+            File directory = new File(IMAGE_UPLOAD_PATH);
+            if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            // Generate a unique filename to prevent collisions
+            String fileExtension = getFileExtension(file);
+            String fileName = UUID.randomUUID().toString() + "." + fileExtension;
+            String filePath = IMAGE_UPLOAD_PATH + fileName;
+
+            // Save the file
+            File destFile = new File(filePath);
+            try (FileOutputStream fos = new FileOutputStream(destFile)) {
+                fos.write(file.getBytes());
+            }
+            if (destFile.exists()) {
+                System.out.println("File saved successfully at: " + destFile.getAbsolutePath());
+            } else {
+                System.out.println("Failed to save file at: " + destFile.getAbsolutePath());
+            }
+
+            return filePath;
+
         } catch (IOException e) {
-            throw new FileConversionException("Failed to convert file to Base64", e);
+            throw new FileConversionException("Failed to save file to file system", e);
         }
     }
 
     /**
-     * Converts a Base64 encoded string back to a byte array.
+     * Deletes a file from the file system
      *
-     * @param base64String The Base64 encoded string
-     * @return Byte array of the decoded content
-     * @throws FileConversionException if the string cannot be decoded
+     * @param filePath The path of the file to delete
+     * @return true if successfully deleted, false otherwise
      */
-    public static byte[] fromBase64(String base64String) {
-        try {
-            if (base64String == null || base64String.isEmpty()) {
-                return new byte[0];
-            }
-            return Base64.getDecoder().decode(base64String);
-        } catch (IllegalArgumentException e) {
-            throw new FileConversionException("Failed to decode Base64 string", e);
+    public static boolean deleteFromFileSystem(String filePath) {
+        if (filePath == null || filePath.isEmpty()) {
+            return false;
         }
+
+        File file = new File(filePath);
+        return file.exists() && file.delete();
+    }
+
+    /**
+     * Converts a file path to a MultipartFile for use in DTOs
+     *
+     * @param filePath The path of the file to convert
+     * @return MultipartFile representation of the file
+     */
+    public static MultipartFile pathToMultipartFile(String filePath) {
+        try {
+            if (filePath == null || filePath.isEmpty()) {
+                return null;
+            }
+
+            Path path = Paths.get(filePath);
+            if (!Files.exists(path)) {
+                return null;
+            }
+
+            String fileName = path.getFileName().toString();
+            String contentType = determineContentType(fileName);
+            byte[] content = Files.readAllBytes(path);
+
+            return new MockMultipartFile(
+                    "image",
+                    fileName,
+                    contentType,
+                    content
+            );
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Determines the content type based on file extension
+     *
+     * @param fileName The name of the file
+     * @return The appropriate content type
+     */
+    private static String determineContentType(String fileName) {
+        if (fileName.toLowerCase().endsWith(".jpg") || fileName.toLowerCase().endsWith(".jpeg")) {
+            return "image/jpeg";
+        } else if (fileName.toLowerCase().endsWith(".png")) {
+            return "image/png";
+        } else if (fileName.toLowerCase().endsWith(".gif")) {
+            return "image/gif";
+        }
+        return "application/octet-stream";
     }
 
     /**
@@ -77,7 +156,7 @@ public class DataConversionUtil {
      */
     public static String getFileExtension(MultipartFile file) {
         if (file == null || file.getOriginalFilename() == null) {
-            return "";
+            return "jpg"; // Default extension
         }
 
         String fileName = file.getOriginalFilename();
@@ -86,28 +165,38 @@ public class DataConversionUtil {
         if (lastDotIndex > 0) {
             return fileName.substring(lastDotIndex + 1).toLowerCase();
         }
-        return "";
+        return "jpg"; // Default extension
     }
-    public static MultipartFile convertToMultipartFile(String base64Image) {
+
+    // Keep these methods for backward compatibility or additional functionality
+    public static String toBase64(MultipartFile file) {
         try {
-            if (base64Image == null || base64Image.isEmpty()) {
+            if (file == null || file.isEmpty()) {
                 return null;
             }
+            byte[] fileContent = file.getBytes();
+            return Base64.getEncoder().encodeToString(fileContent);
+        } catch (IOException e) {
+            throw new FileConversionException("Failed to convert file to Base64", e);
+        }
+    }
 
-            byte[] imageBytes = Base64.getDecoder().decode(base64Image);
-            if (imageBytes.length == 0) {
-                return null;
+    public static byte[] fromBase64(String base64String) {
+        try {
+            if (base64String == null || base64String.isEmpty()) {
+                return new byte[0];
             }
-
-            return new MockMultipartFile(
-                    "image",
-                    "image.jpg",
-                    "image/jpeg",
-                    imageBytes
-            );
+            return Base64.getDecoder().decode(base64String);
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-            return null;
+            throw new FileConversionException("Failed to decode Base64 string", e);
+        }
+    }
+    public static String fileToBase64(String filePath) {
+        try {
+            byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
+            return Base64.getEncoder().encodeToString(fileContent);
+        } catch (IOException e) {
+            throw new FileConversionException("Failed to convert file to base64", e);
         }
     }
 }

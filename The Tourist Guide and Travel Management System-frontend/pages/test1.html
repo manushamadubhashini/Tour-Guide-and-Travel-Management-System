@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel World - Westminster Bridge Tour</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+    :root {
+      --primary-color: #ff9800;
+      --text-color: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      /*font-family: "Franklin Gothic Book";*/
+      font-family: "JetBrains Mono ExtraLight";
+      background-color: #f4f4f4;
+      color: var(--text-color);
+      overflow-x: hidden;
+      animation: pageLoad 1s ease-out;
+    }
+
+    @keyframes pageLoad {
+      0% {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes slideInFromLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInFromRight {
+      0% {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .tour-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      animation: slideInFromLeft 1s ease-out;
+    }
+
+    .booking-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 25px;
+      animation: slideInFromRight 1s ease-out;
+    }
+
+    .tour-title {
+      font-weight: 700;
+      color: var(--text-color);
+      animation: slideInFromLeft 1s ease-out;
+    }
+
+    .tour-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background-color: #f0f0f0;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+
+    .book-now-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .book-now-btn:hover {
+      background-color: #f57c00;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .review-stars {
+      color: #ffc107;
+    }
+
+    .description-section {
+      animation: fadeIn 1.4s ease-out;
+    }
+
+    .navbar {
+      animation: slideInFromLeft 0.8s ease-out;
+    }
+    .description{
+      font-size: 15px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    h4{
+      font-weight: 700;
+      font-size: 18px;
+      font-family: "JetBrains Mono ExtraLight";
+    }
+    h2{
+      font-family: "JetBrains Mono ExtraLight";
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-white px-4 py-2">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="" alt="Travel World Logo">
+    </a>
+    <div class="navbar-nav ms-auto">
+      <a class="nav-link" href="#">Home</a>
+      <a class="nav-link" href="#">About</a>
+      <a class="nav-link" href="#">Tour</a>
+      <a class="nav-link" href="#">Login</a>
+      <a class="btn btn-warning rounded-pill" href="#">Register</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-lg-8">
+      <img src="../img/car.jpg" class="tour-image mb-3" alt="Westminster Bridge">
+
+      <h2 class="tour-title mb-3">Westminster Bridge</h2>
+
+      <div class="tour-details">
+        <div class="detail-item">
+          <span class="review-stars">★★★★½</span>
+          <span>(2)</span>
+        </div>
+        <div class="detail-item">
+          <i class="bi bi-geo-alt"></i>
+          <span>Somewhere in London</span>
+        </div>
+        <div class="detail-item">
+          <i class="bi bi-geo"></i>
+          <span>London</span>
+        </div>
+        <div class="detail-item">
+          <i class="bi bi-cash"></i>
+          <span>$99/per person</span>
+        </div>
+        <div class="detail-item">
+          <i class="bi bi-people"></i>
+          <span>10 people</span>
+        </div>
+      </div>
+
+      <div class="description-section mt-4">
+        <h4 class="mb-3">Description</h4>
+        <p class="description">
+          Embark on a mesmerizing journey across the iconic Westminster Bridge, where history, architecture, and breathtaking views converge. As the golden sunlight dances on the River Thames, you'll be transported into the heart of London's most enchanting landscape.
+        </p>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="booking-card">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h3>$99 <small class="text-muted">per person</small></h3>
+          <div class="text-warning">
+            ★★★★½ (2)
+          </div>
+        </div>
+        <form>
+          <div class="mb-3">
+            <label for="fullName" class="form-label">Full name</label>
+            <input type="text" class="form-control" id="fullName">
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Phone</label>
+            <input type="tel" class="form-control" id="phone">
+          </div>
+          <div class="mb-3">
+            <label for="date" class="form-label">Date</label>
+            <input type="date" class="form-control" id="date">
+          </div>
+          <div class="mb-3">
+            <label for="guests" class="form-label">Guests</label>
+            <select class="form-select" id="guests">
+              <option>Guest</option>
+              <option>1 Person</option>
+              <option>2 Persons</option>
+              <option>3 Persons</option>
+            </select>
+          </div>
+          <div class="border-top pt-3">
+            <div class="d-flex justify-content-between">
+              <span>$99 × 1 person</span>
+              <span>$99</span>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span>Service charge</span>
+              <span>$10</span>
+            </div>
+            <div class="d-flex justify-content-between fw-bold">
+              <span>Total</span>
+              <span>$109</span>
+            </div>
+          </div>
+          <button type="submit" class="btn book-now-btn mt-3">Book Now</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+</body>
+</html>

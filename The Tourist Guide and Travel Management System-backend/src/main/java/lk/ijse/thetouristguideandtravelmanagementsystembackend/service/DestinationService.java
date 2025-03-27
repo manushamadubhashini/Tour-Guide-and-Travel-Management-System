@@ -75,7 +75,7 @@ public class DestinationService {
                 .map(destination -> {
                     MultipartFile imageFile = null;
                     if (destination.getImage() != null && !destination.getImage().isEmpty()) {
-                        imageFile = DataConversionUtil.convertToMultipartFile(destination.getImage());
+//                        imageFile = DataConversionUtil.convertToMultipartFile(destination.getImage());
                     }
 
                     return new DestinationDto(

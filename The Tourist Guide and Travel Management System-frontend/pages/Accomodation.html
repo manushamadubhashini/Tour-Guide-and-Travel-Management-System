@@ -483,11 +483,8 @@
       }
     });
   }
-
-  // Initialize page
   loadAccommodation();
 
-  // Modal functionality
   const modal = document.getElementById("accommodationModal");
   const addAccommodationBtn = document.getElementById("add-accommodation-btn");
   const closeBtn = document.getElementsByClassName("close")[0];
@@ -516,7 +513,6 @@
     }
   }
 
-  // Save/Update accommodation
   $("#btn-save").off("click").on("click", (e) => {
     e.preventDefault();
 

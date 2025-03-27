@@ -12,5 +12,7 @@ public class TransportDto {
     private String type;
     private String location;
     private String distance;
+    private double pricePerKM;
     private double price;
+    private int passengers;
 }

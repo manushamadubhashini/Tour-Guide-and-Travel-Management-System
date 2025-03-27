@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Packages</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    .package-item {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .package-item:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .package-item .read-more,
+    .package-item .book-now {
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="container-xxl py-5">
+  <div class="container">
+    <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+      <h6 class="section-title bg-white text-center text-primary px-3">Packages</h6>
+      <h1 class="mb-5">Awesome Packages</h1>
+    </div>
+    <div id="packagesContainer" class="row g-4 justify-content-center">
+      <div class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const packagesContainer = document.getElementById('packagesContainer');
+    const API_BASE_URL = 'http://localhost:8080/api/v1';
+
+    function generateStars(rating) {
+      const fullStars = Math.floor(rating);
+      const halfStar = rating % 1 !== 0;
+      let starsHTML = '';
+
+      for (let i = 0; i < fullStars; i++) {
+        starsHTML += '<small class="fa fa-star text-primary"></small>';
+      }
+
+      if (halfStar) {
+        starsHTML += '<small class="fa fa-star-half text-primary"></small>';
+      }
+
+      return starsHTML;
+    }
+
+    fetch(`${API_BASE_URL}/tour`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(response => {
+        const packages = response.data || [];
+        packagesContainer.innerHTML = ''; // Clear loading spinner
+
+        packages.forEach(pkg => {
+          const packageCard = document.createElement('div');
+          packageCard.className = 'col-lg-4 col-md-6 wow fadeInUp';
+          packageCard.innerHTML = `
+          <div class="package-item">
+            <div class="overflow-hidden">
+              <img class="img-fluid" src="data:image/jpeg;base64,${pkg.image}" alt="${pkg.name}">
+            </div>
+            <div class="d-flex border-bottom">
+              <small class="flex-fill text-center border-end py-2">
+                <i class="fa fa-map-marker-alt text-primary me-2"></i>${pkg.name}
+              </small>
+              <small class="flex-fill text-center border-end py-2">
+                <i class="fa fa-calendar-alt text-primary me-2"></i>${pkg.duration} days
+              </small>
+              <small class="flex-fill text-center py-2">
+                <i class="fa fa-user text-primary me-2"></i>Group
+              </small>
+            </div>
+            <div class="text-center p-4">
+              <h3 class="mb-0">$${pkg.price}</h3>
+              <div class="mb-3">
+                ${generateStars(4.5)}
+              </div>
+              <p>${pkg.description}</p>
+              <div class="d-flex justify-content-center mb-2">
+                <a href="#" data-id="${pkg.id}" class="btn btn-sm btn-primary px-3 border-end read-more" style="border-radius: 30px 0 0 30px;">
+                  Read More
+                </a>
+                <a href="#" data-id="${pkg.id}" class="btn btn-sm btn-primary px-3 book-now" style="border-radius: 0 30px 30px 0;">
+                  Book Now
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+
+          packagesContainer.appendChild(packageCard);
+
+          // Book Now button event listener
+          packageCard.querySelector('.book-now').addEventListener('click', function(e) {
+            e.preventDefault();
+            const tourId = this.getAttribute('data-id');
+            console.log('Booking Tour ID:', tourId);
+
+            // Directly use the tour ID without additional fetching
+            if (tourId) {
+              localStorage.setItem('selectedTourId', tourId);
+              window.location.href = `test2.html?id=${tourId}`;
+            } else {
+              alert('Unable to process booking. Invalid tour ID.');
+            }
+          });
+
+          // Read More button event listener
+          packageCard.querySelector('.read-more').addEventListener('click', function(e) {
+            e.preventDefault();
+            const tourId = this.getAttribute('data-id');
+
+            fetch(`${API_BASE_URL}/tour/${tourId}`)
+              .then(response => {
+                if (!response.ok) {
+                  throw new Error('Network response was not ok');
+                }
+                return response.json();
+              })
+              .then(tourResponse => {
+                const tour = tourResponse.data || tourResponse;
+                console.log('Tour Details:', tour);
+
+                if (tour && tour.id) {
+                  localStorage.setItem('selectedTour', JSON.stringify(tour));
+                  window.location.href = `test2.html?id=${tour.id}`;
+                } else {
+                  throw new Error('Invalid tour data received');
+                }
+              })
+              .catch(error => {
+                console.error('Error fetching tour details:', error);
+                alert('Unable to fetch tour details. Please try again.');
+              });
+          });
+        });
+      })
+      .catch(error => {
+        console.error('Detailed error:', error);
+        packagesContainer.innerHTML = `
+        <div class="alert alert-danger text-center">
+          Unable to load packages. Error: ${error.message}
+        </div>
+      `;
+      });
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

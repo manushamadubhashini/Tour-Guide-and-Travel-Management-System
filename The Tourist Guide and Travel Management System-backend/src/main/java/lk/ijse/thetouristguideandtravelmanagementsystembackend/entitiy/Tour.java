@@ -28,9 +28,8 @@ public class Tour {
     private int duration;
     @Column(nullable = false)
     private double price;
-    @Lob
-    @Column(columnDefinition = "LONGTEXT")
-    private String image;
+    @Column(name = "image_path")
+    private String imagePath;
     @OneToMany(mappedBy = "tour",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<TourSchedule> tourScheduleList=new ArrayList<>();
     @OneToMany(mappedBy = "tour",cascade = CascadeType.ALL,fetch = FetchType.LAZY)

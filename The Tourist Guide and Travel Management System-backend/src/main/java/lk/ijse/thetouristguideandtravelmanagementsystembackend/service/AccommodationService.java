@@ -50,7 +50,7 @@ public class AccommodationService {
                 .map(accommodation -> {
                     MultipartFile imageFile=null;
                     if (accommodation.getImage() != null && !accommodation.getImage().isEmpty()){
-                        imageFile=DataConversionUtil.convertToMultipartFile(accommodation.getImage());
+//                        imageFile=DataConversionUtil.convertToMultipartFile(accommodation.getImage());
                     }
                     return new AccommodationDto(
                             accommodation.getId(),

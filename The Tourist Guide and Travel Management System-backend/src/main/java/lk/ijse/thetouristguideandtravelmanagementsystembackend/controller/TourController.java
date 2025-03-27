@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @RestController
@@ -39,4 +41,26 @@ public class TourController {
         tourService.update(tourDto);
         return new ResponseUtil(200,"Tour Updated!",tourDto);
     }
+//    @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseUtil getTourById(@PathVariable String id) {
+//        try {
+//            return new ResponseUtil(200, "Tour Found", tourService.findById(id));
+//        } catch (Exception e) {
+//            return new ResponseUtil(404, "Tour Not Found", null);
+//        }
+//    }
+@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+public ResponseUtil getTourById(@PathVariable String id) {
+    try {
+        List<TourDto> tours = tourService.findById(id);
+        if (tours != null && !tours.isEmpty()) {
+            // Return the first tour from the list
+            return new ResponseUtil(200, "Tour Found", tours.get(0));
+        } else {
+            return new ResponseUtil(404, "Tour Not Found", null);
+        }
+    } catch (Exception e) {
+        return new ResponseUtil(404, "Tour Not Found", null);
+    }
+}
 }

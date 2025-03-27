@@ -26,8 +26,12 @@ public class Transport {
     private String location;
     @Column(nullable = false)
     private String distance;
+    @Column(name = "price_per_km",nullable = false)
+    private double pricePerKm;
     @Column(nullable = false)
     private double price;
+    @Column(nullable = false)
+    private int passengers;
     @OneToMany(mappedBy = "transport",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<TransportItemDetails> transportItemDetailsList=new ArrayList<>();
 }

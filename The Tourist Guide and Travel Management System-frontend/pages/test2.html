@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tour Booking - Dynamic Details</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+    :root {
+      --primary-color: #ff9800;
+      --text-color: #333;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "JetBrains Mono ExtraLight";
+      background-color: #f4f4f4;
+      color: var(--text-color);
+      overflow-x: hidden;
+      animation: pageLoad 1s ease-out;
+    }
+
+    @keyframes pageLoad {
+      0% {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes slideInFromLeft {
+      0% {
+        opacity: 0;
+        transform: translateX(-50px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes slideInFromRight {
+      0% {
+        opacity: 0;
+        transform: translateX(50px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .tour-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      animation: slideInFromLeft 1s ease-out;
+    }
+
+    .booking-card {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      padding: 25px;
+      animation: slideInFromRight 1s ease-out;
+    }
+
+    .tour-title {
+      font-weight: 700;
+      color: var(--text-color);
+      animation: slideInFromLeft 1s ease-out;
+    }
+
+    .tour-details {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background-color: #f0f0f0;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+
+    .book-now-btn {
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .book-now-btn:hover {
+      background-color: #f57c00;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .review-stars {
+      color: #ffc107;
+    }
+
+    .description-section {
+      animation: fadeIn 1.4s ease-out;
+    }
+
+    .navbar {
+      animation: slideInFromLeft 0.8s ease-out;
+    }
+    .description{
+      font-size: 15px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    h4{
+      font-weight: 700;
+      font-size: 18px;
+      font-family: "JetBrains Mono ExtraLight";
+    }
+    h2{
+      font-family: "JetBrains Mono ExtraLight";
+    }
+
+    /* Previous CSS remains the same */
+
+    #mapContainer {
+      height: 300px;
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-4">
+  <div id="tourDetailsContainer" class="row">
+    <div class="text-center">
+      <div class="spinner-border" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const tourDetailsContainer = document.getElementById('tourDetailsContainer');
+    const API_BASE_URL = 'http://localhost:8080/api/v1';
+
+    function logError(message, error) {
+      console.error('Detailed Error Log:', {
+        message: message,
+        fullError: error,
+        apiResponseStructure: error ? Object.keys(error) : 'No error object'
+      });
+      tourDetailsContainer.innerHTML = `
+      <div class="alert alert-danger text-center">
+        <strong>Error:</strong> ${message}
+        <br>Please check the console for more details.
+      </div>
+    `;
+    }
+
+    function getUrlParameter(name) {
+      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+      var results = regex.exec(location.search);
+      return results === null ? '' : decodeURIComponent(results[1]);
+    }
+
+    const tourId = getUrlParameter('id');
+    console.log('Tour ID from URL:', tourId);
+
+    if (!tourId) {
+      logError('No tour ID provided in the URL. Please select a valid tour.');
+      return;
+    }
+
+    fetch(`${API_BASE_URL}/tour/${tourId}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => {
+        console.log('API Response Status:', response.status);
+        console.log('Response Headers:', Object.fromEntries(response.headers.entries()));
+
+        if (response.status === 404) {
+          throw new Error('Tour not found. Please check the tour ID.');
+        }
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then(data => {
+        console.log('Full API Response:', data);
+
+        // New, more flexible data extraction
+        let tour;
+        if (data.code === 200 && data.data) {
+          tour = data.data;
+        } else if (Array.isArray(data)) {
+          tour = data[0];
+        } else if (data.tour) {
+          tour = data.tour;
+        } else {
+          tour = data;
+        }
+
+        if (!tour || !tour.id) {
+          throw new Error('Invalid tour data structure. Please check backend response.');
+        }
+
+        renderTourDetails(tour);
+      })
+      .catch(error => {
+        console.error('Fetch Error:', error);
+        logError(error.message, error);
+      });
+
+    function renderTourDetails(tour) {
+      // Fallback for missing data with default values
+      const safeGet = (value, defaultValue = 'Not Available') =>
+        value !== undefined && value !== null ? value : defaultValue;
+
+      // Modify location to use destination information if available
+      const location = tour.name
+        ? `${safeGet(tour.name, 'Unknown Location')}`
+        : safeGet(tour.location, 'Unknown Location');
+
+      // Default coordinates if not provided (using a placeholder location)
+      const defaultLat = 0;
+      const defaultLng = 0;
+      const latitude = tour.latitude || defaultLat;
+      const longitude = tour.longitude || defaultLng;
+
+
+      tourDetailsContainer.innerHTML = `
+      <div class="container mt-4">
+        <div class="row">
+          <div class="col-lg-8">
+            <img src="${tour.image ?
+        `data:image/jpeg;base64,${tour.image}` :
+        'https://via.placeholder.com/600x400?text=Tour+Image'}"
+              class="tour-image mb-3"
+              alt="${safeGet(tour.name)}">
+
+            <h2 class="tour-title mb-3">${safeGet(tour.name)}</h2>
+
+            <div class="tour-details">
+              <div class="detail-item">
+                <span class="review-stars">${generateStars(4.5)}</span>
+                <span>(2 Reviews)</span>
+              </div>
+              <div class="detail-item">
+                <i class="bi bi-geo-alt"></i>
+                <span>${location}</span>
+              </div>
+              <div class="detail-item">
+                <i class="bi bi-calendar"></i>
+                <span>${safeGet(tour.duration, 'N/A')} Days</span>
+              </div>
+              <div class="detail-item">
+                <i class="bi bi-cash"></i>
+                <span>$${safeGet(tour.price, 'Not Specified')}/per person</span>
+              </div>
+              <div class="detail-item">
+                <i class="bi bi-people"></i>
+                <span>Group Tour</span>
+              </div>
+            </div>
+
+            <div class="description-section mt-4">
+              <h4 class="mb-3">Description</h4>
+              <p class="description">
+                ${safeGet(tour.description)}
+              </p>
+            </div>
+
+            <div id="mapContainer"></div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="booking-card">
+              <!-- Booking form remains the same as in previous version -->
+              <form>
+                <div class="mb-3">
+                  <label for="fullName" class="form-label">Full name</label>
+                  <input type="text" class="form-control" id="fullName">
+                </div>
+                <div class="mb-3">
+                  <label for="phone" class="form-label">Phone</label>
+                  <input type="tel" class="form-control" id="phone">
+                </div>
+                <div class="mb-3">
+                  <label for="date" class="form-label">Date</label>
+                  <input type="date" class="form-control" id="date">
+                </div>
+                <div class="mb-3">
+                  <label for="guests" class="form-label">Guests</label>
+                  <select class="form-select" id="guests">
+                    <option>Guest</option>
+                    <option>1 Person</option>
+                    <option>2 Persons</option>
+                    <option>3 Persons</option>
+                  </select>
+                </div>
+                <div class="border-top pt-3">
+                  <div class="d-flex justify-content-between">
+                    <span>$99 × 1 person</span>
+                    <span>$99</span>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <span>Service charge</span>
+                    <span>$10</span>
+                  </div>
+                  <div class="d-flex justify-content-between fw-bold">
+                    <span>Total</span>
+                    <span>$109</span>
+                  </div>
+                </div>
+                <button type="submit" class="btn book-now-btn mt-3">Book Now</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+      // Initialize map after rendering
+      initializeMap(latitude, longitude, location);
+    }
+
+    function initializeMap(lat, lng, locationName) {
+      const mapContainer = document.getElementById('mapContainer');
+
+      // If lat/lng are not provided, fetch them using Geocoding API
+      if ((lat === 0 && lng === 0) || lat === null || lng === null) {
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(locationName)}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.length > 0) {
+              lat = parseFloat(data[0].lat);
+              lng = parseFloat(data[0].lon);
+              console.log(`Fetched coordinates: ${lat}, ${lng}`);
+              renderMap(lat, lng, locationName);
+            } else {
+              mapContainer.innerHTML = `<div class="alert alert-warning">Location not found for ${locationName}</div>`;
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching geolocation:', error);
+            mapContainer.innerHTML = `<div class="alert alert-danger">Error fetching location data.</div>`;
+          });
+      } else {
+        renderMap(lat, lng, locationName);
+      }
+    }
+
+// Function to render map
+    function renderMap(lat, lng, locationName) {
+      const map = L.map('mapContainer').setView([lat, lng], 10);
+
+      // Add OpenStreetMap tiles
+      // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      //   attribution: '© OpenStreetMap contributors'
+      // }).addTo(map);
+      L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; Stadia Maps, OpenMapTiles, OpenStreetMap contributors'
+      }).addTo(map);
+      // Add marker
+      L.marker([lat, lng])
+        .addTo(map)
+        .bindPopup(locationName)
+        .openPopup();
+    }
+
+    function generateStars(rating) {
+      const fullStars = Math.floor(rating);
+      const halfStar = rating % 1 >= 0.5;
+      let starsHTML = '';
+
+      for (let i = 1; i <= 5; i++) {
+        if (i <= fullStars) {
+          starsHTML += '<i class="bi bi-star-fill"></i>';
+        } else if (i === fullStars + 1 && halfStar) {
+          starsHTML += '<i class="bi bi-star-half"></i>';
+        } else {
+          starsHTML += '<i class="bi bi-star"></i>';
+        }
+      }
+
+      return starsHTML;
+    }
+  });
+</script>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
