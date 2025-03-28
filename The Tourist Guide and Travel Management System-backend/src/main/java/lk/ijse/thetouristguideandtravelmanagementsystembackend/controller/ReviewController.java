@@ -10,12 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/v1/review")
+@CrossOrigin
 public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseUtil save(@RequestBody ReviewDto reviewDto){
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseUtil save(@ModelAttribute ReviewDto reviewDto){
         reviewService.save(reviewDto);
         return new ResponseUtil(201,"Review is Successfully",reviewDto);
     }
@@ -27,10 +28,5 @@ public class ReviewController {
     public ResponseUtil delete(@PathVariable(value = "id") String id){
         reviewService.delete(id);
         return new ResponseUtil(200,"Review Deleted",id);
-    }
-    @PutMapping
-    public ResponseUtil update(@RequestBody ReviewDto reviewDto){
-        reviewService.update(reviewDto);
-        return new ResponseUtil(200,"Review Update",reviewDto);
     }
 }

@@ -32,8 +32,8 @@ public class User {
     private List<GuideTour> guideTourList=new ArrayList<>();
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Booking> bookingList=new ArrayList<>();
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Review> reviewList=new ArrayList<>();
+//    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+//    private List<Review> reviewList=new ArrayList<>();
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Notification> notificationList=new ArrayList<>();
 }

@@ -36,5 +36,7 @@ public class Tour {
     private List<GuideTour> guideTourList=new ArrayList<>();
     @OneToMany(mappedBy = "tour",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<TourItemDetails> tourItemDetailsList=new ArrayList<>();
+    @OneToMany(mappedBy = "tour",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Review> reviewList=new ArrayList<>();
 
 }
