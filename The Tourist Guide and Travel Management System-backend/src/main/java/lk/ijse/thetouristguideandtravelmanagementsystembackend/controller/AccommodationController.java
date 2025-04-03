@@ -14,8 +14,8 @@ public class AccommodationController {
     @Autowired
     private AccommodationService accommodationService;
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseUtil save(@ModelAttribute AccommodationDto accommodationDto){
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil save(@RequestBody AccommodationDto accommodationDto){
         accommodationService.save(accommodationDto);
         return new ResponseUtil(201,"Accommodation is Saved",accommodationDto);
     }
@@ -29,7 +29,7 @@ public class AccommodationController {
         return new ResponseUtil(200,"Accommodation is deleted",id);
     }
     @PutMapping
-    public ResponseUtil update(@ModelAttribute AccommodationDto accommodationDto){
+    public ResponseUtil update(@RequestBody AccommodationDto accommodationDto){
         accommodationService.update(accommodationDto);
         return new ResponseUtil(200,"Accommodation is updated",accommodationDto);
 

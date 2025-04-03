@@ -30,9 +30,6 @@ public class AccommodationService {
             if (accommodation.getId() == null) {
                 accommodation.setId(UUID.randomUUID().toString());
             }
-            if (accommodationDto.getImage()!=null){
-                accommodation.setImage(DataConversionUtil.toBase64(accommodationDto.getImage()));
-            }
             accommodation.setAccommodationType(AccommodationType.valueOf(accommodationDto.getType()));
             accommodationRepo.save(accommodation);
             System.out.println("Saved Successfully!");
@@ -45,25 +42,7 @@ public class AccommodationService {
     }
 
     public List<AccommodationDto> getAll(){
-        return accommodationRepo.findAll()
-                .stream()
-                .map(accommodation -> {
-                    MultipartFile imageFile=null;
-                    if (accommodation.getImage() != null && !accommodation.getImage().isEmpty()){
-//                        imageFile=DataConversionUtil.convertToMultipartFile(accommodation.getImage());
-                    }
-                    return new AccommodationDto(
-                            accommodation.getId(),
-                            accommodation.getDestination().getId(),
-                            accommodation.getName(),
-                            accommodation.getDescription(),
-                            accommodation.getAccommodationType().name(),
-                            accommodation.getAddress(),
-                            accommodation.getPrice(),
-                            imageFile
-                    );
-                })
-                .collect(Collectors.toList());
+        return modelMapper.map(accommodationRepo.findAll(),new TypeToken<List<AccommodationDto>>(){}.getType());
     }
     public void delete(String id){
 
@@ -82,9 +61,6 @@ public class AccommodationService {
         try {
             if (accommodationRepo.existsById(accommodationDto.getId())){
                 Accommodation accommodation=modelMapper.map(accommodationDto, Accommodation.class);
-                if (accommodationDto.getImage()!=null){
-                    accommodation.setImage(DataConversionUtil.toBase64(accommodationDto.getImage()));
-                }
                 accommodation.setAccommodationType(AccommodationType.valueOf(accommodationDto.getType()));
                 accommodationRepo.save(accommodation);
                 System.out.println("Updated Successfully!");

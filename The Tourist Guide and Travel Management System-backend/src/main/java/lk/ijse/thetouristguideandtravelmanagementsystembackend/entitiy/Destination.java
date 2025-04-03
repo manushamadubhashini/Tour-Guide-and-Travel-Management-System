@@ -30,8 +30,6 @@ public class Destination {
     @Column(columnDefinition = "LONGTEXT")
     private String image;
     @OneToMany(mappedBy = "destination",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<Accommodation> accommodationList=new ArrayList<>();
-    @OneToMany(mappedBy = "destination",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Tour> tourList=new ArrayList<>();
 
 

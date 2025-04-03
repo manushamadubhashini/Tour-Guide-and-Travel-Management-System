@@ -23,6 +23,99 @@
 
   <style>
 
+    /* Add these styles to your existing style section */
+
+    .gallery-thumbnail:hover {
+      opacity: 0.8;
+      transform: scale(1.02);
+      transition: all 0.3s ease;
+    }
+
+    .thumbnail-row::-webkit-scrollbar {
+      height: 5px;
+    }
+
+    .thumbnail-row::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    .thumbnail-row::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 10px;
+    }
+
+    .thumbnail-row::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    #mainGalleryImage {
+      transition: all 0.3s ease;
+    }
+
+    .carousel-thumbnail {
+      transition: all 0.2s ease;
+      border: 3px solid transparent;
+    }
+
+    .carousel-thumbnail:hover {
+      border-color: var(--primary-color);
+    }
+
+    /* Update the photo-count-badge position to match your screenshot */
+    .photo-count-badge {
+      position: absolute;
+      bottom: 15px;
+      left: 15px; /* Changed from right to left */
+      background-color: rgba(0,0,0,0.6);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Add more spacing between gallery and details */
+    #tourGalleryContainer {
+      animation: fadeIn 1.2s ease-out;
+      margin-bottom: 30px;
+    }
+
+    /* Style the "Show all photos" button to match your design */
+    #viewAllPhotos {
+      border: 1px solid #333;
+      border-radius: 5px;
+      padding: 8px 16px;
+      transition: all 0.3s ease;
+    }
+
+    #viewAllPhotos:hover {
+      background-color: #333;
+      color: white;
+    }
+
+    /* Animation for gallery */
+    #tourGalleryContainer {
+      animation: fadeIn 1.2s ease-out;
+    }
+
+    .gallery-thumbnail, #mainGalleryImage {
+      animation: slideInFromBottom 1s ease-out;
+    }
+
+    @keyframes slideInFromBottom {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     :root {
       --primary-color: #ff9800;
       --text-color: #333;
@@ -75,6 +168,27 @@
       }
     }
 
+    .gallery-thumbnail:hover {
+      opacity: 0.8;
+      transform: scale(1.02);
+      transition: all 0.3s ease;
+    }
+
+    .photo-count-badge {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      background-color: rgba(0,0,0,0.6);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+
     .tour-image {
       max-width: 100%;
       height: auto;
@@ -86,10 +200,17 @@
     .booking-card {
       background-color: white;
       border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       padding: 25px;
       animation: slideInFromRight 1s ease-out;
+      position: sticky;
+      top: 100px; /* Adjust this value to control when the card starts sticking */
+      max-height: 80vh; /* Limit height to prevent it from being too large */
+      overflow-y: auto; /* Add scrollbar if content is too tall */
+      z-index: 1000; /* Ensure it appears above other content */
     }
+
+
 
     .tour-title {
       font-weight: 700;
@@ -250,6 +371,74 @@
       justify-content: center;
       cursor: pointer;
     }
+    /* Fixed height gallery styles */
+    #tourGalleryContainer {
+      margin-bottom: 40px;
+    }
+
+    .gallery-thumbnail {
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .gallery-thumbnail:hover {
+      opacity: 0.9;
+      transform: scale(1.01);
+    }
+
+    /* Match exact spacing to your screenshot */
+    .row.g-3 {
+      --bs-gutter-x: 1rem;
+      --bs-gutter-y: 1rem;
+    }
+
+    /* Ensure consistent image heights */
+    #tourGalleryContainer img {
+      width: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    /* Style the photo count badge to match screenshot */
+    .photo-count-badge {
+      position: absolute;
+      bottom: 15px;
+      left: 15px;
+      background-color: rgba(0,0,0,0.6);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      z-index: 2;
+    }
+
+    /* Style the show all photos button */
+    #viewAllPhotos {
+      white-space: nowrap;
+      background-color: white;
+      color: #333;
+      border: none;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+
+    #viewAllPhotos:hover {
+      background-color: #f8f9fa;
+      transform: scale(1.05);
+    }
+
+    /* Image loading animation */
+    .gallery-thumbnail {
+      animation: fadeIn 0.8s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   </style>
 </head>
 <body>
@@ -327,6 +516,23 @@
     </div>
   </div>
 </div>
+<button type="button" class="btn btn-primary w-100 py-3 mb-3 book-now" data-bs-toggle="modal" data-bs-target="#bookingModal">
+  Book Now
+</button>
+<!-- Tour Gallery Container -->
+<div class="container" id="tourGalleryContainer">
+  <h2 class="text-center mb-4">Tour Gallery</h2>
+  </div>
+
+  <!-- View All Photos Button -->
+  <div class="text-center mb-4">
+    <button id="viewAllPhotos" class="btn btn-outline-primary">
+      <i class="bi bi-images me-2"></i>View All Photos (5)
+    </button>
+  </div>
+</div>
+
+<!-- Your existing tourDetailsContainer div remains as is -->
 <div class="container mt-4">
   <div id="tourDetailsContainer" class="row">
     <div class="text-center">
@@ -391,10 +597,12 @@
   </div>
 </div>
 
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const tourDetailsContainer = document.getElementById('tourDetailsContainer');
+    const tourGalleryContainer = document.getElementById('tourGalleryContainer');
     const API_BASE_URL = 'http://localhost:8080/api/v1';
 
     function logError(message, error) {
@@ -466,7 +674,11 @@
           throw new Error('Invalid tour data structure. Please check backend response.');
         }
 
+        // Add mock gallery images if needed
+        tour = fetchTourWithGallery(tour);
+
         renderTourDetails(tour);
+        renderTourGallery(tour);
       })
       .catch(error => {
         console.error('Fetch Error:', error);
@@ -489,16 +701,11 @@
       const latitude = tour.latitude || defaultLat;
       const longitude = tour.longitude || defaultLng;
 
-
       tourDetailsContainer.innerHTML = `
       <div class="container mt-4">
         <div class="row">
           <div class="col-lg-8">
-            <img src="${tour.image ?
-        `data:image/jpeg;base64,${tour.image}` :
-        'https://via.placeholder.com/600x400?text=Tour+Image'}"
-              class="tour-image mb-3"
-              alt="${safeGet(tour.name)}">
+
 
             <h2 class="tour-title mb-3">${safeGet(tour.name)}</h2>
 
@@ -535,49 +742,62 @@
             <div id="mapContainer"></div>
           </div>
 
-          <div class="col-lg-4">
-            <div class="booking-card">
-              <!-- Booking form remains the same as in previous version -->
-              <form>
-                <div class="mb-3">
-                  <label for="fullName" class="form-label">Full name</label>
-                  <input type="text" class="form-control" id="fullName">
-                </div>
-                <div class="mb-3">
-                  <label for="phone" class="form-label">Phone</label>
-                  <input type="tel" class="form-control" id="phone">
-                </div>
-                <div class="mb-3">
-                  <label for="date" class="form-label">Date</label>
-                  <input type="date" class="form-control" id="date">
-                </div>
-                <div class="mb-3">
-                  <label for="guests" class="form-label">Guests</label>
-                  <select class="form-select" id="guests">
-                    <option>Guest</option>
-                    <option>1 Person</option>
-                    <option>2 Persons</option>
-                    <option>3 Persons</option>
-                  </select>
-                </div>
-                <div class="border-top pt-3">
-                  <div class="d-flex justify-content-between">
-                    <span>$99 × 1 person</span>
-                    <span>$99</span>
-                  </div>
-                  <div class="d-flex justify-content-between">
-                    <span>Service charge</span>
-                    <span>$10</span>
-                  </div>
-                  <div class="d-flex justify-content-between fw-bold">
-                    <span>Total</span>
-                    <span>$109</span>
-                  </div>
-                </div>
-                <button type="submit" class="btn book-now-btn mt-3">Book Now</button>
-              </form>
-            </div>
+
+    <!-- Right Column (Booking Card) -->
+    <div class="col-lg-4">
+      <div class="booking-card sticky-top" style="top: 100px; z-index: 100;">
+        <!-- Discount Banner -->
+        <div class="position-absolute end-0 top-0 translate-middle-y" style="transform: rotate(45deg) translateX(20px);">
+          <div class="bg-danger text-white px-5 py-1" style="transform: rotate(-45deg);">
+            <strong>20% Off</strong>
           </div>
+        </div>
+
+        <!-- Price Section -->
+        <div class="mb-4">
+          <p class="mb-1 text-muted">From <span style="text-decoration: line-through;">USD ${tour.price}</span></p>
+          <h2 class="mb-0">USD $${tour.price} <small class="text-muted">/Adult</small></h2>
+
+          <!-- Rating -->
+          <div class="mt-2">
+            <span class="review-stars me-2">
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-fill text-warning"></i>
+              <i class="bi bi-star-half text-warning"></i>
+            </span>
+            <a href="#reviewsSection" class="text-primary">reviews</a>
+          </div>
+        </div>
+
+        <!-- Benefits List -->
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>
+            <span>Best Price Guarantee</span>
+          </div>
+          <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>
+            <span>The tour is fully customizable</span>
+          </div>
+          <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>
+            <span>Professional Local Guide</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <button type="button" class="btn btn-primary w-100 py-3 mb-3 book-now" data-bs-toggle="modal" data-bs-target="#bookingModal">
+          Book Now
+        </button>
+
+        <button type="button" class="btn btn-outline-primary w-100 py-3">
+          Ask a Question
+        </button>
+      </div>
+    </div>
+  </div>
         </div>
       </div>
     `;
@@ -612,17 +832,15 @@
       }
     }
 
-// Function to render map
+    // Function to render map
     function renderMap(lat, lng, locationName) {
       const map = L.map('mapContainer').setView([lat, lng], 10);
 
       // Add OpenStreetMap tiles
-      // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      //   attribution: '© OpenStreetMap contributors'
-      // }).addTo(map);
       L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; Stadia Maps, OpenMapTiles, OpenStreetMap contributors'
       }).addTo(map);
+
       // Add marker
       L.marker([lat, lng])
         .addTo(map)
@@ -647,7 +865,292 @@
 
       return starsHTML;
     }
+
+    function renderTourGallery(tour) {
+      // Check if we have gallery images
+      if (!tour.galleryImages && !tour.image) {
+        // If no gallery images, don't render gallery section
+        tourGalleryContainer.style.display = 'none';
+        return;
+      }
+
+      // Prepare gallery images array
+      let galleryImages = [];
+
+      // Add main image if available
+      if (tour.image) {
+        galleryImages.push({
+          src: `data:image/jpeg;base64,${tour.image}`,
+          alt: `${tour.name} - Main Image`
+        });
+      }
+
+      // Add additional gallery images if available
+      if (tour.galleryImages && Array.isArray(tour.galleryImages)) {
+        tour.galleryImages.forEach((img, index) => {
+          galleryImages.push({
+            src: typeof img === 'string' ? img : `data:image/jpeg;base64,${img}`,
+            alt: `${tour.name} - Gallery Image ${index + 1}`
+          });
+        });
+      }
+
+      // If no images available, use placeholders
+      if (galleryImages.length === 0) {
+        // Create 4 placeholder images
+        for (let i = 1; i <= 4; i++) {
+          galleryImages.push({
+            src: `https://via.placeholder.com/800x600?text=Tour+Image+${i}`,
+            alt: `${tour.name} - Placeholder ${i}`
+          });
+        }
+      }
+
+      // We need at least 4 images for this layout
+      while (galleryImages.length < 4) {
+        galleryImages.push({
+          src: `https://via.placeholder.com/800x600?text=Tour+Image+${galleryImages.length + 1}`,
+          alt: `${tour.name} - Placeholder ${galleryImages.length + 1}`
+        });
+      }
+
+      // Create gallery HTML - Grid Layout with increased heights
+      let galleryHTML = `
+    <div class="row g-3">
+      <!-- Main Large Image (Left Side) - INCREASED HEIGHT -->
+      <div class="col-md-6 position-relative">
+        <img src="${galleryImages[0].src}" class="img-fluid w-100 h-100 rounded shadow gallery-thumbnail"
+             alt="${galleryImages[0].alt}" style="object-fit: cover; min-height: 590px; max-height: 200px;">
+
+        <!-- Photo count badge -->
+        <div class="photo-count-badge">
+          <i class="bi bi-camera-fill"></i> ${galleryImages.length} photos
+        </div>
+      </div>
+
+      <!-- Right Side Grid -->
+      <div class="col-md-6">
+        <div class="row g-3">
+          <!-- Top Image (Full Width) - INCREASED HEIGHT -->
+          <div class="col-12">
+            <img src="${galleryImages[1].src}" class="img-fluid w-100 rounded shadow gallery-thumbnail"
+                 alt="${galleryImages[1].alt}" style="object-fit: cover; height: 310px;">
+          </div>
+
+          <!-- Bottom Row - Two Images Side by Side - INCREASED HEIGHT -->
+          <div class="col-6">
+            <img src="${galleryImages[2].src}" class="img-fluid w-100 rounded shadow gallery-thumbnail"
+                 alt="${galleryImages[2].alt}" style="object-fit: cover; height: 260px;">
+          </div>
+          <div class="col-6 position-relative">
+            <img src="${galleryImages[3].src}" class="img-fluid w-100 rounded shadow gallery-thumbnail"
+                 alt="${galleryImages[3].alt}" style="object-fit: cover; height: 260px; filter: brightness(0.85);">
+            <!-- "Show all photos" button overlaid on the last image -->
+            <div class="position-absolute top-50 start-50 translate-middle">
+              <button class="btn btn-light btn-sm rounded-pill shadow-sm px-3 py-2" id="viewAllPhotos">
+                <i class="bi bi-grid me-2"></i>Show all photos
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+      // Set the HTML content
+      tourGalleryContainer.innerHTML = galleryHTML;
+
+      // Add event listener to "Show all photos" button
+      const viewAllButton = document.getElementById('viewAllPhotos');
+      if (viewAllButton) {
+        viewAllButton.addEventListener('click', function() {
+          openPhotoGalleryModal(galleryImages);
+        });
+      }
+    }
+    // If your API doesn't provide gallery images, we can simulate them
+    function fetchTourWithGallery(tour) {
+      // If tour doesn't have galleryImages property, add mock data
+      if (!tour.galleryImages) {
+        // For demonstration purposes, create mock gallery from the main image
+        // In production, you would fetch this from your API
+        tour.galleryImages = [
+          // These URLs should be replaced with your actual gallery images
+          '../img/car.jpg',
+          'https://images.unsplash.com/photo-1501555088652-021faa106b9b',
+          'https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd',
+          'https://images.unsplash.com/photo-1544735716-392fe2489ffa'
+        ];
+      }
+      return tour;
+    }
+
+    // Review functionality
+    const ratingStars = document.querySelectorAll('#ratingStars i');
+    const ratingInput = document.getElementById('ratingInput');
+    const reviewForm = document.getElementById('reviewForm');
+    const dragDropZone = document.getElementById('drag-drop-zone');
+    const fileInput = document.getElementById('tourImage');
+    const imagePreview = document.getElementById('imagePreview');
+    const selectedFileName = document.getElementById('selected-file-name');
+
+    // Handle star rating selection
+    ratingStars.forEach(star => {
+      star.addEventListener('click', function() {
+        const rating = parseInt(this.getAttribute('data-rating'));
+        updateStarRating(rating);
+        ratingInput.value = rating;
+      });
+
+      star.addEventListener('mouseover', function() {
+        const rating = parseInt(this.getAttribute('data-rating'));
+        highlightStars(rating);
+      });
+    });
+
+    document.getElementById('ratingStars').addEventListener('mouseout', function() {
+      const currentRating = parseInt(ratingInput.value) || 0;
+      highlightStars(currentRating);
+    });
+
+    function updateStarRating(rating) {
+      ratingInput.value = rating;
+      highlightStars(rating);
+    }
+
+    function highlightStars(rating) {
+      ratingStars.forEach(star => {
+        const starRating = parseInt(star.getAttribute('data-rating'));
+        if (starRating <= rating) {
+          star.classList.remove('bi-star');
+          star.classList.add('bi-star-fill');
+        } else {
+          star.classList.remove('bi-star-fill');
+          star.classList.add('bi-star');
+        }
+      });
+    }
+
+    // Handle drag and drop file upload
+    dragDropZone.addEventListener('click', () => {
+      fileInput.click();
+    });
+
+    dragDropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dragDropZone.classList.add('border-primary');
+    });
+
+    dragDropZone.addEventListener('dragleave', () => {
+      dragDropZone.classList.remove('border-primary');
+    });
+
+    dragDropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dragDropZone.classList.remove('border-primary');
+
+      if (e.dataTransfer.files.length) {
+        fileInput.files = e.dataTransfer.files;
+        handleFileSelect(e.dataTransfer.files[0]);
+      }
+    });
+
+    fileInput.addEventListener('change', (e) => {
+      if (fileInput.files.length) {
+        handleFileSelect(fileInput.files[0]);
+      }
+    });
+
+    function handleFileSelect(file) {
+      if (file && file.type.match('image.*')) {
+        selectedFileName.textContent = file.name;
+        selectedFileName.style.display = 'block';
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          imagePreview.src = e.target.result;
+          imagePreview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    // Handle review submission
+    reviewForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const rating = document.getElementById('ratingInput').value;
+      const name = document.getElementById('nameInput').value;
+      const comment = document.getElementById('commentInput').value;
+
+      if (!rating || !name || !comment) {
+        alert('Please fill out all fields before submitting your review.');
+        return;
+      }
+
+      // Here you would typically send this data to your backend API
+      // For demonstration, we'll just add it to the page
+      addReviewToPage({
+        name: name,
+        rating: rating,
+        comment: comment,
+        date: new Date().toLocaleDateString(),
+        image: imagePreview.style.display !== 'none' ? imagePreview.src : null
+      });
+
+      // Reset form
+      reviewForm.reset();
+      updateStarRating(0);
+      imagePreview.style.display = 'none';
+      selectedFileName.style.display = 'none';
+    });
+
+    function addReviewToPage(review) {
+      const reviewsContainer = document.getElementById('reviewsContainer');
+      const reviewCount = document.getElementById('reviewCount');
+
+      // Create review HTML
+      const reviewHTML = `
+      <div class="existing-review">
+        <div class="d-flex">
+          <img src="${review.image || 'https://via.placeholder.com/60x60?text=User'}"
+               alt="${review.name}" class="user-avatar">
+          <div>
+            <h6>${review.name}</h6>
+            <div class="star-rating mb-1">
+              ${generateStars(review.rating)}
+            </div>
+            <small class="text-muted">${review.date}</small>
+            <p class="mt-2">${review.comment}</p>
+          </div>
+        </div>
+      </div>
+    `;
+
+      // Add to page
+      reviewsContainer.innerHTML = reviewHTML + reviewsContainer.innerHTML;
+
+      // Update count
+      const currentCount = parseInt(reviewCount.textContent);
+      reviewCount.textContent = currentCount + 1;
+    }
   });
+  // Add this to your existing script
+  // Find all "Book Now" buttons
+  const bookNowButtons = document.querySelectorAll('.book-now');
+
+  // Add click event listener to each button
+  bookNowButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      // Get the current tour ID from the URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const tourId = "TOUR002"
+      // Redirect to checkout page with the tour ID
+      window.location.href = `test3.html?id=${tourId}`;
+    });
+  });
+
 </script>
 
 <!-- Bootstrap JS and dependencies -->

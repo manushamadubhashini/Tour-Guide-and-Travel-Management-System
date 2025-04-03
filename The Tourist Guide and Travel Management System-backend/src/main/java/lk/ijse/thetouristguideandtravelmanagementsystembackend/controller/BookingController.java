@@ -19,7 +19,7 @@ public class BookingController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil save(@RequestBody BookingDto bookingDto){
-        bookingService.saveBooking(bookingDto);
+        bookingService.save(bookingDto);
         return new ResponseUtil(201,"Booking is Saved",bookingDto);
     }
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

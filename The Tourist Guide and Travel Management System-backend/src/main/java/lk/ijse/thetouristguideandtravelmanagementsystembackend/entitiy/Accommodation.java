@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.awt.print.Book;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,8 +20,8 @@ public class Accommodation {
     @Column(name = "accommodation_id")
     private String id;
     @ManyToOne
-    @JoinColumn(name = "destination_id",nullable = false)
-    private Destination destination;
+    @JoinColumn(name = "tour_id",nullable = false)
+    private Tour tour;
     @Column(name = "accommodation_name",nullable = false,length = 60)
     private String name;
     @Column(name = "accommodation_description",nullable = false,length = 200)
@@ -32,11 +33,8 @@ public class Accommodation {
     private String address;
     @Column(nullable = false)
     private double price;
-    @Lob
-    @Column(columnDefinition = "LONGTEXT")
-    private String image;
     @OneToMany(mappedBy = "accommodation",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<AccommodationItemDetails> accommodationItemDetailsList=new ArrayList<>();
+    private List<Booking> bookingArrayList=new ArrayList<>();
 
 
 }

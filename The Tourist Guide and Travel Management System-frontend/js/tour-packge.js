@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function() {
         packagesContainer.appendChild(packageCard);
 
         // Book Now button event listener
-        packageCard.querySelector('.book-now').addEventListener('click', function(e) {
+        packageCard.querySelector('.read-more').addEventListener('click', function(e) {
           e.preventDefault();
           const tourId = this.getAttribute('data-id');
           console.log('Booking Tour ID:', tourId);
@@ -83,8 +83,36 @@ document.addEventListener('DOMContentLoaded', function() {
           }
         });
 
-        // Read More button event listener
-        packageCard.querySelector('.read-more').addEventListener('click', function(e) {
+        // // Read More button event listener
+        // packageCard.querySelector('.book-now').addEventListener('click', function(e) {
+        //   e.preventDefault();
+        //   const tourId = this.getAttribute('data-id');
+        //
+        //   fetch(`${API_BASE_URL}/tour/${tourId}`)
+        //     .then(response => {
+        //       if (!response.ok) {
+        //         throw new Error('Network response was not ok');
+        //       }
+        //       return response.json();
+        //     })
+        //     .then(tourResponse => {
+        //       const tour = tourResponse.data || tourResponse;
+        //       console.log('Tour Details:', tour);
+        //
+        //       if (tour && tour.id) {
+        //         localStorage.setItem('selectedTour', JSON.stringify(tour));
+        //         window.location.href = `booking.html?id=${tour.id}`;
+        //       } else {
+        //         throw new Error('Invalid tour data received');
+        //       }
+        //     })
+        //     .catch(error => {
+        //       console.error('Error fetching tour details:', error);
+        //       alert('Unable to fetch tour details. Please try again.');
+        //     });
+        // });
+        // Modify your Book Now button event listener
+        packageCard.querySelector('.book-now').addEventListener('click', function(e) {
           e.preventDefault();
           const tourId = this.getAttribute('data-id');
 
@@ -100,8 +128,10 @@ document.addEventListener('DOMContentLoaded', function() {
               console.log('Tour Details:', tour);
 
               if (tour && tour.id) {
+                // Store tour data in localStorage for checkout page
                 localStorage.setItem('selectedTour', JSON.stringify(tour));
-                window.location.href = `test2.html?id=${tour.id}`;
+                // Redirect to checkout page
+                window.location.href = `checkout.html?id=${tour.id}`;
               } else {
                 throw new Error('Invalid tour data received');
               }
@@ -121,4 +151,6 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
       `;
     });
+
+
 });

@@ -193,10 +193,23 @@ public class DataConversionUtil {
     }
     public static String fileToBase64(String filePath) {
         try {
-            byte[] fileContent = Files.readAllBytes(Paths.get(filePath));
+            if (filePath == null || filePath.isEmpty()) {
+                throw new FileConversionException("File path is null or empty");
+            }
+
+            Path path = Paths.get(filePath);
+            if (!Files.exists(path) || !Files.isReadable(path)) {
+                throw new FileConversionException("File does not exist or is not readable: " + filePath);
+            }
+
+            byte[] fileContent = Files.readAllBytes(path);
+            if (fileContent.length == 0) {
+                throw new FileConversionException("File is empty: " + filePath);
+            }
+
             return Base64.getEncoder().encodeToString(fileContent);
         } catch (IOException e) {
-            throw new FileConversionException("Failed to convert file to base64", e);
+            throw new FileConversionException("Failed to convert file to base64: " + filePath, e);
         }
     }
 }

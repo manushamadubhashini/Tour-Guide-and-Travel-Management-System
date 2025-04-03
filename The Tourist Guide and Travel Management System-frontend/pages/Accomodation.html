@@ -342,11 +342,11 @@
           </div>
 
           <div class="mb-3">
-            <label for="destinationId" class="form-label">Destination ID</label>
+            <label for="tourId" class="form-label">Tour ID</label>
             <div class="input-group">
-              <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" id="load-destination-id">Select</button>
-              <ul class="dropdown-menu" id="destination-dropdown"></ul>
-              <input type="text" class="form-control" id="destinationId" readonly>
+              <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" id="load-tour-id">Select</button>
+              <ul class="dropdown-menu" id="tour-dropdown"></ul>
+              <input type="text" class="form-control" id="tourId" readonly>
             </div>
           </div>
 
@@ -387,13 +387,6 @@
               <input type="text" class="form-control" id="accommodationPrice" required maxlength="50">
             </div>
           </div>
-
-          <div class="mb-3">
-            <label for="accommodationImage" class="form-label">Accommodation Image</label>
-            <input type="file" class="form-control" id="accommodationImage" accept="image/jpeg,image/png,image/jpg">
-            <div class="form-text">Upload an image of the accommodation (JPEG, PNG formats only)</div>
-          </div>
-
           <div class="mt-2">
             <img id="imagePreview" src="" alt="Accommodation Image" style="max-width: 100%; display: none; border-radius: 5px;">
           </div>
@@ -436,23 +429,15 @@
           html += `
               <div class="col-lg-6 col-xl-4">
                 <div class="card accommodation-card">
-                  <div class="card-img-top">
-                    ${accommodation.image ?
-            `<img src="data:image/jpeg;base64,${accommodation.image}" class="img-fluid" alt="${accommodation.name}" style="height: 200px; width: 100%; object-fit: cover;">` :
-            `<div class="no-image-placeholder bg-light text-center" style="height: 200px;">
-                        <span class="text-muted">No Image</span>
-                      </div>`
-          }
-                  </div>
                   <div class="card-body">
                     <div class="d-flex justify-content-between">
-                      <h5 class="card-title">${accommodation.name}</h5>
+                      <h5 class="card-title"><i class="fas fa-bed"></i> ${accommodation.name}</h5>
                       <span class="badge bg-primary rounded-pill">ID: ${accommodation.id}</span>
                     </div>
                     <p class="card-text text-muted small">${accommodation.description}</p>
                     <div class="d-flex justify-content-between align-items-center">
                       <div>
-                        <span class="d-block"><i class="fas fa-map-marker-alt text-danger me-1"></i> Destination: ${accommodation.destinationId}</span>
+                        <span class="d-block"><i class="fas fa-map-marker-alt text-danger me-1"></i> Tour: ${accommodation.tourId}</span>
                         <span class="d-block"><i class="fas fa-building text-warning me-1"></i> Type: ${accommodation.type}</span>
                       </div>
                       <h5 class="text-primary m-0">RS.${accommodation.price}/night</h5>
@@ -461,7 +446,7 @@
                   <div class="card-footer bg-white border-top-0">
                     <div class="accommodation-actions">
                       <button type="button" class="btn btn-outline-primary btn-sm flex-grow-1"
-                        onclick="editAccommodation('${accommodation.id}','${accommodation.destinationId}' ,'${accommodation.name}', '${accommodation.description}', '${accommodation.type}', '${accommodation.address}', '${accommodation.price}', '${accommodation.image}')">
+                        onclick="editAccommodation('${accommodation.id}','${accommodation.tourId}' ,'${accommodation.name}', '${accommodation.description}', '${accommodation.type}', '${accommodation.address}', '${accommodation.price}')">
                         <i class="fas fa-edit me-1"></i> Edit
                       </button>
                       <button type="button" class="btn btn-outline-danger btn-sm flex-grow-1" onclick="deleteAccommodation('${accommodation.id}')">
@@ -495,7 +480,6 @@
     document.getElementById("accommodation-form").reset();
     document.getElementById("accommodationId").value = "";
     document.getElementById("btn-save").textContent = "Save Accommodation";
-    document.getElementById("imagePreview").style.display = "none";
     modal.style.display = "block";
   }
 
@@ -515,27 +499,34 @@
 
   $("#btn-save").off("click").on("click", (e) => {
     e.preventDefault();
+    const id= $("#accommodationId").val();
+    const tourId=$("#tourId").val();
+    const accommodationName=$("#accommodationName").val();
+    const description=$("#accommodationDescription").val();
+    const accommodationType=$("#accommodationType").val();
+    const accommodationAddress= $("#accommodationType").val();
+    const accommodationPrice=$("#accommodationPrice").val();
 
-    const formData = new FormData();
-    formData.append("id", $("#accommodationId").val());
-    formData.append("destinationId", $("#destinationId").val());
-    formData.append("name", $("#accommodationName").val());
-    formData.append("description", $("#accommodationDescription").val());
-    formData.append("type", $("#accommodationType").val());
-    formData.append("address", $("#accommodationAddress").val());
-    formData.append("price", $("#accommodationPrice").val());
+    const isUpdate=id.trim() !== "";
 
-    const imageFile = $("#accommodationImage")[0].files[0];
-    if (imageFile) {
-      formData.append("image", imageFile);
+    const json={
+      "id":id,
+      "tourId":tourId,
+      "name":accommodationName,
+      "description":description,
+      "type":accommodationType,
+      "address":accommodationAddress,
+      "price":accommodationPrice
     }
+
+
+    const method= isUpdate ? "PUT" : "POST"
 
     $.ajax({
       url: "http://localhost:8080/api/v1/accommodation",
-      method: "POST",
-      data: formData,
-      contentType: false,
-      processData: false,
+      method: method,
+      data:JSON.stringify(json),
+      contentType: "application/json",
       success: (res) => {
         console.log("Success:", res);
         $("#accommodation-form")[0].reset();
@@ -551,18 +542,17 @@
     });
   });
 
-  // Load destination dropdown
-  $("#load-destination-id").click((e) => {
+  $("#load-tour-id").click((e) => {
     e.preventDefault()
     $.ajax({
-      url: "http://localhost:8080/api/v1/destination",
+      url: "http://localhost:8080/api/v1/tour",
       method: "GET",
       success: (res) => {
         console.log(res)
-        $("#destination-dropdown").empty()
-        res.data.forEach(destination => {
-          $("#destination-dropdown").append(`
-              <li><a class="dropdown-item" href="#" onclick="setDestination('${destination.id}')">${destination.id}</a></li>
+        $("#tour-dropdown").empty()
+        res.data.forEach(tour => {
+          $("#tour-dropdown").append(`
+              <li><a class="dropdown-item" href="#" onclick="setTour('${tour.id}')">${tour.id}</a></li>
             `)
         })
       },
@@ -573,9 +563,9 @@
     })
   });
 
-  // Set destination ID
-  function setDestination(destinationId) {
-    $("#destinationId").val(destinationId)
+
+  function setTour(tourId) {
+    $("#tourId").val(tourId)
   }
 
   // Set accommodation type
@@ -584,10 +574,10 @@
   }
 
   // Edit accommodation
-  function editAccommodation(id, destinationId, name, description, type, address, price, image) {
+  function editAccommodation(id, tourId, name, description, type, address, price) {
     document.getElementById("modal-title").textContent = "Edit Accommodation";
     $("#accommodationId").val(id)
-    $("#destinationId").val(destinationId)
+    $("#tourId").val(tourId)
     $("#accommodationName").val(name)
     $("#accommodationDescription").val(description)
     $("#accommodationType").val(type)
@@ -595,18 +585,9 @@
     $("#accommodationPrice").val(price)
     $("#btn-save").text("Update Accommodation");
 
-    // Show image preview if available
-    if (image) {
-      $("#imagePreview").attr("src", `data:image/jpeg;base64,${image}`);
-      $("#imagePreview").css("display", "block");
-    } else {
-      $("#imagePreview").css("display", "none");
-    }
-
     modal.style.display = "block";
   }
 
-  // Delete accommodation
   function deleteAccommodation(id) {
     if (confirm("Are you sure you want to delete this accommodation?")) {
       $.ajax({
@@ -624,18 +605,6 @@
     }
   }
 
-  // Preview image before upload
-  $("#accommodationImage").change(function() {
-    const file = this.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        $("#imagePreview").attr("src", e.target.result);
-        $("#imagePreview").css("display", "block");
-      }
-      reader.readAsDataURL(file);
-    }
-  });
 </script>
 </body>
 </html>

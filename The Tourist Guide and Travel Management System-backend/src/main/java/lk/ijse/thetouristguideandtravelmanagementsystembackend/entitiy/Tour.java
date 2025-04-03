@@ -22,7 +22,8 @@ public class Tour {
     private Destination destination;
     @Column(name = "tour_name",nullable = false,length = 60)
     private String name;
-    @Column(name = "tour_description",nullable = false,length = 200)
+    @Lob
+    @Column(name = "tour_description",nullable = false,columnDefinition = "LONGTEXT")
     private String description;
     @Column(nullable = false)
     private int duration;
@@ -35,8 +36,10 @@ public class Tour {
     @OneToMany(mappedBy = "tour",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<GuideTour> guideTourList=new ArrayList<>();
     @OneToMany(mappedBy = "tour",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<TourItemDetails> tourItemDetailsList=new ArrayList<>();
+    private List<Booking> bookingArrayList=new ArrayList<>();
     @OneToMany(mappedBy = "tour",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Review> reviewList=new ArrayList<>();
+    @OneToMany(mappedBy = "tour",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Accommodation> accommodationList=new ArrayList<>();
 
 }

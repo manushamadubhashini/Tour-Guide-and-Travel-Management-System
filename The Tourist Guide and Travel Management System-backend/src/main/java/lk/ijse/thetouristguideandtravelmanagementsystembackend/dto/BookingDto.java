@@ -13,13 +13,13 @@ import java.util.List;
 @Data
 public class BookingDto {
     private String bookingId;
-    private List<BookingItemDto> bookingItemDtoList;
     private String touristId;
+    private String tourId;
+    private String accommodationId;
+    private String transportId;
     private String date;
     private double totalAmount;
+    private int noOfTravellers;
     private String bookingStatus;
-    private List<AccommodationItemDetailDto> accommodationItemDetailDtoList;
-    private List<TourItemDetailsDto> tourItemDetailsDtoList;
-    private List<TransportItemDetailsDto> transportItemDetailsDtoList;
 }
 

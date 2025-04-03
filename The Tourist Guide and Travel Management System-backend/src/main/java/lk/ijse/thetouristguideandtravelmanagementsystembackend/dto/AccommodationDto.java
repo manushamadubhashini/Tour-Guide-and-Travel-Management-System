@@ -14,12 +14,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class AccommodationDto {
     private String id;
-    private String destinationId;
+    private String tourId;
     private String name;
     private String description;
     private String type;
     private String address;
     private double price;
-    private MultipartFile image;
 
 }

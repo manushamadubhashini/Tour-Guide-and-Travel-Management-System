@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Everest Trips - Tour Checkout</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .step-circle {
+      width: 40px;
+      height: 40px;
+      background-color: #1e88e5;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 15px;
+    }
+    .card {
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      border: none;
+      margin-bottom: 20px;
+    }
+    .card-header {
+      background-color: white;
+      border-bottom: 1px solid #f0f0f0;
+      padding: 20px;
+      border-radius: 12px 12px 0 0 !important;
+    }
+    .card-body {
+      padding: 20px;
+    }
+    .logo {
+      height: 50px;
+    }
+    .discount-badge {
+      background-color: #4caf50;
+      color: white;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .price-details {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      position: sticky;
+      top: 20px;
+    }
+    .form-control, .form-select {
+      padding: 10px 15px;
+      height: auto;
+      border-radius: 8px;
+    }
+    .image-box {
+      width: 100px;
+      height: 80px;
+      overflow: hidden;
+      border-radius: 8px;
+      margin-right: 15px;
+    }
+    .image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .security-message {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border-radius: 8px;
+      padding: 10px 15px;
+      margin-bottom: 20px;
+    }
+    .payment-logo {
+      height: 25px;
+      margin-right: 10px;
+    }
+    .book-now-btn {
+      background-color: #1e88e5;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      font-weight: 600;
+      width: 100%;
+    }
+    .custom-control {
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <div style="color: #1e88e5; font-size: 24px; font-weight: bold;">
+        <span style="color: #ff7043;">🏔️ EVEREST</span> TRIPS
+      </div>
+    </a>
+    <div class="ms-auto d-flex align-items-center">
+      <span class="text-success me-3">
+        <i class="fas fa-lock me-1"></i> Secure Payment
+      </span>
+    </div>
+  </div>
+</nav>
+
+<div class="container my-4">
+  <div class="row">
+    <div class="col-lg-8">
+      <h2 class="mb-4">Confirm & Pay</h2>
+
+      <!-- Tour Details Card -->
+      <div id="tourDetails" class="card mb-4">
+        <!-- Tour details will be loaded dynamically -->
+      </div>
+
+      <!-- Step 1: Travelers -->
+      <div class="card">
+        <div class="card-header d-flex align-items-center">
+          <div class="step-circle">1</div>
+          <h4 class="mb-0">Travellers</h4>
+        </div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+              <span>No. of Travellers (Adult: 18-80)</span>
+            </div>
+            <div class="d-flex align-items-center">
+              <button class="btn btn-outline-secondary rounded-circle" id="decrease-btn" style="width: 38px; height: 38px; padding: 0;">-</button>
+              <span class="mx-3" id="noOfTravellers">2</span>
+              <button class="btn btn-outline-secondary rounded-circle" id="increase-btn" style="width: 38px; height: 38px; padding: 0;">+</button>
+            </div>
+          </div>
+          <div class="text-primary">
+            <i class="fas fa-tag me-2"></i> Group Discount
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Accommodation -->
+      <div class="card">
+        <div class="card-header d-flex align-items-center">
+          <div class="step-circle">2</div>
+          <h4 class="mb-0">Accommodation</h4>
+        </div>
+        <div class="card-body">
+          <div class="mb-3">
+            <div class="d-flex align-items-center mb-3">
+              <i class="fas fa-bed me-2"></i>
+              <span id="accommodation-note">Please choose a room(s) for 2 Travellers.</span>
+            </div>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h5>Single Room</h5>
+              <p class="text-muted mb-0">A cozy room for one guest, ideal for solo travelers.</p>
+            </div>
+            <div class="text-end">
+              <div class="d-flex align-items-center justify-content-end mb-2">
+                <div class="me-3">
+                  <span class="fw-bold">USD $70</span><br>
+                  <small>per traveller</small>
+                </div>
+                <select class="form-select room-selection" id="single-room" style="width: 100px;">
+                  <option selected>0 Traveller</option>
+                  <option>1 Traveller</option>
+                  <option>2 Travellers</option>
+                </select>
+              </div>
+              <a href="#" class="text-primary">View Details</a>
+            </div>
+          </div>
+          <hr>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <h5>Twin Room</h5>
+              <p class="text-muted mb-0">A comfortable room with two beds.</p>
+            </div>
+            <div class="text-end">
+              <div class="d-flex align-items-center justify-content-end mb-2">
+                <div class="me-3">
+                  <span class="fw-bold">USD $60</span><br>
+                  <small>per traveller</small>
+                </div>
+                <select class="form-select room-selection" id="twin-room" style="width: 100px;">
+                  <option>0 Traveller</option>
+                  <option>1 Traveller</option>
+                  <option selected>2 Travellers</option>
+                </select>
+              </div>
+              <a href="#" class="text-primary">View Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Add-ons -->
+      <div class="card">
+        <div class="card-header d-flex align-items-center">
+          <div class="step-circle">3</div>
+          <h4 class="mb-0">Add-ons</h4>
+        </div>
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex">
+              <div class="image-box">
+                <!-- Placeholder for image -->
+              </div>
+              <div>
+                <h5>1 Day Kathmandu Sightseeing</h5>
+                <p class="text-muted mb-0">Enhance your trek with a 1-day guided tour of Kathmandu's UNESCO sites, including Swayambhunath and Boudhanath. Perfect for immersing in Nepal's rich culture.</p>
+              </div>
+            </div>
+            <div class="text-end">
+              <div class="fw-bold mb-2">USD $200</div>
+              <input type="number" class="form-control text-center addon-item" id="addon-sightseeing" min="0" value="0" style="width: 80px; float: right;" data-price="200">
+            </div>
+          </div>
+          <hr>
+
+          <h5 class="mb-3">Airport Pickup</h5>
+          <div class="mb-3">
+            <select class="form-select" id="airport-pickup-type">
+              <option selected>Airport pickup in taxi (4 people)</option>
+              <option>Private car pickup (2 people)</option>
+              <option>Shared van pickup (8 people)</option>
+            </select>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex">
+              <div class="image-box">
+                <!-- Placeholder for image -->
+              </div>
+              <div>
+                <h5>Airport pickup in taxi (4 people)</h5>
+                <p class="text-muted mb-0">Convenient airport transfer for up to 4 people in a private taxi, ensuring a smooth start to your journey.</p>
+              </div>
+            </div>
+            <div class="text-end">
+              <div class="fw-bold mb-2">USD $20</div>
+              <input type="number" class="form-control text-center addon-item" id="addon-airport" min="0" value="0" style="width: 80px; float: right;" data-price="20">
+            </div>
+          </div>
+          <hr>
+
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div class="d-flex">
+              <div class="image-box">
+                <!-- Placeholder for image -->
+              </div>
+              <div>
+                <h5>Private Trek</h5>
+                <p class="text-muted mb-0">You have the option to make this trek a private journey instead of joining a group.</p>
+              </div>
+            </div>
+            <div class="text-end">
+              <div class="fw-bold mb-2">USD $200</div>
+              <input type="number" class="form-control text-center addon-item" id="addon-private" min="0" value="0" style="width: 80px; float: right;" data-price="200">
+            </div>
+          </div>
+          <hr>
+
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex">
+              <div class="image-box">
+                <!-- Placeholder for image -->
+              </div>
+              <div>
+                <h5>Helicopter from Lukla to Kathmandu</h5>
+                <p class="text-muted mb-0">If you prefer to fly directly to Kathmandu airport instead of taking the regular flight to Ramechhap followed by a 5-hour drive to Kathmandu.</p>
+              </div>
+            </div>
+            <div class="text-end">
+              <div class="fw-bold mb-2">USD $600</div>
+              <input type="number" class="form-control text-center addon-item" id="addon-helicopter" min="0" value="0" style="width: 80px; float: right;" data-price="600">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Traveller Details -->
+      <div class="card">
+        <div class="card-header d-flex align-items-center">
+          <div class="step-circle">4</div>
+          <h4 class="mb-0">Add Traveller Details</h4>
+        </div>
+        <div class="card-body" id="traveller-details-container">
+          <h5 class="mb-3">Traveller 1 (Lead Traveller)</h5>
+          <div class="row mb-3">
+            <div class="col-12 mb-2">
+              <label class="form-label">Full Name <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-md-3 mb-3">
+              <select class="form-select">
+                <option selected>Title</option>
+                <option>Mr.</option>
+                <option>Mrs.</option>
+                <option>Ms.</option>
+                <option>Dr.</option>
+              </select>
+            </div>
+            <div class="col-md-4.5 mb-3">
+              <input type="text" class="form-control" placeholder="First Name" required>
+            </div>
+            <div class="col-md-4.5 mb-3">
+              <input type="text" class="form-control" placeholder="Last Name" required>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Email Address <span class="text-danger">*</span></label>
+              <input type="email" class="form-control" placeholder="Email Address" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+              <input type="tel" class="form-control" placeholder="1234567890" required>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+              <div class="row">
+                <div class="col">
+                  <input type="text" class="form-control" placeholder="DD" required>
+                </div>
+                <div class="col">
+                  <input type="text" class="form-control" placeholder="MM" required>
+                </div>
+                <div class="col">
+                  <input type="text" class="form-control" placeholder="YYYY" required>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Nationality <span class="text-danger">*</span></label>
+              <select class="form-select" required>
+                <option selected>Select Nationality</option>
+                <option>United States</option>
+                <option>United Kingdom</option>
+                <option>Canada</option>
+                <option>Australia</option>
+                <option>Germany</option>
+                <option>France</option>
+                <option>Japan</option>
+                <option>India</option>
+                <option>Nepal</option>
+              </select>
+            </div>
+          </div>
+
+          <h5 class="mb-3 mt-4">Traveller 2 (Adult)</h5>
+          <div class="row mb-3">
+            <div class="col-12 mb-2">
+              <label class="form-label">Full Name <span class="text-danger">*</span></label>
+            </div>
+            <div class="col-md-3 mb-3">
+              <select class="form-select">
+                <option selected>Title</option>
+                <option>Mr.</option>
+                <option>Mrs.</option>
+                <option>Ms.</option>
+                <option>Dr.</option>
+              </select>
+            </div>
+            <div class="col-md-4.5 mb-3">
+              <input type="text" class="form-control" placeholder="First Name" required>
+            </div>
+            <div class="col-md-4.5 mb-3">
+              <input type="text" class="form-control" placeholder="Last Name" required>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+              <div class="row">
+                <div class="col">
+                  <input type="text" class="form-control" placeholder="DD" required>
+                </div>
+                <div class="col">
+                  <input type="text" class="form-control" placeholder="MM" required>
+                </div>
+                <div class="col">
+                  <input type="text" class="form-control" placeholder="YYYY" required>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Nationality <span class="text-danger">*</span></label>
+              <select class="form-select" required>
+                <option selected>Select Nationality</option>
+                <option>United States</option>
+                <option>United Kingdom</option>
+                <option>Canada</option>
+                <option>Australia</option>
+                <option>Germany</option>
+                <option>France</option>
+                <option>Japan</option>
+                <option>India</option>
+                <option>Nepal</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 5: Special Requests -->
+      <div class="card">
+        <div class="card-header d-flex align-items-center">
+          <div class="step-circle">5</div>
+          <h4 class="mb-0">Special Requests/Comments</h4>
+        </div>
+        <div class="card-body">
+          <textarea class="form-control" rows="5" placeholder="Enter your notes here..."></textarea>
+        </div>
+      </div>
+
+      <!-- Step 6: Payment Details -->
+      <div class="card">
+        <div class="card-header d-flex align-items-center">
+          <div class="step-circle">6</div>
+          <h4 class="mb-0">Add Payment Details</h4>
+        </div>
+        <div class="card-body">
+          <div class="security-message mb-4">
+            <i class="fas fa-lock me-2"></i> This is a secure and SSL-encrypted payment. Your credit card details are safe.
+          </div>
+
+          <div class="mb-4">
+            <h5 class="mb-3">Select Your Payment Method <span class="text-danger">*</span></h5>
+            <div class="form-check mb-3 border rounded p-3">
+              <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" checked>
+              <label class="form-check-label d-flex justify-content-between align-items-center w-100" for="creditCard">
+                <span>Pay By Card</span>
+                <span>
+                  <!-- Payment method logos would go here -->
+                </span>
+              </label>
+            </div>
+            <div class="form-check border rounded p-3">
+              <input class="form-check-input" type="radio" name="paymentMethod" id="payLater">
+              <label class="form-check-label d-flex justify-content-between align-items-center w-100" for="payLater">
+                <span>Book Now & Pay Later</span>
+                <i class="fas fa-info-circle"></i>
+              </label>
+            </div>
+          </div>
+
+          <button class="btn btn-primary book-now-btn" id="complete-booking">Book Now</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-lg-4">
+      <div class="price-details">
+        <h4 class="mb-4">Price Details</h4>
+        <div id="priceBreakdown">
+          <!-- Price breakdown will be loaded dynamically -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="py-4 bg-light mt-5">
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>Copyright © 2013-2025</div>
+      <div>Powered by Tripcart</div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get tour ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const tourId = urlParams.get('id');
+
+    // Get tour data from localStorage
+    const selectedTour = JSON.parse(localStorage.getItem('selectedTour'));
+
+    if (selectedTour) {
+      // Display tour details
+      displayTourDetails(selectedTour);
+
+      // Setup traveler count functionality
+      setupTravelerCount();
+
+      // Initial price calculation
+      calculateTotalPrice();
+
+      // Setup event listeners for all elements that affect price
+      setupPriceListeners();
+
+      // Setup form fields for travelers
+      updateTravelerFormFields();
+    } else {
+      alert("Tour information not found. Redirecting to packages page.");
+      window.location.href = "index.html";
+    }
+
+    // Complete booking button event listener
+    document.getElementById('complete-booking').addEventListener('click', function(e) {
+      e.preventDefault();
+      if (validateForm()) {
+        alert('Your booking has been submitted successfully! Confirmation will be sent to your email.');
+        // Optionally redirect to confirmation page
+        // window.location.href = "confirmation.html";
+      }
+    });
+  });
+
+  function displayTourDetails(tour) {
+    const tourDetailsElement = document.getElementById('tourDetails');
+
+    document.title = `Everest Trips - ${tour.name} Checkout`;
+
+    tourDetailsElement.innerHTML = `
+      <div class="card-header d-flex align-items-center">
+        <h4 class="mb-0">${tour.name}</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <p><strong>Duration:</strong> ${tour.duration} days</p>
+          </div>
+          <div class="col-md-4">
+            <p><strong>Base Price:</strong> $${tour.price} per person</p>
+          </div>
+          <div class="col-md-4">
+            <p><strong>Group Size:</strong> ${tour.groupSize || 'Flexible'}</p>
+          </div>
+        </div>
+        <p>${tour.description}</p>
+      </div>
+    `;
+  }
+
+  function setupTravelerCount() {
+    const travellersSpan = document.getElementById("noOfTravellers");
+    const increaseBtn = document.getElementById("increase-btn");
+    const decreaseBtn = document.getElementById("decrease-btn");
+
+    let travellersCount = parseInt(travellersSpan.textContent) || 2;
+
+    increaseBtn.addEventListener("click", function() {
+      travellersCount++;
+      travellersSpan.textContent = travellersCount;
+      document.getElementById('accommodation-note').textContent = `Please choose a room(s) for ${travellersCount} Travellers.`;
+      updateTravelerFormFields();
+      calculateTotalPrice();
+    });
+
+    decreaseBtn.addEventListener("click", function() {
+      if (travellersCount > 1) {
+        travellersCount--;
+        travellersSpan.textContent = travellersCount;
+        document.getElementById('accommodation-note').textContent = `Please choose a room(s) for ${travellersCount} Travellers.`;
+        updateTravelerFormFields();
+        calculateTotalPrice();
+      }
+    });
+  }
+
+  function updateTravelerFormFields() {
+    const travelerCount = parseInt(document.getElementById('noOfTravellers').textContent);
+    const container = document.getElementById('traveller-details-container');
+
+    // Keep the first traveler always
+    let html = `
+      <h5 class="mb-3">Traveller 1 (Lead Traveller)</h5>
+      <div class="row mb-3">
+        <div class="col-12 mb-2">
+          <label class="form-label">Full Name <span class="text-danger">*</span></label>
+        </div>
+        <div class="col-md-3 mb-3">
+          <select class="form-select">
+            <option selected>Title</option>
+            <option
