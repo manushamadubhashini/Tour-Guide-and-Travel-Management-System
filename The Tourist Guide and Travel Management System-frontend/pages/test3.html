@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tour Booking - Checkout</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="../css/style.css" rel="stylesheet">
+
+  <!-- Icon Font Stylesheet -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    .checkout-section {
+      padding: 40px 0;
+    }
+    .card {
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    .section-number {
+      width: 40px;
+      height: 40px;
+      background-color: #007bff;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 15px;
+    }
+    .booking-summary {
+      background-color: #f8f9fa;
+      border-left: 4px solid #007bff;
+      padding: 15px;
+    }
+    .discount-badge {
+      background-color: #28a745;
+      color: white;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar & Hero Section (Reuse from your existing code) -->
+<div class="container-fluid position-relative p-0">
+  <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+    <a href="" class="navbar-brand p-0">
+      <h1 class="text-primary m-0"><i class="fa fa-map-marker-alt me-3"></i>Tourist</h1>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+      <span class="fa fa-bars"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <div class="navbar-nav ms-auto py-0">
+        <a href="index.html" class="nav-item nav-link">Home</a>
+        <a href="about.html" class="nav-item nav-link">About</a>
+        <a href="service.html" class="nav-item nav-link">Services</a>
+        <a href="package.html" class="nav-item nav-link">Packages</a>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
+          <div class="dropdown-menu m-0">
+            <a href="destination.html" class="dropdown-item">Destination</a>
+            <a href="booking.html" class="dropdown-item">Booking</a>
+            <a href="team.html" class="dropdown-item">Travel Guides</a>
+            <a href="testimonial.html" class="dropdown-item">Testimonial</a>
+            <a href="404.html" class="dropdown-item">404 Page</a>
+          </div>
+        </div>
+        <a href="contact.html" class="nav-item nav-link">Contact</a>
+      </div>
+      <a href="" class="btn btn-primary rounded-pill py-2 px-4">Register</a>
+    </div>
+  </nav>
+
+  <div class="container-fluid bg-primary py-5 mb-5 hero-header">
+    <div class="container py-5">
+      <div class="row justify-content-center py-5">
+        <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
+          <h1 class="display-3 text-white animated slideInDown">Confirm & Pay</h1>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Tours</a></li>
+              <li class="breadcrumb-item text-white active" aria-current="page">Checkout</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Checkout Section -->
+<div class="container checkout-section">
+  <div class="row">
+    <!-- Left Column - Booking Form -->
+    <div class="col-lg-8">
+      <!-- Travellers Section -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="section-header">
+            <div class="section-number">1</div>
+            <h3 class="mb-0">Travellers</h3>
+          </div>
+
+          <div class="row align-items-center mb-3">
+            <div class="col-md-6">
+              <label for="numTravelers" class="form-label">No. of Travellers (Adult: 18-80)</label>
+            </div>
+            <div class="col-md-6 d-flex align-items-center justify-content-end">
+              <button class="btn btn-outline-secondary btn-sm" id="decreaseTravelers">-</button>
+              <input type="text" class="form-control mx-2 text-center" id="numTravelers" value="1" style="max-width: 60px;">
+              <button class="btn btn-outline-secondary btn-sm" id="increaseTravelers">+</button>
+
+              <div class="ms-3">
+                <button class="btn btn-outline-primary btn-sm">
+                  <i class="bi bi-people-fill me-2"></i>Group Discount
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accommodation Section -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="section-header">
+            <div class="section-number">2</div>
+            <h3 class="mb-0">Accommodation</h3>
+          </div>
+
+          <div class="alert alert-info" id="accommodationAlert">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            Please select an accommodation option for your trip
+            <span id="accommodationTravelerCount">1</span>
+          </div>
+
+          <div id="accommodationContainer">
+            <!-- Accommodation options will be loaded here -->
+            <div class="text-center my-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2">Loading accommodations...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Payment Details Section -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="section-header">
+            <div class="section-number">3</div>
+            <h3 class="mb-0">Payment Details</h3>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+              <label for="cardName" class="form-label">Name on Card</label>
+              <input type="text" class="form-control" id="cardName" placeholder="John Smith">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="cardNumber" class="form-label">Card Number</label>
+              <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <label for="expiryMonth" class="form-label">Expiry Month</label>
+              <select class="form-select" id="expiryMonth">
+                <option selected>MM</option>
+                <option value="01">01</option>
+                <option value="02">02</option>
+                <!-- Add all months -->
+                <option value="12">12</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="expiryYear" class="form-label">Expiry Year</label>
+              <select class="form-select" id="expiryYear">
+                <option selected>YYYY</option>
+                <option value="2025">2025</option>
+                <option value="2026">2026</option>
+                <option value="2027">2027</option>
+                <option value="2028">2028</option>
+                <option value="2029">2029</option>
+              </select>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="cvv" class="form-label">CVV</label>
+              <input type="text" class="form-control" id="cvv" placeholder="123">
+            </div>
+          </div>
+
+          <div class="form-check mt-3">
+            <input class="form-check-input" type="checkbox" id="saveCard">
+            <label class="form-check-label" for="saveCard">
+              Save this card for future bookings
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="d-grid gap-2">
+        <button class="btn btn-primary btn-lg" type="button" id="completeBooking">Complete Booking</button>
+      </div>
+    </div>
+
+    <!-- Right Column - Tour Summary -->
+    <div class="col-lg-4">
+      <!-- Tour Details -->
+      <div class="card">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">Tour Details</h5>
+          <button class="btn btn-link p-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDetails">
+            <i class="bi bi-chevron-down"></i>
+          </button>
+        </div>
+        <div class="collapse show" id="collapseDetails">
+          <div class="card-body">
+            <h5 id="tourName">Loading...</h5>
+
+            <div class="row mt-3">
+              <div class="col-6">
+                <p class="mb-1 text-muted">Duration:</p>
+                <p class="fw-bold" id="tourDuration">--</p>
+              </div>
+              <div class="col-6">
+                <p class="mb-1 text-muted">Starts on:</p>
+                <p class="fw-bold" id="tourStartDate">--</p>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-6">
+                <p class="mb-1 text-muted">Ends on:</p>
+                <p class="fw-bold" id="tourEndDate">--</p>
+              </div>
+              <div class="col-6">
+                <p class="mb-1 text-muted">No. of Travellers:</p>
+                <p class="fw-bold" id="tourTravellers">1</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">Price Details</h5>
+        </div>
+        <div class="card-body">
+          <div id="priceBreakdown">
+            <h6 class="mb-3">Traveller(s):</h6>
+            <div class="d-flex justify-content-between mb-2">
+              <div>Adult: <span id="adultCount">2</span> x $<span id="adultPrice"></span> <span class="discount-badge">20% Off</span></div>
+              <div>$<span id="adultTotalPrice">2400</span></div>
+            </div>
+
+            <h6 class="mt-3 mb-2">Accommodation</h6>
+            <div class="d-flex justify-content-between mb-2">
+              <div>Single Room: <span id="singleRoomCount">2</span> x $<span id="singleRoomPrice">70</span></div>
+              <div>$<span id="singleRoomTotal">140</span></div>
+            </div>
+
+            <div class="d-flex justify-content-between mb-2">
+              <div>Bank Charge <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Processing and service fees"></i></div>
+              <div>$<span id="bankCharge">88</span></div>
+            </div>
+
+            <hr>
+
+            <div class="d-flex justify-content-between fw-bold">
+              <div>Total:</div>
+              <div>$<span id="totalPrice">2628</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Footer Section (Reuse from your existing site) -->
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Common functions to handle URL parameters
+    function getUrlParameter(name) {
+      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+      var results = regex.exec(location.search);
+      return results === null ? '' : decodeURIComponent(results[1]);
+    }
+
+    // Constants and configurations
+    const API_BASE_URL = 'http://localhost:8080/api/v1';
+
+    // Initialize page elements
+    initializeCheckoutPage();
+
+    function initializeCheckoutPage() {
+      // Load tour data first
+      loadTourData();
+
+      // Load accommodation options
+      loadAccommodationOptions();
+
+      // Setup traveler count controls
+      setupTravelerCountHandlers();
+
+      // Add event listener to complete booking button
+      const completeBookingBtn = document.getElementById('completeBooking');
+      if (completeBookingBtn) {
+        completeBookingBtn.addEventListener('click', handleCompleteBooking);
+      }
+    }
+
+    function loadTourData() {
+      const tourId = getUrlParameter('id');
+      if (!tourId) {
+        showError('No tour ID provided. Please select a tour first.');
+        return;
+      }
+
+      // First try to get data from sessionStorage
+      const sessionData = sessionStorage.getItem('tourData');
+      if (sessionData) {
+        try {
+          const tourData = JSON.parse(sessionData);
+          populateTourDetails(tourData);
+          return;
+        } catch (e) {
+          console.error('Error parsing session data:', e);
+        }
+      }
+
+      // If no session data, fetch from API
+      fetchTourDataFromAPI(tourId);
+    }
+
+    function fetchTourDataFromAPI(tourId) {
+      // Show loading indicators
+      document.getElementById('tourName').textContent = "Loading...";
+      document.getElementById('tourDuration').textContent = "...";
+      document.getElementById('tourStartDate').textContent = "...";
+      document.getElementById('tourEndDate').textContent = "...";
+
+      fetch(`${API_BASE_URL}/tour/${tourId}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Extract tour data based on API response format
+          let tour;
+          if (data.code === 200 && data.data) {
+            tour = data.data;
+          } else if (Array.isArray(data)) {
+            tour = data[0];
+          } else if (data.tour) {
+            tour = data.tour;
+          } else {
+            tour = data;
+          }
+
+          populateTourDetails(tour);
+        })
+        .catch(error => {
+          console.error('Error fetching tour data:', error);
+          showError('Failed to load tour details. Please try again later.');
+
+          // Use fallback data in case of error
+          populateTourDetails({
+            id: tourId,
+            name: "Paradise Tour Package",
+            duration: "7 Days",
+            price: 25000,
+            discount: 0.2,
+            bankCharge: 42
+          });
+        });
+    }
+
+    function populateTourDetails(tourData) {
+      // Get current date for setting the tour dates
+      const currentDate = new Date();
+      const startDate = new Date(currentDate);
+      startDate.setDate(currentDate.getDate() + 7); // Tour starts in 7 days
+
+      const endDate = new Date(startDate);
+      const durationDays = parseInt(tourData.duration) || 7;
+      endDate.setDate(startDate.getDate() + durationDays);
+
+      // Format dates
+      const formatDate = (date) => {
+        const options = { day: '2-digit', month: 'short', year: 'numeric' };
+        const dayName = new Intl.DateTimeFormat('en-US', { weekday: 'short' }).format(date);
+        return `${date.toLocaleDateString('en-US', options)} (${dayName})`;
+      };
+
+      // Update tour details in the UI
+      document.getElementById('tourName').textContent = tourData.name || "Tour Package";
+      document.getElementById('tourDuration').textContent = tourData.duration || "7 Days";
+      document.getElementById('tourStartDate').textContent = formatDate(startDate);
+      document.getElementById('tourEndDate').textContent = formatDate(endDate);
+
+      // Update price details
+      const basePrice = parseFloat(tourData.price) || 25000;
+      const discount = parseFloat(tourData.discount) || 0.2; // 20% discount
+      const discountedPrice = Math.round(basePrice * (1 - discount));
+      const bankCharge = parseFloat(tourData.bankCharge) || 42;
+
+      // Set price values in the UI
+      if (document.getElementById('adultPrice')) {
+        document.getElementById('adultPrice').textContent = basePrice;
+      }
+
+      if (document.getElementById('bankCharge')) {
+        document.getElementById('bankCharge').textContent = bankCharge;
+      }
+
+      // Initial price calculation
+      updatePriceCalculation();
+    }
+
+    function loadAccommodationOptions() {
+      const accommodationContainer = document.getElementById('accommodationContainer');
+      if (!accommodationContainer) return;
+
+      // Show loading indicator
+      accommodationContainer.innerHTML = `
+    <div class="text-center my-4">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading accommodations...</span>
+      </div>
+      <p class="mt-2">Loading accommodation options...</p>
+    </div>
+  `;
+
+      // Sample accommodation data (fallback if API fails)
+      const fallbackAccommodations = [
+        { id: 1, name: "Grand Hotel", type: "Single", price: 25000, description: "abc" },
+        { id: 2, name: "abcd Hotel", type: "Double", price: 25000, description: "abcd" },
+        { id: 3, name: "abc Hotel", type: "Twin", price: 35000, description: "abcd" }
+      ];
+
+      // Fetch accommodations from API or use fallback
+      fetch(`${API_BASE_URL}/accommodation`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(response => {
+          // Extract accommodations - handle different response formats
+          let accommodations;
+          if (response.data) {
+            accommodations = response.data;
+          } else if (Array.isArray(response)) {
+            accommodations = response;
+          } else {
+            accommodations = [response];
+          }
+
+          renderAccommodationOptions(accommodations);
+        })
+        .catch(error => {
+          console.error('Error fetching accommodations:', error);
+          // Use fallback data if API call fails
+          renderAccommodationOptions(fallbackAccommodations);
+        });
+    }
+
+    function renderAccommodationOptions(accommodations) {
+      const accommodationContainer = document.getElementById('accommodationContainer');
+      if (!accommodationContainer) return;
+
+      if (accommodations.length === 0) {
+        accommodationContainer.innerHTML = '<div class="alert alert-info">No accommodations available.</div>';
+        return;
+      }
+
+      let html = `
+    <div class="alert alert-info" id="accommodationAlert">
+      <i class="bi bi-info-circle-fill me-2"></i>
+      Please select accommodation for all travelers
+      <span id="accommodationTravelerCount">1</span>
+    </div>
+  `;
+
+      // Generate accommodation cards with unique IDs for each row
+      accommodations.forEach((accommodation, index) => {
+        // Create a unique ID for each accommodation
+        const accommodationId = `accommodation-${index}`;
+        html += `
+      <div class="row border-bottom py-3" id="${accommodationId}">
+        <div class="col-lg-6">
+          <h5>${accommodation.name}</h5>
+          <p class="text-muted mb-0">${accommodation.description || 'A comfortable room choice for your stay.'}</p>
+        </div>
+        <div class="col-lg-3 text-center">
+          <h5>$${accommodation.price}</h5>
+          <p class="text-muted mb-0">per room</p>
+        </div>
+        <div class="col-lg-3 d-flex justify-content-end align-items-center">
+          <button class="btn btn-outline-secondary btn-sm me-2 decrease-room" data-accommodation-id="${accommodationId}">-</button>
+          <input type="text" class="form-control text-center room-count"
+                id="${accommodationId}-count"
+                value="0"
+                style="max-width: 60px;"
+                data-room-type="${accommodation.type}"
+                data-room-price="${accommodation.price}"
+                readonly>
+          <button class="btn btn-outline-secondary btn-sm ms-2 increase-room" data-accommodation-id="${accommodationId}">+</button>
+
+          <div class="ms-3">
+            <button class="btn btn-outline-primary select-room" data-accommodation-id="${accommodationId}">Select</button>
+          </div>
+        </div>
+      </div>
+    `;
+      });
+
+      // Update the DOM
+      accommodationContainer.innerHTML = html;
+
+      // Add event listeners for room selection buttons
+      const decreaseButtons = document.querySelectorAll('.decrease-room');
+      const increaseButtons = document.querySelectorAll('.increase-room');
+      const selectButtons = document.querySelectorAll('.select-room');
+
+      decreaseButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const accommodationId = this.getAttribute('data-accommodation-id');
+          const inputField = document.getElementById(`${accommodationId}-count`);
+
+          if (inputField) {
+            let currentValue = parseInt(inputField.value) || 0;
+            if (currentValue > 0) {
+              inputField.value = currentValue - 1;
+              updateAccommodationStatus();
+              updatePriceCalculation();
+            }
+          }
+        });
+      });
+
+      increaseButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const accommodationId = this.getAttribute('data-accommodation-id');
+          const inputField = document.getElementById(`${accommodationId}-count`);
+          const roomType = inputField.getAttribute('data-room-type').toLowerCase();
+
+          if (inputField) {
+            let currentValue = parseInt(inputField.value) || 0;
+            let maxValue = getTotalTravelers();
+
+            // For double or twin rooms, allow half as many rooms as travelers
+            if (roomType === 'double' || roomType === 'twin') {
+              maxValue = Math.ceil(maxValue / 2);
+            }
+
+            if (currentValue < maxValue) {
+              inputField.value = currentValue + 1;
+              updateAccommodationStatus();
+              updatePriceCalculation();
+            }
+          }
+        });
+      });
+
+      selectButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const accommodationId = this.getAttribute('data-accommodation-id');
+          selectAccommodation(accommodationId);
+        });
+      });
+
+      // Initialize accommodation status
+      updateAccommodationStatus();
+    }
+
+    function selectAccommodation(accommodationId) {
+      console.log(`Selecting accommodation: ${accommodationId}`); // Debug log
+
+      // Reset all room counts to 0
+      const roomCountInputs = document.querySelectorAll('.room-count');
+      roomCountInputs.forEach(input => {
+        input.value = 0;
+      });
+
+      // Set the selected room type based on travelers
+      const travelers = getTotalTravelers();
+      const roomInput = document.getElementById(`${accommodationId}-count`);
+
+      if (roomInput) {
+        const roomType = roomInput.getAttribute('data-room-type').toLowerCase();
+
+        // For double or twin rooms, calculate how many rooms needed
+        if (roomType === 'double' || roomType === 'twin') {
+          roomInput.value = Math.ceil(travelers / 2);
+        } else {
+          roomInput.value = travelers;
+        }
+
+        // Update UI and calculations
+        updateAccommodationStatus();
+        updatePriceCalculation();
+      } else {
+        console.error(`Room input not found for accommodation: ${accommodationId}`);
+      }
+    }
+
+    function updateAccommodationStatus() {
+      const totalTravelers = getTotalTravelers();
+      let totalCapacity = 0;
+
+      // Calculate total capacity from selected rooms
+      const roomInputs = document.querySelectorAll('.room-count');
+      roomInputs.forEach(input => {
+        const roomType = input.getAttribute('data-room-type').toLowerCase();
+        const roomCount = parseInt(input.value) || 0;
+
+        // Different room types have different capacities
+        if (roomType === 'double' || roomType === 'twin') {
+          totalCapacity += roomCount * 2;
+        } else {
+          totalCapacity += roomCount;
+        }
+      });
+
+      // Update alert message
+      const accommodationAlert = document.getElementById('accommodationAlert');
+      if (accommodationAlert) {
+        if (totalCapacity < totalTravelers) {
+          accommodationAlert.className = 'alert alert-warning';
+          accommodationAlert.innerHTML = `
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        Please select accommodation for all ${totalTravelers} travelers.
+        Currently selected: capacity for ${totalCapacity} traveler${totalCapacity !== 1 ? 's' : ''}.
+      `;
+        } else if (totalCapacity > totalTravelers) {
+          accommodationAlert.className = 'alert alert-warning';
+          accommodationAlert.innerHTML = `
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        You've selected rooms with capacity for ${totalCapacity} travelers, but only have ${totalTravelers} traveler${totalTravelers !== 1 ? 's' : ''}.
+      `;
+        } else {
+          accommodationAlert.className = 'alert alert-success';
+          accommodationAlert.innerHTML = `
+        <i class="bi bi-check-circle-fill me-2"></i>
+        Accommodation selected for all ${totalTravelers} traveler${totalTravelers !== 1 ? 's' : ''}.
+      `;
+        }
+      }
+
+      // Update all instances of accommodation traveler count
+      updateAllTravelerCountsInUI(totalTravelers);
+    }
+
+    function setupTravelerCountHandlers() {
+      const numTravelers = document.getElementById('numTravelers');
+      const decreaseBtn = document.getElementById('decreaseTravelers');
+      const increaseBtn = document.getElementById('increaseTravelers');
+
+      if (!numTravelers || !decreaseBtn || !increaseBtn) return;
+
+      decreaseBtn.addEventListener('click', function() {
+        const currentValue = parseInt(numTravelers.value);
+        if (currentValue > 1) {
+          numTravelers.value = currentValue - 1;
+          updateAllTravelerCountsInUI(currentValue - 1);
+          updateAccommodationStatus();
+          updatePriceCalculation();
+        }
+      });
+
+      increaseBtn.addEventListener('click', function() {
+        const currentValue = parseInt(numTravelers.value);
+        numTravelers.value = currentValue + 1;
+        updateAllTravelerCountsInUI(currentValue + 1);
+        updateAccommodationStatus();
+        updatePriceCalculation();
+      });
+
+      numTravelers.addEventListener('change', function() {
+        let value = parseInt(this.value);
+        if (isNaN(value) || value < 1) {
+          value = 1;
+          this.value = 1;
+        }
+        updateAllTravelerCountsInUI(value);
+        updateAccommodationStatus();
+        updatePriceCalculation();
+      });
+    }
+
+    function updateAllTravelerCountsInUI(count) {
+      // Update all elements showing traveler count
+      const travelerCountElements = [
+        document.getElementById('accommodationTravelerCount'),
+        document.getElementById('tourTravellers'),
+        document.getElementById('adultCount')
+      ];
+
+      travelerCountElements.forEach(element => {
+        if (element) {
+          element.textContent = count;
+        }
+      });
+    }
+
+    function getTotalTravelers() {
+      const numTravelers = document.getElementById('numTravelers');
+      return parseInt(numTravelers?.value || 1);
+    }
+
+    function updatePriceCalculation() {
+      const travelerCount = getTotalTravelers();
+      const basePrice = parseInt(document.getElementById('adultPrice')?.textContent || 25000);
+      const bankCharge = parseInt(document.getElementById('bankCharge')?.textContent || 42);
+
+      // Calculate traveler cost
+      const travelerTotal = travelerCount * basePrice;
+
+      // Calculate accommodation cost
+      let totalAccommodationPrice = 0;
+      const roomInputs = document.querySelectorAll('.room-count');
+
+      roomInputs.forEach(input => {
+        const roomCount = parseInt(input.value) || 0;
+        if (roomCount > 0) {
+          const roomPrice = parseFloat(input.getAttribute('data-room-price') || 0);
+          totalAccommodationPrice += roomCount * roomPrice;
+        }
+      });
+
+      // Calculate total
+      const totalPrice = travelerTotal + totalAccommodationPrice + bankCharge;
+
+      // Update UI elements
+      if (document.getElementById('adultTotalPrice')) {
+        document.getElementById('adultTotalPrice').textContent = travelerTotal;
+      }
+
+      // Create accommodation breakdown HTML
+      let accommodationHtml = '<h6 class="mt-3 mb-2">Accommodation</h6>';
+      let hasSelectedRooms = false;
+
+      roomInputs.forEach(input => {
+        const roomCount = parseInt(input.value) || 0;
+        if (roomCount > 0) {
+          hasSelectedRooms = true;
+          const roomType = input.getAttribute('data-room-type');
+          const roomPrice = parseFloat(input.getAttribute('data-room-price') || 0);
+          const roomTotal = roomCount * roomPrice;
+
+          accommodationHtml += `
+        <div class="d-flex justify-content-between mb-2">
+          <div>${roomType} Room: ${roomCount} x $${roomPrice}</div>
+          <div>$${roomTotal}</div>
+        </div>
+      `;
+        }
+      });
+
+      if (!hasSelectedRooms) {
+        accommodationHtml += `
+      <div class="text-muted mb-2">No rooms selected</div>
+    `;
+      }
+
+      // Update price breakdown
+      const priceBreakdown = document.getElementById('priceBreakdown');
+      if (priceBreakdown) {
+        priceBreakdown.innerHTML = `
+      <h6 class="mb-3">Traveller(s):</h6>
+      <div class="d-flex justify-content-between mb-2">
+        <div>Adult: <span id="adultCount">${travelerCount}</span> x $<span id="adultPrice">${basePrice}</span> <span class="discount-badge">20% Off</span></div>
+        <div>$<span id="adultTotalPrice">${travelerTotal}</span></div>
+      </div>
+
+      ${accommodationHtml}
+
+      <div class="d-flex justify-content-between mb-2">
+        <div>Bank Charge <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Processing and service fees"></i></div>
+        <div>$<span id="bankCharge">${bankCharge}</span></div>
+      </div>
+
+      <hr>
+
+      <div class="d-flex justify-content-between fw-bold">
+        <div>Total:</div>
+        <div>$<span id="totalPrice">${totalPrice}</span></div>
+      </div>
+    `;
+      }
+
+      // Update final total price display
+      if (document.getElementById('totalPrice')) {
+        document.getElementById('totalPrice').textContent = totalPrice;
+      }
+    }
+
+    function handleCompleteBooking() {
+      // Validate payment form
+      const cardName = document.getElementById('cardName')?.value;
+      const cardNumber = document.getElementById('cardNumber')?.value;
+      const cvv = document.getElementById('cvv')?.value;
+      const expiryMonth = document.getElementById('expiryMonth')?.value;
+      const expiryYear = document.getElementById('expiryYear')?.value;
+
+      if (!cardName || !cardNumber || !cvv || expiryMonth === 'MM' || expiryYear === 'YYYY') {
+        alert('Please fill in all payment details.');
+        return;
+      }
+
+      // Check if accommodation is selected for all travelers
+      const totalTravelers = getTotalTravelers();
+      let totalCapacity = 0;
+
+      // Calculate total capacity from selected rooms
+      const roomInputs = document.querySelectorAll('.room-count');
+      const selectedRooms = {};
+
+      roomInputs.forEach(input => {
+        const roomType = input.getAttribute('data-room-type').toLowerCase();
+        const roomCount = parseInt(input.value) || 0;
+        selectedRooms[roomType] = roomCount;
+
+        // Different room types have different capacities
+        if (roomType === 'double' || roomType === 'twin') {
+          totalCapacity += roomCount * 2;
+        } else {
+          totalCapacity += roomCount;
+        }
+      });
+
+      if (totalCapacity < totalTravelers) {
+        alert(`Please select accommodation for all ${totalTravelers} travelers.`);
+        return;
+      }
+
+      // Get booking data
+      const totalPrice = document.getElementById('totalPrice')?.textContent || '0';
+      const bookingData = {
+        tourId: getUrlParameter('id'),
+        travelers: totalTravelers,
+        rooms: selectedRooms,
+        payment: {
+          cardName: cardName,
+          cardNumber: cardNumber,
+          cvv: cvv,
+          expiryMonth: expiryMonth,
+          expiryYear: expiryYear
+        },
+        totalAmount: totalPrice
+      };
+
+      // Show loading overlay
+      const loadingOverlay = document.createElement('div');
+      loadingOverlay.className = 'loading-overlay';
+      loadingOverlay.style.position = 'fixed';
+      loadingOverlay.style.top = '0';
+      loadingOverlay.style.left = '0';
+      loadingOverlay.style.width = '100%';
+      loadingOverlay.style.height = '100%';
+      loadingOverlay.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+      loadingOverlay.style.display = 'flex';
+      loadingOverlay.style.flexDirection = 'column';
+      loadingOverlay.style.justifyContent = 'center';
+      loadingOverlay.style.alignItems = 'center';
+      loadingOverlay.style.zIndex = '9999';
+
+      loadingOverlay.innerHTML = `
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Processing payment...</span>
+    </div>
+    <p class="mt-3">Processing your booking...</p>
+  `;
+      document.body.appendChild(loadingOverlay);
+
+      // Simulate API call for booking (replace with actual API call)
+      setTimeout(() => {
+        // Generate confirmation number
+        const confirmationNumber = 'BK' + Math.floor(100000 + Math.random() * 900000);
+
+        // Store booking details for confirmation page
+        sessionStorage.setItem('bookingConfirmation', JSON.stringify({
+          confirmationNumber: confirmationNumber,
+          bookingData: bookingData,
+          tourName: document.getElementById('tourName')?.textContent,
+          startDate: document.getElementById('tourStartDate')?.textContent,
+          endDate: document.getElementById('tourEndDate')?.textContent
+        }));
+
+        // Remove loading overlay
+        document.body.removeChild(loadingOverlay);
+
+        // Show success message
+        alert(`Booking completed successfully! Confirmation number: ${confirmationNumber}`);
+
+        // Redirect to confirmation page
+        window.location.href = `confirmation.html?ref=${confirmationNumber}`;
+      }, 2000);
+    }
+
+    function showError(message) {
+      const accommodationContainer = document.getElementById('accommodationContainer');
+      if (accommodationContainer) {
+        accommodationContainer.innerHTML = `
+      <div class="alert alert-danger">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <strong>Error:</strong> ${message}
+      </div>
+    `;
+      } else {
+        alert('Error: ' + message);
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
