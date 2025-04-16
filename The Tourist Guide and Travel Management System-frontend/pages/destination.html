@@ -3,525 +3,1109 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tourist Guide - Destination Management</title>
+  <title>TravelPro - Destination Management</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     body {
-      background-color: #f8f9fa;
+      background-color: #f5f5f5;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    .destination-image {
-      transition: height 0.3s ease;
-      min-height: 200px;
-    }
 
-    .destination-card:hover .destination-image {
-      max-height: 400px;
+    .sidebar {
+      background-color: white;
+      height: 100vh;
+      position: fixed;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 250px;
+      overflow-y: auto;
     }
-
-    @media (min-width: 768px) {
-      .destination-image {
-        max-height: 350px;
-      }
-    }
-    .destination-card {
-      transition: transform 0.3s;
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      color: #7bc043;
+      font-size: 24px;
+      font-weight: 700;
+      border-bottom: 1px solid  #BDBDBD;
       margin-bottom: 20px;
     }
-    .destination-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    .sidebar-brand i{
+      font-size: 24px;
+      color: var(--primary);
+      margin-right: 10px;
+      text-align: center;
     }
-    .header {
-      background: linear-gradient(135deg, #1e5799 0%,#2989d8 50%,#207cca 51%,#7db9e8 100%);
-      color: white;
-      padding: 20px 0;
-      margin-bottom: 30px;
+    .sidebar-brand h2{
+      font-size: 21px;
+      color: var(--primary-dark);
+      font-weight: 600;
+      margin-top: 8px;
     }
-    .weather-widget {
-      background-color: #f0f8ff;
+
+    .main-content p {
+      color: #757575;
+      font-size: 14px;
+      margin-top: 5px;
+    }
+
+    .nav-item {
+      padding: 12px 20px;
+      color: #6c757d;
+      transition: all 0.3s;
+      border-left: 4px solid transparent;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      margin-bottom: 5px;
+    }
+
+    nav i{
+      font-size: 18px;
+    }
+
+    .nav-item.active, .nav-item:hover  {
+      background-color: #DCEDC8;
+      color:  #689F38;
+      border-left: 4px solid #8BC34A;
+    }
+    .divider {
+      height: 1px;
+      background-color: #BDBDBD;
+      margin: 15px 0;
+    }
+    .main-content{
+      flex: 1;
+      padding: 20px;
+      margin-left: 250px;
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: -16px;
+    }
+
+    .btn-primary {
+      background-color: #7bc043;
+      border-color: #7bc043;
+    }
+
+    .btn-primary:hover {
+      background-color: #6aad39;
+      border-color: #6aad39;
+    }
+
+    .stats-container {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .stats-card {
+      flex: 1;
+      background: white;
       border-radius: 10px;
-      padding: 15px;
-      margin-top: 15px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      padding: 20px 17px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
     }
-    .form-container {
+
+    .icon-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+
+    .stats-info {
+      flex-grow: 1;
+    }
+
+    .stats-info p {
+      margin: 0;
+      color: #757575;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .status-positive {
+      color: #4CAF50;
+    }
+
+    .stats-info .text-success {
+      color: #7bc043 !important;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .stats-info .text-success i {
+      font-size: 10px;
+    }
+
+    .bg-total {
+      background-color: #7bc043;
+    }
+
+    .bg-beach {
+      background-color: #0d6efd;
+    }
+
+    .bg-mountain {
+      background-color: #fd7e14;
+    }
+
+    .bg-cultural {
+      background-color: #20c997;
+    }
+
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
       background-color: white;
       border-radius: 10px;
-      padding: 25px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .custom-table th {
+      color: #6c757d;
+      font-weight: 600;
+      padding: 12px 15px;
+      text-align: left;
+    }
+
+    .custom-table td {
+      padding: 12px 15px;
+      vertical-align: middle;
+      border-top: 1px solid #BDBDBD;
+    }
+
+    .custom-table tr:hover {
+      background-color: #DCEDC8;
+    }
+
+    .badge {
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .badge-beach {
+      background-color: #e9f0ff;
+      color: #0d6efd;
+    }
+
+    .badge-mountain {
+      background-color: #fff4e6;
+      color: #fd7e14;
+    }
+
+    .badge-cultural {
+      background-color: #e6fcf5;
+      color: #20c997;
+    }
+
+    .action-btn {
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      margin-right: 5px;
+      cursor: pointer;
+      border: none;
+    }
+
+    .search-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 15px;
+    }
+
+    .search-box {
+      max-width: 300px;
+      display: flex;
+    }
+    .search-box .btn-outline-secondary {
+      background-color: #7bc043;
+      color: white;
+      border-color: #7bc043;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      transition: all 0.3s ease;
+    }
+
+    .search-box .btn-outline-secondary:hover {
+      background-color: #6aad39;
+      border-color: #6aad39;
+    }
+
+    .search-box .form-control {
+      border-right: none;
+    }
+
+    .search-box .form-control:focus {
+      border-color: #7bc043;
+      box-shadow: 0 0 0 0.25rem rgba(123, 192, 67, 0.25);
+    }
+
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      padding: 20px 0;
+      color: #6c757d;
+      font-size: 14px;
+      border-top: 1px solid #dee2e6;
+    }
+
+    /* Modal styles */
+    .custom-modal {
+      display: none;
+      position: fixed;
+      z-index: 1050;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 800px;
+      border-radius: 10px;
       box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     }
-    #map {
-      height: 300px;
-      width: 100%;
-      border-radius: 8px;
-      margin-top: 10px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
     }
-    .map-container {
-      background-color: #f0f8ff;
-      border-radius: 10px;
+
+    .destination-image-preview {
+      width: 100%;
+      height: 150px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-top: 10px;
+      border: 1px solid #ddd;
+    }
+
+    .weather-widget {
+      background-color: #f8f9fa;
+      border-radius: 8px;
       padding: 15px;
       margin-top: 15px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: none;
     }
-    .map-actions {
-      margin-top: 10px;
+
+    .weather-icon {
+      font-size: 24px;
+      margin-right: 10px;
+      color: #0d6efd;
+    }
+    #destinationModal i{
+      color: #7bc043;
+    }
+    #destinationModal{
+      border: 1px solid black;
     }
   </style>
 </head>
+
 <body>
-<div class="header text-center">
-  <h1>Destination Management Portal</h1>
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="sidebar-brand">
+    <i class="fas fa-map-marker-alt"></i>
+    <h2>TravelPro</h2>
+  </div>
+  <nav>
+    <a href="Dashboard.html" class="nav-item">
+      <i class="fas fa-th-large"></i>
+      <span>Dashboard</span>
+    </a>
+    <a href="tour.html" class="nav-item">
+      <i class="fas fa-map-marked-alt"></i>
+      <span>Tours</span>
+    </a>
+    <a href="guide.html" class="nav-item">
+      <i class="fas fa-users"></i>
+      <span>Guides</span>
+    </a>
+    <a href="transport.html" class="nav-item">
+      <i class="fas fa-shuttle-van"></i>
+      <span>Transport</span>
+    </a>
+    <a href="Accommodation.html" class="nav-item">
+      <i class="fas fa-hotel"></i>
+      <span>Accommodation</span>
+    </a>
+    <a href="tourists.html" class="nav-item">
+      <i class="fas fa-user-friends"></i>
+      <span>Tourists</span>
+    </a>
+    <a href="destinations.html" class="nav-item active">
+      <i class="fas fa-globe"></i>
+      <span>Destinations</span>
+    </a>
+    <div class="divider"></div>
+    <a href="notifications.html" class="nav-item">
+      <i class="fas fa-bell"></i>
+      <span>Notifications</span>
+    </a>
+    <a href="reviews.html" class="nav-item">
+      <i class="fas fa-star"></i>
+      <span>Reviews</span>
+    </a>
+    <a href="settings.html" class="nav-item">
+      <i class="fas fa-cog"></i>
+      <span>Settings</span>
+    </a>
+  </nav>
 </div>
 
-<div class="container">
-  <div class="row">
-    <div class="col-lg-6">
-      <div class="form-container">
-        <h3 class="mb-4">Add New Destination</h3>
-        <form id="destinationForm">
-          <div class="mb-3">
-            <label for="destinationId" class="form-label">Destination ID</label>
-            <input type="text" class="form-control" id="destinationId" required>
-          </div>
-          <div class="mb-3">
-            <label for="destinationName" class="form-label">Destination Name</label>
-            <input type="text" class="form-control" id="destinationName" required maxlength="50">
-          </div>
-          <div class="mb-3">
-            <label for="destinationDescription" class="form-label">Description</label>
-            <textarea class="form-control" id="destinationDescription" rows="3" maxlength="200" required></textarea>
-          </div>
-          <div class="mb-3">
-            <label for="destinationImage" class="form-label">Destination Image</label>
-            <input type="file" class="form-control" id="destinationImage" accept="image/jpeg,image/png,image/jpg">
-            <div class="form-text">Upload an image of the destination (JPEG, PNG formats only)</div>
-          </div>
-          <div class="mb-3">
-            <label for="destinationLocation" class="form-label">Location</label>
-            <input type="text" class="form-control" id="destinationLocation" required maxlength="400">
-            <div class="form-text">Enter a city, region or landmark</div>
-            <div class="d-flex gap-2 mt-2">
-              <button type="button" class="btn btn-outline-primary" id="fetchWeatherBtn">Fetch Weather Info</button>
-              <button type="button" class="btn btn-outline-success" id="showMapBtn">Show on Map</button>
-            </div>
-          </div>
+<!-- Main Content -->
+<div class="main-content">
+  <!-- Header -->
+  <div class="header-bar">
+    <div>
+      <h4>Admin Dashboard</h4>
+      <p>Welcome back! Here's what's happening with your travel business</p>
+    </div>
+    <div class="add-btn">
+      <button class="btn btn-primary" id="add-destination-btn">
+        <i class="fas fa-plus me-2"></i>Add New Destination
+      </button>
+    </div>
+  </div>
+  <hr>
 
-          <!-- Map Container -->
-          <div class="map-container" id="mapContainer" style="display: none;">
-            <h5>Location Map</h5>
-            <div id="map"></div>
-            <div class="map-actions">
-              <div class="row">
-                <div class="col-md-6">
-                  <input type="text" class="form-control" id="latitudeInput" placeholder="Latitude" readonly>
-                </div>
-                <div class="col-md-6">
-                  <input type="text" class="form-control" id="longitudeInput" placeholder="Longitude" readonly>
-                </div>
-              </div>
-              <div class="d-flex justify-content-between mt-2">
-                <button type="button" class="btn btn-outline-primary btn-sm" id="captureMapBtn">Use as Destination Image</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm" id="resetMapBtn">Reset Map</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Weather Widget (initially hidden) -->
-          <div class="weather-widget" id="weatherWidget" style="display: none;">
-            <h5>Weather Information</h5>
-            <div class="row">
-              <div class="col-md-6">
-                <div id="currentWeather">
-                  <p><strong>Current:</strong> <span id="currentTemp"></span>°C, <span id="currentCondition"></span></p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div id="forecastWeather">
-                  <p><strong>Forecast:</strong> <span id="forecastDesc"></span></p>
-                </div>
-              </div>
-            </div>
-            <hr>
-            <label for="weatherInfo" class="form-label">Weather Info Summary</label>
-            <textarea class="form-control" id="weatherInfo" rows="2" required maxlength="200"></textarea>
-          </div>
-
-          <div class="mb-3 mt-3">
-            <label for="bestTimeToVisit" class="form-label">Best Time to Visit</label>
-            <select class="form-select" id="bestTimeToVisit" required>
-              <option value="">Select season...</option>
-              <option value="Spring (March to May)">Spring (March to May)</option>
-              <option value="Summer (June to August)">Summer (June to August)</option>
-              <option value="Fall (September to November)">Fall (September to November)</option>
-              <option value="Winter (December to February)">Winter (December to February)</option>
-              <option value="Year-round">Year-round</option>
-              <option value="custom">Custom (specify below)</option>
-            </select>
-            <textarea class="form-control mt-2" id="customBestTime" style="display: none;" maxlength="200" placeholder="Specify best time to visit..."></textarea>
-          </div>
-
-          <button type="submit" class="btn btn-primary" id="btn-save">Save Destination</button>
-          <button type="reset" class="btn btn-secondary">Reset</button>
-        </form>
+  <div class="stats-container">
+    <div class="stats-card mt-2">
+      <div class="icon-circle bg-total">
+        <i class="fas fa-map-marker-alt"></i>
+      </div>
+      <div class="stats-info">
+        <h4 id="total-destinations">0</h4>
+        <p>TOTAL DESTINATIONS<span class="status-positive">+5% from last month</span></p>
       </div>
     </div>
-
-    <div class="col-lg-6">
-      <h3 class="mb-4">Existing Destinations</h3>
-      <div id="destinationsList">
+    <div class="stats-card mt-2">
+      <div class="icon-circle bg-beach">
+        <i class="fas fa-umbrella-beach"></i>
+      </div>
+      <div class="stats-info">
+        <h4 id="total-beaches">0</h4>
+        <p>BEACHES<span class="status-positive">+2% from last month</span></p>
+      </div>
+    </div>
+    <div class="stats-card mt-2">
+      <div class="icon-circle bg-mountain">
+        <i class="fas fa-mountain"></i>
+      </div>
+      <div class="stats-info">
+        <h4 id="total-mountains">0</h4>
+        <p>MOUNTAINS<span class="status-positive">+4% from last month</span></p>
+      </div>
+    </div>
+    <div class="stats-card mt-2">
+      <div class="icon-circle bg-cultural">
+        <i class="fas fa-landmark"></i>
+      </div>
+      <div class="stats-info">
+        <h4 id="total-cultural">0</h4>
+        <p>CULTURAL<span class="status-positive">+3% from last month</span></p>
       </div>
     </div>
   </div>
+
+  <!-- Destinations Section -->
+  <div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5>Destinations</h5>
+      <div class="search-box">
+        <input type="text" class="form-control" placeholder="Search destinations..." id="search-destination">
+        <button class="btn btn-outline-secondary" type="button">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div>
+
+    <div id="destinationList">
+      <!-- Destination list will load here -->
+      <div class="text-center p-4">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>© 2025 Tourist Guide and Travel Management System. All rights reserved.</p>
+  </div>
 </div>
+
+<!-- Add/Edit Destination Modal -->
+<div id="destinationModal" class="custom-modal">
+  <div class="modal-content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h5 id="modal-title"><i class="fas fa-map-marker-alt me-2"></i>Add New Destination</h5>
+      <span class="close">&times;</span>
+    </div>
+
+    <form id="destination-form" enctype="multipart/form-data">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="destinationId" class="form-label"><i class="fas fa-fingerprint me-2"></i>Destination ID</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-key"></i></span>
+              <input type="text" class="form-control" id="destinationId" name="id" required readonly>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="destinationName" class="form-label"><i class="fas fa-signature me-2"></i>Destination Name</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-font"></i></span>
+              <input type="text" class="form-control" id="destinationName" name="name" required maxlength="50" placeholder="Enter destination name">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="destinationLocation" class="form-label"><i class="fas fa-map-pin me-2"></i>Location</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-location-arrow"></i></span>
+              <input type="text" class="form-control" id="destinationLocation" name="location" required maxlength="100" placeholder="Enter location">
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="destinationType" class="form-label"><i class="fas fa-tag me-2"></i>Destination Type</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-list-ul"></i></span>
+              <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" id="loadDestinationType">Select Type</button>
+              <ul class="dropdown-menu" id="type-dropdown">
+                <li><a class="dropdown-item" href="#" onclick="setDestinationType('Beach')"><i class="fas fa-umbrella-beach me-2"></i>Beach</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setDestinationType('Mountain')"><i class="fas fa-mountain me-2"></i>Mountain</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setDestinationType('Cultural')"><i class="fas fa-landmark me-2"></i>Cultural</a></li>
+              </ul>
+              <input type="text" class="form-control" id="destinationType" readonly>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="destinationDescription" class="form-label"><i class="fas fa-align-left me-2"></i>Description</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-info-circle"></i></span>
+              <textarea class="form-control" id="destinationDescription" name="description" rows="3" maxlength="200" required placeholder="Describe the destination"></textarea>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="weatherInfo" class="form-label"><i class="fas fa-cloud-sun me-2"></i>Weather Information</label>
+            <div class="input-group mb-2">
+              <span class="input-group-text"><i class="fas fa-temperature-high"></i></span>
+              <input type="text" class="form-control" id="weatherInfo" name="weather_info" maxlength="200" placeholder="Weather details">
+              <button type="button" class="btn btn-info" id="fetchWeatherBtn">
+                <i class="fas fa-sync-alt me-1"></i>Fetch Weather
+              </button>
+            </div>
+
+            <!-- Weather Widget -->
+            <div class="weather-widget" id="weatherWidget">
+              <div class="d-flex align-items-center mb-2">
+                <i class="fas fa-cloud-sun weather-icon"></i>
+                <div>
+                  <h6 class="mb-0">Current Weather</h6>
+                  <div class="d-flex align-items-center">
+                    <span id="currentTemp" class="h5 mb-0">--</span>
+                    <span class="ms-1">°C</span>
+                    <span class="ms-2" id="currentCondition">--</span>
+                  </div>
+                </div>
+              </div>
+              <p class="small text-muted mb-0">Forecast: <span id="forecastDesc">--</span></p>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="bestTimeToVisit" class="form-label"><i class="fas fa-calendar-alt me-2"></i>Best Time to Visit</label>
+            <div class="input-group">
+              <span class="input-group-text"><i class="fas fa-clock"></i></span>
+              <input type="text" class="form-control" id="bestTimeToVisit" name="best_time_to_visit" required maxlength="100" placeholder="e.g. January to March">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="divider my-4"></div>
+
+      <div class="d-flex justify-content-end mt-4">
+        <button type="button" class="btn btn-secondary me-2" id="btn-cancel">
+          <i class="fas fa-times me-2"></i>Cancel
+        </button>
+        <button type="submit" class="btn btn-primary" id="btn-save">
+          <i class="fas fa-save me-2"></i>Save Destination
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-providers/1.13.0/leaflet-providers.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="../js/destination.js"></script>
-
 <script>
+  // Load destinations function
+  function loadDestinations() {
+    const destinationList = document.getElementById('destinationList');
 
-  let map;
-  let marker;
-  let capturedMapImage;
+    destinationList.innerHTML = '<div class="text-center p-4"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
 
-  $(document).ready(function() {
-    $("#bestTimeToVisit").change(function() {
-      if ($(this).val() === "custom") {
-        $("#customBestTime").show();
-      } else {
-        $("#customBestTime").hide();
-      }
-    });
-
-    $("#showMapBtn").click(function() {
-      const location = $("#destinationLocation").val();
-      if (location) {
-        $("#mapContainer").show();
-        initMap(location);
-      } else {
-        alert("Please enter a location first");
-      }
-    });
-
-    $("#resetMapBtn").click(function() {
-      $("#mapContainer").hide();
-      $("#latitudeInput").val("");
-      $("#longitudeInput").val("");
-      capturedMapImage = null;
-      if (document.getElementById('mapImagePreview')) {
-        document.getElementById('mapImagePreview').remove();
-      }
-    });
-
-    // Capture map as image
-    $("#captureMapBtn").click(function() {
-      // Wait for map tiles to fully load
-      setTimeout(() => captureMap(), 500);
-    });
-
-    // Handle form submission
-    $("#destinationForm").submit(function(event) {
-      event.preventDefault(); // Prevent default form submission
-
-      // Get form data
-      const destinationData = {
-        id: $("#destinationId").val(),
-        name: $("#destinationName").val(),
-        description: $("#destinationDescription").val(),
-        location: $("#destinationLocation").val(),
-        bestTime: $("#bestTimeToVisit").val() === "custom" ? $("#customBestTime").val() : $("#bestTimeToVisit").val()
-      };
-
-      const latitude = $("#latitudeInput").val();
-      const longitude = $("#longitudeInput").val();
-      if (latitude && longitude) {
-        destinationData.latitude = latitude;
-        destinationData.longitude = longitude;
-      }
-      if (capturedMapImage) {
-        destinationData.imageUrl = capturedMapImage;
-        saveDestination(destinationData);
-      } else {
-        const fileInput = document.getElementById("destinationImage");
-        if (fileInput.files && fileInput.files[0]) {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            destinationData.imageUrl = e.target.result;
-            saveDestination(destinationData);
-          };
-          reader.readAsDataURL(fileInput.files[0]);
+    $.ajax({
+      url: "http://localhost:8080/api/v1/destination",
+      method: "GET",
+      dataType: "json",
+      success: (res) => {
+        const destinations = res.data;
+        if (destinations.length === 0) {
+          destinationList.innerHTML = '<div class="alert alert-info m-3">No destinations found.</div>';
           return;
-        } else {
-
-          saveDestination(destinationData);
         }
-      }
-    });
-  });
 
+        // Update total destinations count
+        document.getElementById('total-destinations').textContent = destinations.length;
 
-  function initMap(location) {
+        // Count by type (assuming types are stored in a 'type' field like in accommodations)
+        // For this example, we'll use arbitrary categorization based on the name
+        let beachCount = 0;
+        let mountainCount = 0;
+        let culturalCount = 0;
 
-    if (map) {
-      map.remove();
-    }
-
-
-    map = L.map('map').setView([0, 0], 2);
-
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      maxZoom: 19
-    }).addTo(map);
-
-    geocodeLocation(location);
-  }
-
-
-  function geocodeLocation(location) {
-    const nominatimUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}`;
-
-    fetch(nominatimUrl)
-      .then(response => response.json())
-      .then(data => {
-        if (data && data.length > 0) {
-          const result = data[0];
-          const lat = parseFloat(result.lat);
-          const lon = parseFloat(result.lon);
-
-
-          map.setView([lat, lon], 13);
-
-          if (marker) {
-            marker.setLatLng([lat, lon]);
+        destinations.forEach(destination => {
+          // This is just a simple example - you'll need to adjust based on your actual data structure
+          const name = destination.name.toLowerCase();
+          if (name.includes("beach") || name.includes("sea") || name.includes("ocean")) {
+            beachCount++;
+          } else if (name.includes("mountain") || name.includes("hill") || name.includes("peak")) {
+            mountainCount++;
           } else {
-            marker = L.marker([lat, lon], {
-              draggable: true
-            }).addTo(map);
+            culturalCount++; // Default to cultural for this example
+          }
+        });
 
+        document.getElementById('total-beaches').textContent = beachCount;
+        document.getElementById('total-mountains').textContent = mountainCount;
+        document.getElementById('total-cultural').textContent = culturalCount;
 
-            marker.on('dragend', function(event) {
-              const position = marker.getLatLng();
-              $("#latitudeInput").val(position.lat.toFixed(6));
-              $("#longitudeInput").val(position.lng.toFixed(6));
-            });
+        // Create table layout
+        let html = `
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Destination</th>
+                <th>Location</th>
+                <th>Weather Info</th>
+                <th>Best Time to Visit</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        destinations.forEach(destination => {
+          // Define badge class based on type (adjust based on your actual data)
+          let badgeClass = 'badge-beach';
+          let type = 'Beach'; // Default
+
+          if (destination.name.toLowerCase().includes("mountain")) {
+            badgeClass = 'badge-mountain';
+            type = 'Mountain';
+          } else if (!destination.name.toLowerCase().includes("beach")) {
+            badgeClass = 'badge-cultural';
+            type = 'Cultural';
           }
 
+          // Truncate description for table view
+          const shortDesc = destination.description.length > 30 ?
+            destination.description.substring(0, 30) + '...' :
+            destination.description;
 
-          $("#latitudeInput").val(lat.toFixed(6));
-          $("#longitudeInput").val(lon.toFixed(6));
-
-
-          map.on('click', function(event) {
-            const position = event.latlng;
-            marker.setLatLng(position);
-            $("#latitudeInput").val(position.lat.toFixed(6));
-            $("#longitudeInput").val(position.lng.toFixed(6));
-          });
-        } else {
-          alert("Location not found. Please try a different search term.");
-        }
-      })
-      .catch(error => {
-        console.error("Error geocoding location:", error);
-        alert("Failed to geocode location. Please try again.");
-      });
-  }
-
-
-  function captureMap() {
-    if (!map) return;
-
-    console.log("Capturing map...");
-
-
-    map.whenReady(function() {
-      setTimeout(() => {
-        html2canvas(document.getElementById('map'), {
-          useCORS: true,
-          allowTaint: true,
-          logging: true
-        }).then(canvas => {
-          console.log("Map captured successfully");
-
-
-          const dataURL = canvas.toDataURL('image/png');
-
-
-          capturedMapImage = dataURL;
-
-
-          const imgPreview = document.createElement('img');
-          imgPreview.src = dataURL;
-          imgPreview.style.maxWidth = '100%';
-          imgPreview.style.display = 'block';
-          imgPreview.style.marginTop = '10px';
-          imgPreview.id = 'mapImagePreview';
-
-
-          const existingPreview = document.getElementById('mapImagePreview');
-          if (existingPreview) existingPreview.remove();
-
-
-          document.getElementById('mapContainer').appendChild(imgPreview);
-
-
-          const downloadLink = document.createElement('a');
-          downloadLink.href = dataURL;
-          downloadLink.download = 'map_' + $("#destinationLocation").val().replace(/\s+/g, '_') + '.png';
-          downloadLink.className = 'btn btn-sm btn-outline-info mt-2';
-          downloadLink.textContent = 'Download Map Image';
-          downloadLink.id = 'downloadMapBtn';
-
-
-          const existingDownloadBtn = document.getElementById('downloadMapBtn');
-          if (existingDownloadBtn) existingDownloadBtn.remove();
-
-
-          document.getElementById('mapContainer').appendChild(downloadLink);
-
-          const fileInput = document.getElementById('destinationImage');
-
-
-          fileInput.value = '';
-
-
-          const fileInputLabel = document.createElement('div');
-          fileInputLabel.className = 'alert alert-success mt-2';
-          fileInputLabel.innerHTML = '<strong>Map image captured!</strong> Click "Save Destination" to use this image.';
-          fileInputLabel.id = 'mapImageMessage';
-
-
-          const existingMessage = document.getElementById('mapImageMessage');
-          if (existingMessage) existingMessage.remove();
-
-
-          fileInput.parentNode.appendChild(fileInputLabel);
-
-
-          downloadLink.addEventListener('click', function() {
-
-            console.log("Downloading map image...");
-
-
-            setTimeout(() => {
-              fileInputLabel.innerHTML = '<strong>Map image downloaded!</strong> File saved to your downloads folder.';
-            }, 500);
-          });
-
-          alert("Map image captured! You can now download it or save the destination.");
-        }).catch(error => {
-          console.error("Error capturing map:", error);
-          alert("Failed to capture map image: " + error.message);
+          html += `
+            <tr>
+              <td>${destination.id}</td>
+              <td>${destination.name}</td>
+              <td>${destination.location}</td>
+              <td>${destination.weather_info ? destination.weather_info.substring(0, 30) + '...' : 'N/A'}</td>
+              <td>${destination.best_time_to_visit}</td>
+              <td>
+                <div class="d-flex">
+                  <span class="action-btn btn-edit" style="background-color:#2196F3;color: white; padding: 5px 10px;border-radius: 4px;font-size: 12px"
+                    onclick="editDestination('${destination.id}', '${destination.name}', '${destination.description.replace(/'/g, "\\'")}', '${destination.location}', '${destination.weather_info ? destination.weather_info.replace(/'/g, "\\'") : ""}', '${destination.best_time_to_visit}')">
+                    <i class="fas fa-edit"></i>
+                  </span>
+                  <span class="action-btn btn-delete" style="background-color: #F44336;color: white" onclick="deleteDestination('${destination.id}')">
+                    <i class="fas fa-trash"></i>
+                  </span>
+                </div>
+              </td>
+            </tr>
+          `;
         });
-      }, 1000);
+
+        html += '</tbody></table>';
+
+        destinationList.innerHTML = html;
+      },
+      error: (err) => {
+        console.error('Error loading destinations:', err);
+        destinationList.innerHTML = '<div class="alert alert-danger m-3">Failed to load destinations.</div>';
+      }
     });
   }
 
+  // Load destinations on page load
+  $(document).ready(function() {
+    loadDestinations();
 
-  $("#destinationForm").submit(function(event) {
-    event.preventDefault();
-
-    console.log("Form submitted");
-
-
-    const destinationData = {
-      id: $("#destinationId").val(),
-      name: $("#destinationName").val(),
-      description: $("#destinationDescription").val(),
-      location: $("#destinationLocation").val(),
-      bestTime: $("#bestTimeToVisit").val() === "custom" ? $("#customBestTime").val() : $("#bestTimeToVisit").val()
-    };
+    // Search functionality
+    $("#search-destination").on("keyup", function() {
+      const value = $(this).val().toLowerCase();
+      $(".custom-table tbody tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
 
 
-    const latitude = $("#latitudeInput").val();
-    const longitude = $("#longitudeInput").val();
-    if (latitude && longitude) {
-      destinationData.latitude = latitude;
-      destinationData.longitude = longitude;
-    }
-
-    console.log("Captured map image exists:", !!capturedMapImage);
-
-    if (capturedMapImage) {
-      destinationData.imageUrl = capturedMapImage;
-      console.log("Using captured map image");
-      saveDestination(destinationData);
-    } else {
-
-      const fileInput = document.getElementById("destinationImage");
-      if (fileInput.files && fileInput.files[0]) {
-        console.log("Using uploaded image file");
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          destinationData.imageUrl = e.target.result;
-          saveDestination(destinationData);
-        };
-        reader.readAsDataURL(fileInput.files[0]);
-      } else {
-        // No image selected
-        console.log("No image selected");
-        saveDestination(destinationData);
-      }
-    }
   });
 
-  $("#showMapBtn").click(function() {
-    const location = $("#destinationLocation").val();
-    if (location) {
-      $("#mapContainer").show();
-      console.log("Initializing map for location:", location);
-      initMap(location);
-    } else {
-      alert("Please enter a location first");
-    }
-  });
+  const modal = document.getElementById("destinationModal");
+  const addDestinationBtn = document.getElementById("add-destination-btn");
+  const closeBtn = document.getElementsByClassName("close")[0];
+  const cancelBtn = document.getElementById("btn-cancel");
 
+  // Open modal for adding new destination
+  addDestinationBtn.onclick = function() {
+    document.getElementById("modal-title").textContent = "Add New Destination";
+    document.getElementById("destination-form").reset();
+    document.getElementById("weatherWidget").style.display = "none";
+    document.getElementById("btn-save").textContent = "Save Destination";
+    modal.style.display = "block";
 
-  $("#resetMapBtn").click(function() {
-    $("#mapContainer").hide();
-    $("#latitudeInput").val("");
-    $("#longitudeInput").val("");
-    capturedMapImage = null;
-
-    if (document.getElementById('mapImagePreview')) {
-      document.getElementById('mapImagePreview').remove();
-    }
-    if (document.getElementById('downloadMapBtn')) {
-      document.getElementById('downloadMapBtn').remove();
-    }
-    if (document.getElementById('mapImageMessage')) {
-      document.getElementById('mapImageMessage').remove();
-    }
-
-    console.log("Map reset");
-  });
-
-
-  function saveDestination(destinationData) {
-    console.log("Saving destination:", destinationData);
-
-    addDestinationToList(destinationData);
-
-
-    $("#destinationForm")[0].reset();
-    $("#mapContainer").hide();
-    $("#weatherWidget").hide();
-    $("#customBestTime").hide();
-    if (document.getElementById('mapImagePreview')) {
-      document.getElementById('mapImagePreview').remove();
-    }
-    capturedMapImage = null;
-
-    alert("Destination saved successfully!");
+    // Generate a new destination ID
+    const newId = "DEST" + Math.floor(Math.random() * 900 + 100);
+    document.getElementById("destinationId").value = newId;
   }
 
+  // Close modal functions
+  closeBtn.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  cancelBtn.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+
+  // Save destination
+  $("#destination-form").submit(function(e) {
+    e.preventDefault();
+
+    // Create FormData object
+    const formData = new FormData(this);
+
+    // Get the destination ID
+    const id = $("#destinationId").val();
+    const isUpdate = id !== "" && !id.startsWith("DEST");
+
+    $.ajax({
+      url: "http://localhost:8080/api/v1/destination",
+      method: isUpdate ? "PUT" : "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: (res) => {
+        console.log("Success:", res);
+
+        // Show success message
+        const successMsg = isUpdate ? "Destination updated successfully!" : "New destination added successfully!";
+        const alertHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
+          ${successMsg}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>`;
+
+        $(".main-content").prepend(alertHTML);
+
+        // Auto remove alert after 3 seconds
+        setTimeout(() => {
+          $(".alert").alert('close');
+        }, 3000);
+
+        // Reset form, close modal and reload destinations
+        $("#destination-form")[0].reset();
+        $("#imagePreview").attr("src", "/api/placeholder/400/200");
+        modal.style.display = "none";
+        loadDestinations();
+      },
+      error: (err) => {
+        console.error("Error:", err);
+        alert("Error saving destination data. Please try again.");
+      },
+    });
+  });
+
+  // Weather API functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const fetchWeatherBtn = document.getElementById('fetchWeatherBtn');
+    const weatherWidget = document.getElementById('weatherWidget');
+
+    fetchWeatherBtn.addEventListener('click', fetchWeatherData);
+
+    function fetchWeatherData() {
+      const location = document.getElementById('destinationLocation').value;
+
+      if (!location) {
+        alert('Please enter a location first');
+        return;
+      }
+
+      fetchWeatherBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...';
+      fetchWeatherBtn.disabled = true;
+
+      // Mock API response for demo purposes since we can't actually call the API
+      setTimeout(() => {
+        const mockWeatherData = {
+          current: {
+            temp: 28.5,
+            condition: "Partly Cloudy",
+            humidity: 65,
+            wind: 3.2
+          },
+          forecast: [
+            { date: "2025-04-08", condition: "Sunny", avgTemp: 29.3 },
+            { date: "2025-04-09", condition: "Cloudy", avgTemp: 27.8 },
+            { date: "2025-04-10", condition: "Light Rain", avgTemp: 26.5 },
+            { date: "2025-04-11", condition: "Sunny", avgTemp: 28.1 },
+            { date: "2025-04-12", condition: "Partly Cloudy", avgTemp: 28.9 }
+          ]
+        };
+
+        document.getElementById('currentTemp').textContent = mockWeatherData.current.temp.toFixed(1);
+        document.getElementById('currentCondition').textContent = mockWeatherData.current.condition;
+
+        // Format forecast description
+        let forecastDesc = mockWeatherData.forecast.map(day =>
+          `${day.date.substring(0, 10)}: ${day.condition}, ${day.avgTemp.toFixed(1)}°C`
+        ).join('; ');
+
+        document.getElementById('forecastDesc').textContent = forecastDesc;
+
+        // Suggest weather info text
+        document.getElementById('weatherInfo').value =
+          `${mockWeatherData.current.condition} climate with average temperatures of ${mockWeatherData.current.temp.toFixed(1)}°C. ` +
+          `Humidity: ${mockWeatherData.current.humidity}%, Wind: ${mockWeatherData.current.wind.toFixed(1)} m/s. ` +
+          `Forecast shows varied conditions over the next 5 days.`;
+
+        // Show weather widget
+        weatherWidget.style.display = 'block';
+
+        // Reset button
+        fetchWeatherBtn.innerHTML = 'Fetch Weather';
+        fetchWeatherBtn.disabled = false;
+      }, 1000);
+    }
+  });
+
+  // Set destination type
+  function setDestinationType(type) {
+    $("#destinationType").val(type);
+  }
+
+  // Edit destination
+  function editDestination(id, name, description, location, weather_info, best_time_to_visit) {
+    document.getElementById("modal-title").textContent = "Edit Destination";
+    $("#destinationId").val(id);
+    $("#destinationName").val(name);
+    $("#destinationDescription").val(description);
+    $("#destinationLocation").val(location);
+    $("#weatherInfo").val(weather_info || '');
+    $("#bestTimeToVisit").val(best_time_to_visit);
+
+    // Set destination type based on name (simplified logic for demo)
+    let type = 'Cultural'; // Default
+    if (name.toLowerCase().includes("beach")) {
+      type = 'Beach';
+    } else if (name.toLowerCase().includes("mountain")) {
+      type = 'Mountain';
+    }
+    $("#destinationType").val(type);
+
+
+    // Hide weather widget initially
+    $("#weatherWidget").css("display", "none");
+
+    // Change button text
+    $("#btn-save").text("Update Destination");
+
+    // Show modal
+    modal.style.display = "block";
+  }
+
+  // Delete destination
+  function deleteDestination(id) {
+    if (confirm("Are you sure you want to delete this destination?")) {
+      $.ajax({
+        url: `http://localhost:8080/api/v1/destination/${id}`,
+        method: "DELETE",
+        success: function(response) {
+          // Show success message
+          const alertHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
+          Destination deleted successfully!
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>`;
+
+          $(".main-content").prepend(alertHTML);
+
+          // Auto remove alert after 3 seconds
+          setTimeout(() => {
+            $(".alert").alert('close');
+          }, 3000);
+
+          // Reload destinations list
+          loadDestinations();
+        },
+        error: function(error) {
+          console.error("Error deleting destination:", error);
+          alert("Failed to delete destination. Please try again.");
+        }
+      });
+    }
+  }
+
+  // Filter destinations by type
+  function filterDestinations(type) {
+    if (!type || type === 'All') {
+      // Show all destinations
+      $(".custom-table tbody tr").show();
+    } else {
+      // Hide all rows first
+      $(".custom-table tbody tr").hide();
+
+      // Show only rows that match the selected type
+      $(".custom-table tbody tr").filter(function() {
+        return $(this).find(".badge").text().trim() === type;
+      }).show();
+    }
+  }
+
+  // Initialize data table with sorting
+  function initializeDataTable() {
+    if ($.fn.DataTable) {
+      $('.custom-table').DataTable({
+        paging: true,
+        searching: true,
+        ordering: true,
+        info: true,
+        pageLength: 10,
+        responsive: true
+      });
+    }
+  }
+
+  // Export destinations to CSV
+  function exportToCSV() {
+    $.ajax({
+      url: "http://localhost:8080/api/v1/destination",
+      method: "GET",
+      dataType: "json",
+      success: function(res) {
+        const destinations = res.data;
+        if (destinations.length === 0) {
+          alert("No destinations to export");
+          return;
+        }
+
+        // Create CSV content
+        let csvContent = "data:text/csv;charset=utf-8,";
+        csvContent += "ID,Name,Location,Weather Info,Best Time to Visit,Description\n";
+
+        destinations.forEach(function(destination) {
+          // Escape fields with commas
+          const row = [
+            destination.id,
+            `"${destination.name}"`,
+            `"${destination.location}"`,
+            `"${destination.weather_info || ''}"`,
+            `"${destination.best_time_to_visit}"`,
+            `"${destination.description.replace(/"/g, '""')}"`
+          ];
+          csvContent += row.join(",") + "\n";
+        });
+
+        // Create download link
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "destinations_export.csv");
+        document.body.appendChild(link);
+
+        // Download the CSV file
+        link.click();
+        document.body.removeChild(link);
+      },
+      error: function(err) {
+        console.error("Error exporting destinations:", err);
+        alert("Failed to export destinations data.");
+      }
+    });
+  }
+
+  // Import destinations from CSV
+  function importFromCSV(file) {
+    const reader = new FileReader();
+    reader.readAsText(file);
+
+    reader.onload = function(event) {
+      const csv = event.target.result;
+      const lines = csv.split("\n");
+      const headers = lines[0].split(",");
+
+      // Skip the header and process data rows
+      for (let i = 1; i < lines.length; i++) {
+        if (lines[i].trim() === "") continue;
+
+        const values = lines[i].split(",");
+        const destinationData = new FormData();
+
+        // Map CSV columns to form fields
+        destinationData.append("id", values[0].replace(/"/g, ""));
+        destinationData.append("name", values[1].replace(/"/g, ""));
+        destinationData.append("location", values[2].replace(/"/g, ""));
+        destinationData.append("weather_info", values[3].replace(/"/g, ""));
+        destinationData.append("best_time_to_visit", values[4].replace(/"/g, ""));
+        destinationData.append("description", values[5].replace(/"/g, ""));
+
+        // Send import request
+        $.ajax({
+          url: "http://localhost:8080/api/v1/destination",
+          method: "POST",
+          data: destinationData,
+          processData: false,
+          contentType: false,
+          error: function(err) {
+            console.error("Error importing destination:", err);
+          }
+        });
+      }
+
+      // Show success message and reload data
+      alert("Import completed successfully!");
+      loadDestinations();
+    };
+
+    reader.onerror = function() {
+      alert("Failed to read the CSV file.");
+    };
+  }
+
+  // Add event listeners for import/export buttons
+  $(document).ready(function() {
+    // Setup CSV import button if it exists
+    $("#import-csv").on("click", function() {
+      $("#csv-file-input").click();
+    });
+
+    $("#csv-file-input").on("change", function(e) {
+      if (e.target.files.length > 0) {
+        importFromCSV(e.target.files[0]);
+      }
+    });
+
+    // Setup export button if it exists
+    $("#export-csv").on("click", function() {
+      exportToCSV();
+    });
+
+    // Setup filter dropdown if it exists
+    $("#filter-type").on("change", function() {
+      filterDestinations($(this).val());
+    });
+  });
+
+  // Validate form before submission
+  function validateDestinationForm() {
+    const name = $("#destinationName").val().trim();
+    const location = $("#destinationLocation").val().trim();
+    const description = $("#destinationDescription").val().trim();
+    const bestTime = $("#bestTimeToVisit").val().trim();
+    const type = $("#destinationType").val();
+
+    if (name === "") {
+      alert("Please enter a destination name");
+      return false;
+    }
+
+    if (location === "") {
+      alert("Please enter a location");
+      return false;
+    }
+
+    if (description === "") {
+      alert("Please enter a description");
+      return false;
+    }
+
+    if (bestTime === "") {
+      alert("Please enter the best time to visit");
+      return false;
+    }
+
+    if (type === "") {
+      alert("Please select a destination type");
+      return false;
+    }
+
+    return true;
+  }
+
+  // Add form validation to form submission
+  $("#destination-form").submit(function(e) {
+    if (!validateDestinationForm()) {
+      e.preventDefault();
+      return false;
+    }
+    // Form submission continues if validation passes
+  });
 </script>
 </body>
 </html>

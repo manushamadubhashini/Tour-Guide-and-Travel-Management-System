@@ -3,591 +3,355 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Everest Trips - Tour Checkout</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <title>PayHere Payment Gateway</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body {
+    .payment-card {
+      max-width: 500px;
+      margin: 0 auto;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: #6c63ff;
+      box-shadow: 0 0 0 0.25rem rgba(108, 99, 255, 0.25);
+    }
+
+    .btn-primary {
+      background-color: #6c63ff;
+      border-color: #6c63ff;
+    }
+
+    .btn-primary:hover {
+      background-color: #5a52d5;
+      border-color: #5a52d5;
+    }
+
+    .payment-header {
       background-color: #f8f9fa;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      border-bottom: 1px solid #eee;
+      border-radius: 10px 10px 0 0;
     }
-    .step-circle {
-      width: 40px;
-      height: 40px;
-      background-color: #1e88e5;
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      margin-right: 15px;
+
+    .card-icons {
+      font-size: 24px;
+      color: #6c6c6c;
     }
-    .card {
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      border: none;
-      margin-bottom: 20px;
+
+    .success-message {
+      display: none;
+      text-align: center;
     }
-    .card-header {
-      background-color: white;
-      border-bottom: 1px solid #f0f0f0;
-      padding: 20px;
-      border-radius: 12px 12px 0 0 !important;
-    }
-    .card-body {
-      padding: 20px;
-    }
-    .logo {
-      height: 50px;
-    }
-    .discount-badge {
-      background-color: #4caf50;
-      color: white;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-    .price-details {
-      background-color: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      padding: 20px;
-      position: sticky;
-      top: 20px;
-    }
-    .form-control, .form-select {
-      padding: 10px 15px;
-      height: auto;
-      border-radius: 8px;
-    }
-    .image-box {
-      width: 100px;
-      height: 80px;
-      overflow: hidden;
-      border-radius: 8px;
-      margin-right: 15px;
-    }
-    .image-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .security-message {
-      background-color: #e8f5e9;
-      color: #2e7d32;
-      border-radius: 8px;
-      padding: 10px 15px;
-      margin-bottom: 20px;
-    }
-    .payment-logo {
-      height: 25px;
-      margin-right: 10px;
-    }
-    .book-now-btn {
-      background-color: #1e88e5;
-      border: none;
-      border-radius: 8px;
-      padding: 12px;
-      font-weight: 600;
-      width: 100%;
-    }
-    .custom-control {
-      margin-bottom: 15px;
+
+    .success-checkmark {
+      font-size: 60px;
+      color: #28a745;
     }
   </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
-  <div class="container">
-    <a class="navbar-brand d-flex align-items-center" href="#">
-      <div style="color: #1e88e5; font-size: 24px; font-weight: bold;">
-        <span style="color: #ff7043;">🏔️ EVEREST</span> TRIPS
-      </div>
-    </a>
-    <div class="ms-auto d-flex align-items-center">
-      <span class="text-success me-3">
-        <i class="fas fa-lock me-1"></i> Secure Payment
-      </span>
-    </div>
-  </div>
-</nav>
-
-<div class="container my-4">
+<div class="container py-5">
   <div class="row">
-    <div class="col-lg-8">
-      <h2 class="mb-4">Confirm & Pay</h2>
-
-      <!-- Tour Details Card -->
-      <div id="tourDetails" class="card mb-4">
-        <!-- Tour details will be loaded dynamically -->
-      </div>
-
-      <!-- Step 1: Travelers -->
-      <div class="card">
-        <div class="card-header d-flex align-items-center">
-          <div class="step-circle">1</div>
-          <h4 class="mb-0">Travellers</h4>
-        </div>
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <div>
-              <span>No. of Travellers (Adult: 18-80)</span>
-            </div>
-            <div class="d-flex align-items-center">
-              <button class="btn btn-outline-secondary rounded-circle" id="decrease-btn" style="width: 38px; height: 38px; padding: 0;">-</button>
-              <span class="mx-3" id="noOfTravellers">2</span>
-              <button class="btn btn-outline-secondary rounded-circle" id="increase-btn" style="width: 38px; height: 38px; padding: 0;">+</button>
+    <div class="col-12">
+      <div class="card payment-card">
+        <div class="payment-header p-4">
+          <div class="d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">Payment Details</h3>
+            <div class="card-icons">
+              <i class="bi bi-credit-card me-2"></i>
+              <i class="bi bi-paypal"></i>
             </div>
           </div>
-          <div class="text-primary">
-            <i class="fas fa-tag me-2"></i> Group Discount
-          </div>
         </div>
-      </div>
 
-      <!-- Step 2: Accommodation -->
-      <div class="card">
-        <div class="card-header d-flex align-items-center">
-          <div class="step-circle">2</div>
-          <h4 class="mb-0">Accommodation</h4>
-        </div>
-        <div class="card-body">
-          <div class="mb-3">
-            <div class="d-flex align-items-center mb-3">
-              <i class="fas fa-bed me-2"></i>
-              <span id="accommodation-note">Please choose a room(s) for 2 Travellers.</span>
-            </div>
-          </div>
-          <hr>
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-              <h5>Single Room</h5>
-              <p class="text-muted mb-0">A cozy room for one guest, ideal for solo travelers.</p>
-            </div>
-            <div class="text-end">
-              <div class="d-flex align-items-center justify-content-end mb-2">
-                <div class="me-3">
-                  <span class="fw-bold">USD $70</span><br>
-                  <small>per traveller</small>
+        <div class="card-body p-4">
+          <!-- Payment Form -->
+          <form id="payment-form">
+            <div class="row g-3">
+              <!-- Order Summary -->
+              <div class="col-12 mb-3">
+                <h5>Order Summary</h5>
+                <div class="bg-light p-3 rounded">
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Product Total</span>
+                    <span>$<span id="product-total">99.00</span></span>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Shipping</span>
+                    <span>$<span id="shipping">5.00</span></span>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Tax</span>
+                    <span>$<span id="tax">10.00</span></span>
+                  </div>
+                  <hr>
+                  <div class="d-flex justify-content-between fw-bold">
+                    <span>Total</span>
+                    <span>$<span id="total-amount">114.00</span></span>
+                  </div>
                 </div>
-                <select class="form-select room-selection" id="single-room" style="width: 100px;">
-                  <option selected>0 Traveller</option>
-                  <option>1 Traveller</option>
-                  <option>2 Travellers</option>
+              </div>
+
+              <!-- Customer Information -->
+              <div class="col-12">
+                <h5>Customer Information</h5>
+              </div>
+
+              <div class="col-md-6">
+                <label for="first-name" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="first-name" required>
+              </div>
+
+              <div class="col-md-6">
+                <label for="last-name" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="last-name" required>
+              </div>
+
+              <div class="col-12">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" class="form-control" id="email" required>
+              </div>
+
+              <div class="col-12">
+                <label for="phone" class="form-label">Phone</label>
+                <input type="tel" class="form-control" id="phone" required>
+              </div>
+
+              <!-- Payment Method -->
+              <div class="col-12 mt-4">
+                <h5>Payment Method</h5>
+              </div>
+
+              <div class="col-12">
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="radio" name="payment-method" id="credit-card" checked>
+                  <label class="form-check-label" for="credit-card">
+                    Credit Card
+                  </label>
+                </div>
+
+                <div id="credit-card-details">
+                  <div class="mb-3">
+                    <label for="card-number" class="form-label">Card Number</label>
+                    <input type="text" class="form-control" id="card-number" placeholder="1234 5678 9012 3456" required>
+                  </div>
+
+                  <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                      <label for="expiry-date" class="form-label">Expiry Date</label>
+                      <input type="text" class="form-control" id="expiry-date" placeholder="MM/YY" required>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="cvv" class="form-label">CVV</label>
+                      <input type="text" class="form-control" id="cvv" placeholder="123" required>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="card-name" class="form-label">Name on Card</label>
+                    <input type="text" class="form-control" id="card-name" required>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Billing Address -->
+              <div class="col-12 mt-4">
+                <h5>Billing Address</h5>
+              </div>
+
+              <div class="col-12">
+                <label for="address" class="form-label">Address</label>
+                <input type="text" class="form-control" id="address" required>
+              </div>
+
+              <div class="col-md-6">
+                <label for="city" class="form-label">City</label>
+                <input type="text" class="form-control" id="city" required>
+              </div>
+
+              <div class="col-md-6">
+                <label for="zip" class="form-label">ZIP Code</label>
+                <input type="text" class="form-control" id="zip" required>
+              </div>
+
+              <div class="col-12">
+                <label for="country" class="form-label">Country</label>
+                <select class="form-select" id="country" required>
+                  <option value="">Select Country</option>
+                  <option value="US">United States</option>
+                  <option value="CA">Canada</option>
+                  <option value="UK">United Kingdom</option>
+                  <option value="AU">Australia</option>
+                  <option value="IN">India</option>
                 </select>
               </div>
-              <a href="#" class="text-primary">View Details</a>
-            </div>
-          </div>
-          <hr>
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <h5>Twin Room</h5>
-              <p class="text-muted mb-0">A comfortable room with two beds.</p>
-            </div>
-            <div class="text-end">
-              <div class="d-flex align-items-center justify-content-end mb-2">
-                <div class="me-3">
-                  <span class="fw-bold">USD $60</span><br>
-                  <small>per traveller</small>
-                </div>
-                <select class="form-select room-selection" id="twin-room" style="width: 100px;">
-                  <option>0 Traveller</option>
-                  <option>1 Traveller</option>
-                  <option selected>2 Travellers</option>
-                </select>
-              </div>
-              <a href="#" class="text-primary">View Details</a>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Step 3: Add-ons -->
-      <div class="card">
-        <div class="card-header d-flex align-items-center">
-          <div class="step-circle">3</div>
-          <h4 class="mb-0">Add-ons</h4>
-        </div>
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex">
-              <div class="image-box">
-                <!-- Placeholder for image -->
-              </div>
-              <div>
-                <h5>1 Day Kathmandu Sightseeing</h5>
-                <p class="text-muted mb-0">Enhance your trek with a 1-day guided tour of Kathmandu's UNESCO sites, including Swayambhunath and Boudhanath. Perfect for immersing in Nepal's rich culture.</p>
-              </div>
-            </div>
-            <div class="text-end">
-              <div class="fw-bold mb-2">USD $200</div>
-              <input type="number" class="form-control text-center addon-item" id="addon-sightseeing" min="0" value="0" style="width: 80px; float: right;" data-price="200">
-            </div>
-          </div>
-          <hr>
-
-          <h5 class="mb-3">Airport Pickup</h5>
-          <div class="mb-3">
-            <select class="form-select" id="airport-pickup-type">
-              <option selected>Airport pickup in taxi (4 people)</option>
-              <option>Private car pickup (2 people)</option>
-              <option>Shared van pickup (8 people)</option>
-            </select>
-          </div>
-
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex">
-              <div class="image-box">
-                <!-- Placeholder for image -->
-              </div>
-              <div>
-                <h5>Airport pickup in taxi (4 people)</h5>
-                <p class="text-muted mb-0">Convenient airport transfer for up to 4 people in a private taxi, ensuring a smooth start to your journey.</p>
-              </div>
-            </div>
-            <div class="text-end">
-              <div class="fw-bold mb-2">USD $20</div>
-              <input type="number" class="form-control text-center addon-item" id="addon-airport" min="0" value="0" style="width: 80px; float: right;" data-price="20">
-            </div>
-          </div>
-          <hr>
-
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex">
-              <div class="image-box">
-                <!-- Placeholder for image -->
-              </div>
-              <div>
-                <h5>Private Trek</h5>
-                <p class="text-muted mb-0">You have the option to make this trek a private journey instead of joining a group.</p>
-              </div>
-            </div>
-            <div class="text-end">
-              <div class="fw-bold mb-2">USD $200</div>
-              <input type="number" class="form-control text-center addon-item" id="addon-private" min="0" value="0" style="width: 80px; float: right;" data-price="200">
-            </div>
-          </div>
-          <hr>
-
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex">
-              <div class="image-box">
-                <!-- Placeholder for image -->
-              </div>
-              <div>
-                <h5>Helicopter from Lukla to Kathmandu</h5>
-                <p class="text-muted mb-0">If you prefer to fly directly to Kathmandu airport instead of taking the regular flight to Ramechhap followed by a 5-hour drive to Kathmandu.</p>
-              </div>
-            </div>
-            <div class="text-end">
-              <div class="fw-bold mb-2">USD $600</div>
-              <input type="number" class="form-control text-center addon-item" id="addon-helicopter" min="0" value="0" style="width: 80px; float: right;" data-price="600">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Step 4: Traveller Details -->
-      <div class="card">
-        <div class="card-header d-flex align-items-center">
-          <div class="step-circle">4</div>
-          <h4 class="mb-0">Add Traveller Details</h4>
-        </div>
-        <div class="card-body" id="traveller-details-container">
-          <h5 class="mb-3">Traveller 1 (Lead Traveller)</h5>
-          <div class="row mb-3">
-            <div class="col-12 mb-2">
-              <label class="form-label">Full Name <span class="text-danger">*</span></label>
-            </div>
-            <div class="col-md-3 mb-3">
-              <select class="form-select">
-                <option selected>Title</option>
-                <option>Mr.</option>
-                <option>Mrs.</option>
-                <option>Ms.</option>
-                <option>Dr.</option>
-              </select>
-            </div>
-            <div class="col-md-4.5 mb-3">
-              <input type="text" class="form-control" placeholder="First Name" required>
-            </div>
-            <div class="col-md-4.5 mb-3">
-              <input type="text" class="form-control" placeholder="Last Name" required>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Email Address <span class="text-danger">*</span></label>
-              <input type="email" class="form-control" placeholder="Email Address" required>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Phone Number <span class="text-danger">*</span></label>
-              <input type="tel" class="form-control" placeholder="1234567890" required>
-            </div>
-          </div>
-          <div class="row mb-4">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
-              <div class="row">
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="DD" required>
-                </div>
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="MM" required>
-                </div>
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="YYYY" required>
+              <div class="col-12 mt-4">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="save-info">
+                  <label class="form-check-label" for="save-info">
+                    Save this information for next time
+                  </label>
                 </div>
               </div>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Nationality <span class="text-danger">*</span></label>
-              <select class="form-select" required>
-                <option selected>Select Nationality</option>
-                <option>United States</option>
-                <option>United Kingdom</option>
-                <option>Canada</option>
-                <option>Australia</option>
-                <option>Germany</option>
-                <option>France</option>
-                <option>Japan</option>
-                <option>India</option>
-                <option>Nepal</option>
-              </select>
-            </div>
-          </div>
 
-          <h5 class="mb-3 mt-4">Traveller 2 (Adult)</h5>
-          <div class="row mb-3">
-            <div class="col-12 mb-2">
-              <label class="form-label">Full Name <span class="text-danger">*</span></label>
-            </div>
-            <div class="col-md-3 mb-3">
-              <select class="form-select">
-                <option selected>Title</option>
-                <option>Mr.</option>
-                <option>Mrs.</option>
-                <option>Ms.</option>
-                <option>Dr.</option>
-              </select>
-            </div>
-            <div class="col-md-4.5 mb-3">
-              <input type="text" class="form-control" placeholder="First Name" required>
-            </div>
-            <div class="col-md-4.5 mb-3">
-              <input type="text" class="form-control" placeholder="Last Name" required>
-            </div>
-          </div>
-          <div class="row mb-4">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
-              <div class="row">
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="DD" required>
-                </div>
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="MM" required>
-                </div>
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="YYYY" required>
-                </div>
+              <div class="col-12 mt-4">
+                <button type="submit" class="btn btn-primary w-100 py-3">Pay $114.00</button>
               </div>
             </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Nationality <span class="text-danger">*</span></label>
-              <select class="form-select" required>
-                <option selected>Select Nationality</option>
-                <option>United States</option>
-                <option>United Kingdom</option>
-                <option>Canada</option>
-                <option>Australia</option>
-                <option>Germany</option>
-                <option>France</option>
-                <option>Japan</option>
-                <option>India</option>
-                <option>Nepal</option>
-              </select>
+          </form>
+
+          <!-- Success Message (Hidden initially) -->
+          <div class="success-message" id="success-message">
+            <div class="py-5">
+              <div class="success-checkmark mb-4">✓</div>
+              <h3>Payment Successful!</h3>
+              <p class="mb-4">Your payment has been processed successfully. A confirmation email has been sent to your email address.</p>
+              <p class="mb-1"><strong>Transaction ID:</strong> <span id="transaction-id"></span></p>
+              <p class="mb-4"><strong>Amount Paid:</strong> $<span id="paid-amount">114.00</span></p>
+              <button type="button" class="btn btn-outline-primary" id="back-button">Return to Store</button>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- Step 5: Special Requests -->
-      <div class="card">
-        <div class="card-header d-flex align-items-center">
-          <div class="step-circle">5</div>
-          <h4 class="mb-0">Special Requests/Comments</h4>
-        </div>
-        <div class="card-body">
-          <textarea class="form-control" rows="5" placeholder="Enter your notes here..."></textarea>
-        </div>
-      </div>
-
-      <!-- Step 6: Payment Details -->
-      <div class="card">
-        <div class="card-header d-flex align-items-center">
-          <div class="step-circle">6</div>
-          <h4 class="mb-0">Add Payment Details</h4>
-        </div>
-        <div class="card-body">
-          <div class="security-message mb-4">
-            <i class="fas fa-lock me-2"></i> This is a secure and SSL-encrypted payment. Your credit card details are safe.
-          </div>
-
-          <div class="mb-4">
-            <h5 class="mb-3">Select Your Payment Method <span class="text-danger">*</span></h5>
-            <div class="form-check mb-3 border rounded p-3">
-              <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" checked>
-              <label class="form-check-label d-flex justify-content-between align-items-center w-100" for="creditCard">
-                <span>Pay By Card</span>
-                <span>
-                  <!-- Payment method logos would go here -->
-                </span>
-              </label>
-            </div>
-            <div class="form-check border rounded p-3">
-              <input class="form-check-input" type="radio" name="paymentMethod" id="payLater">
-              <label class="form-check-label d-flex justify-content-between align-items-center w-100" for="payLater">
-                <span>Book Now & Pay Later</span>
-                <i class="fas fa-info-circle"></i>
-              </label>
-            </div>
-          </div>
-
-          <button class="btn btn-primary book-now-btn" id="complete-booking">Book Now</button>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="col-lg-4">
-      <div class="price-details">
-        <h4 class="mb-4">Price Details</h4>
-        <div id="priceBreakdown">
-          <!-- Price breakdown will be loaded dynamically -->
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<footer class="py-4 bg-light mt-5">
-  <div class="container">
-    <div class="d-flex justify-content-between align-items-center">
-      <div>Copyright © 2013-2025</div>
-      <div>Powered by Tripcart</div>
-    </div>
-  </div>
-</footer>
+<!-- PayHere SDK -->
+<script type="text/javascript" src="https://www.payhere.lk/lib/payhere.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
+
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JavaScript -->
 <script>
+  // Frontend fixes for the payment form script
   document.addEventListener('DOMContentLoaded', function() {
-    // Get tour ID from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const tourId = urlParams.get('id');
+    const paymentForm = document.getElementById('payment-form');
 
-    // Get tour data from localStorage
-    const selectedTour = JSON.parse(localStorage.getItem('selectedTour'));
+    // Set up PayHere event handlers
+    payhere.onCompleted = function onCompleted(orderId) {
+      console.log("Payment completed. OrderID:" + orderId);
+      // Show success message with transaction ID
+      document.getElementById('transaction-id').textContent = orderId;
+      document.getElementById('payment-form').style.display = 'none';
+      document.getElementById('success-message').style.display = 'block';
+    };
 
-    if (selectedTour) {
-      // Display tour details
-      displayTourDetails(selectedTour);
+    payhere.onDismissed = function onDismissed() {
+      console.log("Payment dismissed");
+      alert("Payment was dismissed");
 
-      // Setup traveler count functionality
-      setupTravelerCount();
+      // Re-enable the submit button if it was disabled
+      const submitButton = paymentForm.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Pay $' + document.getElementById('total-amount').textContent;
+      }
+    };
 
-      // Initial price calculation
-      calculateTotalPrice();
+    payhere.onError = function onError(error) {
+      console.log("Payment error: " + error);
+      alert("Payment error: " + error);
 
-      // Setup event listeners for all elements that affect price
-      setupPriceListeners();
+      // Re-enable the submit button if it was disabled
+      const submitButton = paymentForm.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Pay $' + document.getElementById('total-amount').textContent;
+      }
+    };
 
-      // Setup form fields for travelers
-      updateTravelerFormFields();
-    } else {
-      alert("Tour information not found. Redirecting to packages page.");
-      window.location.href = "index.html";
-    }
-
-    // Complete booking button event listener
-    document.getElementById('complete-booking').addEventListener('click', function(e) {
+    // Form submission handler
+    paymentForm.addEventListener('submit', function(e) {
       e.preventDefault();
-      if (validateForm()) {
-        alert('Your booking has been submitted successfully! Confirmation will be sent to your email.');
-        // Optionally redirect to confirmation page
-        // window.location.href = "confirmation.html";
+
+      // Validate form
+      if (!paymentForm.checkValidity()) {
+        e.stopPropagation();
+        paymentForm.classList.add('was-validated');
+        return;
       }
+
+      // Show loading state
+      const submitButton = paymentForm.querySelector('button[type="submit"]');
+      const originalButtonText = submitButton.textContent;
+      submitButton.disabled = true;
+      submitButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Processing...';
+
+      // Gather form data
+      const formData = {
+        bookingId: "BOOK008", // Generate a temporary booking ID if not available
+        paymentMethod: "CREDIT_CARD",
+        firstName: document.getElementById('first-name').value.trim(),
+        lastName: document.getElementById('last-name').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        address: document.getElementById('address').value.trim(),
+        city: document.getElementById('city').value.trim(),
+        country: document.getElementById('country').value,
+        amount: parseFloat(document.getElementById('total-amount').textContent)
+      };
+
+      // Call the backend API to initiate payment
+      fetch('http://localhost:8080/api/v1/payments/initiate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+        .then(response => {
+          if (!response.ok) {
+            return response.json().then(data => {
+              throw new Error(data.error || 'Failed to initiate payment');
+            });
+          }
+          return response.json();
+        })
+        // Inside your payment form submit handler
+        .then(data => {
+          console.log("Full response from server:", data);
+          console.log("PayHere data:", data.payhereData);
+
+          // Check if payhereData exists and has all required properties
+          if (data.payhereData &&
+            data.payhereData.merchant_id &&
+            data.payhereData.order_id &&
+            data.payhereData.amount) {
+            try {
+              console.log("Starting PayHere payment with:", JSON.stringify(data.payhereData));
+              // Start PayHere payment with the data from backend
+              payhere.startPayment(data.payhereData);
+            } catch (err) {
+              console.error("Error starting PayHere payment:", err);
+              throw new Error("Invalid payment gateway response: " + err.message);
+            }
+          } else {
+            console.error("Missing required PayHere data:", data);
+            throw new Error('Missing required payment gateway data');
+          }
+        })
+
     });
+
+    // Back button handler
+    document.getElementById('back-button').addEventListener('click', function() {
+      // Reset the form
+      paymentForm.reset();
+      paymentForm.style.display = 'block';
+      document.getElementById('success-message').style.display = 'none';
+    });
+
+    // Input formatting helpers (unchanged)
+    // ... rest of the input formatting code
   });
-
-  function displayTourDetails(tour) {
-    const tourDetailsElement = document.getElementById('tourDetails');
-
-    document.title = `Everest Trips - ${tour.name} Checkout`;
-
-    tourDetailsElement.innerHTML = `
-      <div class="card-header d-flex align-items-center">
-        <h4 class="mb-0">${tour.name}</h4>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          <div class="col-md-4">
-            <p><strong>Duration:</strong> ${tour.duration} days</p>
-          </div>
-          <div class="col-md-4">
-            <p><strong>Base Price:</strong> $${tour.price} per person</p>
-          </div>
-          <div class="col-md-4">
-            <p><strong>Group Size:</strong> ${tour.groupSize || 'Flexible'}</p>
-          </div>
-        </div>
-        <p>${tour.description}</p>
-      </div>
-    `;
-  }
-
-  function setupTravelerCount() {
-    const travellersSpan = document.getElementById("noOfTravellers");
-    const increaseBtn = document.getElementById("increase-btn");
-    const decreaseBtn = document.getElementById("decrease-btn");
-
-    let travellersCount = parseInt(travellersSpan.textContent) || 2;
-
-    increaseBtn.addEventListener("click", function() {
-      travellersCount++;
-      travellersSpan.textContent = travellersCount;
-      document.getElementById('accommodation-note').textContent = `Please choose a room(s) for ${travellersCount} Travellers.`;
-      updateTravelerFormFields();
-      calculateTotalPrice();
-    });
-
-    decreaseBtn.addEventListener("click", function() {
-      if (travellersCount > 1) {
-        travellersCount--;
-        travellersSpan.textContent = travellersCount;
-        document.getElementById('accommodation-note').textContent = `Please choose a room(s) for ${travellersCount} Travellers.`;
-        updateTravelerFormFields();
-        calculateTotalPrice();
-      }
-    });
-  }
-
-  function updateTravelerFormFields() {
-    const travelerCount = parseInt(document.getElementById('noOfTravellers').textContent);
-    const container = document.getElementById('traveller-details-container');
-
-    // Keep the first traveler always
-    let html = `
-      <h5 class="mb-3">Traveller 1 (Lead Traveller)</h5>
-      <div class="row mb-3">
-        <div class="col-12 mb-2">
-          <label class="form-label">Full Name <span class="text-danger">*</span></label>
-        </div>
-        <div class="col-md-3 mb-3">
-          <select class="form-select">
-            <option selected>Title</option>
-            <option
+</script>
+</body>
+</html>

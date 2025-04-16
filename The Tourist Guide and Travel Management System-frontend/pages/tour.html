@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TravelPro - Tour Management Dashboard</title>
+  <title>TravelPro - Tour Management</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     body {
-      background-color: #f8f9fa;
+      background-color: #f5f5f5;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
@@ -17,13 +17,36 @@
       height: 100vh;
       position: fixed;
       box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      width: 260px;
-      z-index: 100;
+      width: 250px;
+      overflow-y: auto;
+    }
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      color: #7bc043;
+      font-size: 24px;
+      font-weight: 700;
+      border-bottom: 1px solid  #BDBDBD;
+      margin-bottom: 20px;
+    }
+    .sidebar-brand i{
+      font-size: 24px;
+      color: var(--primary);
+      margin-right: 10px;
+      text-align: center;
+    }
+    .sidebar-brand h2{
+      font-size: 21px;
+      color: var(--primary-dark);
+      font-weight: 600;
+      margin-top: 8px;
     }
 
-    .main-content {
-      margin-left: 260px;
-      padding: 20px;
+    .main-content p {
+      color: #757575;
+      font-size: 14px;
+      margin-top: 5px;
     }
 
     .nav-item {
@@ -35,100 +58,215 @@
       align-items: center;
       gap: 10px;
       text-decoration: none;
+      margin-bottom: 5px;
     }
 
-    .nav-item:hover {
-      background-color: #f8f9fa;
-      color: #0d6efd;
+    nav i{
+      font-size: 18px;
     }
 
-    .nav-item.active {
-      background-color: #e9f0ff;
-      color: #0d6efd;
-      border-left: 4px solid #0d6efd;
+    .nav-item.active, .nav-item:hover  {
+      background-color: #DCEDC8;
+      color:  #689F38;
+      border-left: 4px solid #8BC34A;
     }
-
-    .card {
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-      border-radius: 10px;
-      border: none;
-      transition: transform 0.3s;
-      margin-bottom: 20px;
+    .divider {
+      height: 1px;
+      background-color: #BDBDBD;
+      margin: 15px 0;
     }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
-
-    .form-container {
-      background-color: white;
-      border-radius: 10px;
-      padding: 25px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-    }
-
-    .stats-card {
-      position: relative;
-      overflow: hidden;
+    .main-content{
+      flex: 1;
       padding: 20px;
-    }
-
-    .stats-card .icon {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-      width: 50px;
-      height: 50px;
-      border-radius: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: white;
+      margin-left: 250px;
     }
 
     .header-bar {
-      background: #ffffff;
-      padding: 15px 25px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-
-    .tour-card {
-      overflow: hidden;
-      margin-bottom: 20px;
-    }
-
-    .tour-card img {
-      transition: transform 0.3s;
-    }
-
-    .tour-card:hover img {
-      transform: scale(1.05);
-    }
-
-    .no-image-placeholder {
-      height: 300px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: #f8f9fa;
+      margin-bottom: -16px;
     }
 
     .btn-primary {
-      background-color: #0d6efd;
-      border-color: #0d6efd;
+      background-color: #7bc043;
+      border-color: #7bc043;
     }
 
-    .tour-actions {
-      display: flex;
-      gap: 10px;
+    .btn-primary:hover {
+      background-color: #6aad39;
+      border-color: #6aad39;
     }
 
     .stats-container {
+      display: flex;
+      gap: 15px;
       margin-bottom: 25px;
+    }
+
+    .stats-card {
+      flex: 1;
+      background: white;
+      border-radius: 10px;
+      padding: 20px 17px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      display: flex;
+      align-items: center;
+    }
+
+    .icon-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+
+    .stats-info {
+      flex-grow: 1;
+    }
+
+    .stats-info p {
+      margin: 0;
+      color: #757575;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    .status-positive {
+      color: #4CAF50;
+    }
+
+    .stats-info .text-success {
+      color: #7bc043 !important;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .stats-info .text-success i {
+      font-size: 10px;
+    }
+
+    .bg-total {
+      background-color: #7bc043;
+    }
+
+    .bg-adventure {
+      background-color: #0d6efd;
+    }
+
+    .bg-cultural {
+      background-color: #fd7e14;
+    }
+
+    .bg-eco {
+      background-color: #20c997;
+    }
+
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .custom-table th {
+      color: #6c757d;
+      font-weight: 600;
+      padding: 12px 15px;
+      text-align: left;
+    }
+
+    .custom-table td {
+      padding: 12px 15px;
+      vertical-align: middle;
+      border-top: 1px solid #BDBDBD;
+    }
+
+    .custom-table tr:hover {
+      background-color: #DCEDC8;
+    }
+
+    .badge {
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .badge-adventure {
+      background-color: #e9f0ff;
+      color: #0d6efd;
+    }
+
+    .badge-cultural {
+      background-color: #fff4e6;
+      color: #fd7e14;
+    }
+
+    .badge-eco {
+      background-color: #e6fcf5;
+      color: #20c997;
+    }
+
+    .action-btn {
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      margin-right: 5px;
+      cursor: pointer;
+      border: none;
+    }
+
+    .search-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 15px;
+    }
+
+    .search-box {
+      max-width: 300px;
+      display: flex;
+    }
+    .search-box .btn-outline-secondary {
+      background-color: #7bc043;
+      color: white;
+      border-color: #7bc043;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      transition: all 0.3s ease;
+    }
+
+    .search-box .btn-outline-secondary:hover {
+      background-color: #6aad39;
+      border-color: #6aad39;
+    }
+
+    .search-box .form-control {
+      border-right: none;
+    }
+
+    .search-box .form-control:focus {
+      border-color: #7bc043;
+      box-shadow: 0 0 0 0.25rem rgba(123, 192, 67, 0.25);
+    }
+
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      padding: 20px 0;
+      color: #6c757d;
+      font-size: 14px;
+      border-top: 1px solid #dee2e6;
     }
 
     /* Modal styles */
@@ -163,160 +301,177 @@
       cursor: pointer;
     }
 
-    .close:hover {
-      color: black;
+    .tour-image-preview {
+      width: 100%;
+      max-height: 200px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-top: 10px;
+    }
+
+    .tour-type-tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      margin-right: 5px;
+    }
+
+    /* Thumbnail styles for the table */
+    .tour-thumbnail {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    /* No image placeholder */
+    .no-image-placeholder {
+      width: 80px;
+      height: 60px;
+      background-color: #f0f0f0;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
     }
   </style>
 </head>
-<body>
-<div class="sidebar">
-  <div class="p-4 d-flex align-items-center">
-    <i class="fas fa-plane-departure text-primary me-2 fs-4"></i>
-    <h3 class="m-0">TravelPro</h3>
-  </div>
-  <hr>
-  <nav>
-    <a href="http://localhost:63342/The%20Tourist%20Guide%20and%20Travel%20Management%20System/The%20Tourist%20Guide%20and%20Travel%20Management%20System-frontend/pages/Dashbaord.html?_" class="block nav-item bg-blue-100 py-3 px-4 text-blue-700 rounded-r-lg border-l-4 border-blue-600" target="_blank">
-      <div class="flex items-center gap-3">
-        <i class="fas fa-th-large"></i>
-        <span>Dashboard</span>
-      </div>
-    </a>
-    <a href="http://localhost:63342/The%20Tourist%20Guide%20and%20Travel%20Management%20System/The%20Tourist%20Guide%20and%20Travel%20Management%20System-frontend/pages/tour.html?_ijt=7a" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50" target="_blank">
-      <div class="flex items-center gap-3">
-        <i class="fas fa-map-marked-alt"></i>
-        <span>Tours</span>
-      </div>
-    </a>
-    <a href="" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50" target="_blank">
-      <div class="flex items-center gap-3">
-        <i class="fas fa-users"></i>
-        <span>Guides</span>
-      </div>
-    </a>
-    <a href="billing.html" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50">
-      <div class="flex items-center gap-3">
-        <i class="fas fa-credit-card"></i>
-        <span>Trasport</span>
-      </div>
-    </a>
-    <a href="http://localhost:63342/The%20Tourist%20Guide%20and%20Travel%20Management%20System/The%20Tourist%20Guide%20and%20Travel%20Management%20System-frontend/pages/Accomodation.html?_ijt=3e7ujvq411m94dbsc7854e02gh&_ij_reload=RELOAD_ON_SAVE#" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50" target="_blank">
-      <div class="flex items-center gap-3">
-        <i class="fas fa-vr-cardboard"></i>
-        <span>Accommodation</span>
-      </div>
-    </a>
-    <a href="guides.html" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50">
-      <div class="flex items-center gap-3">
-        <i class="fas fa-users"></i>
-        <span>Tourist</span>
-      </div>
-    </a>
-    <a href="http://localhost:63342/The%20Tourist%20Guide%20and%20Travel%20Management%20System/The%20Tourist%20Guide%20and%20Travel%20Management%20System-frontend/pages/destination.html?_ijt=es95c4jb89qqle5o1jrl63p0bl&_ij_reload=RELOAD_ON_SAVE" class="block nav-item py-3 px-4 text-gray-600 hover:bg-gray-50">
-      <div class="flex items-center gap-3">
-        <i class="fas fa-globe"></i>
-        <span>Destination</span>
-      </div>
-    </a>
-    <div class="py-3 px-4 text-gray-600 hover:bg-gray-50">
-      <div class="flex items-center gap-3">
-        <i class="fas fa-vr-cardboard"></i>
-        <span>Notification</span>
-      </div>
-    </div>
-    <div class="py-3 px-4 text-gray-600 hover:bg-gray-50">
-      <div class="flex items-center gap-3">
-        <i class="fas fa-globe"></i>
-        <span>Review</span>
-      </div>
-    </div>
 
-    <div class="mt-5 p-3">
-      <div class="bg-light p-4 rounded-3 text-center mb-3">
-        <i class="fas fa-question-circle text-primary fs-3"></i>
-      </div>
-      <h5 class="text-center">Need help?</h5>
-      <p class="text-center small text-muted">Check our documentation</p>
-      <button class="btn btn-dark w-100 mb-2">Documentation</button>
-      <button class="btn btn-primary w-100">Upgrade to Pro</button>
-    </div>
+<body>
+<!-- Sidebar -->
+<div class="sidebar">
+  <div class="sidebar-brand">
+    <i class="fas fa-map-marker-alt"></i>
+    <h2>TravelPro</h2>
+  </div>
+  <nav>
+    <a href="Dashboard.html" class="nav-item">
+      <i class="fas fa-th-large"></i>
+      <span>Dashboard</span>
+    </a>
+    <a href="tour.html" class="nav-item active">
+      <i class="fas fa-map-marked-alt"></i>
+      <span>Tours</span>
+    </a>
+    <a href="guide.html" class="nav-item">
+      <i class="fas fa-users"></i>
+      <span>Guides</span>
+    </a>
+    <a href="transport.html" class="nav-item">
+      <i class="fas fa-shuttle-van"></i>
+      <span>Transport</span>
+    </a>
+    <a href="Accommodation.html" class="nav-item">
+      <i class="fas fa-hotel"></i>
+      <span>Accommodation</span>
+    </a>
+    <a href="tourists.html" class="nav-item">
+      <i class="fas fa-user-friends"></i>
+      <span>Tourists</span>
+    </a>
+    <a href="destinations.html" class="nav-item">
+      <i class="fas fa-globe"></i>
+      <span>Destinations</span>
+    </a>
+    <div class="divider"></div>
+    <a href="notifications.html" class="nav-item">
+      <i class="fas fa-bell"></i>
+      <span>Notifications</span>
+    </a>
+    <a href="reviews.html" class="nav-item">
+      <i class="fas fa-star"></i>
+      <span>Reviews</span>
+    </a>
+    <a href="settings.html" class="nav-item">
+      <i class="fas fa-cog"></i>
+      <span>Settings</span>
+    </a>
   </nav>
 </div>
 
 <!-- Main Content -->
 <div class="main-content">
   <!-- Header -->
-  <div class="header-bar mb-4">
+  <div class="header-bar">
     <div>
-      <h4 class="m-0">Tour Management</h4>
-      <p class="text-muted m-0 small">Manage your tours and packages</p>
+      <h4>Admin Dashboard</h4>
+      <p>Welcome back! Here's what's happening with your travel business</p>
     </div>
-    <div>
+    <div class="add-btn">
       <button class="btn btn-primary" id="add-tour-btn">
         <i class="fas fa-plus me-2"></i>Add New Tour
       </button>
     </div>
   </div>
+  <hr>
 
-  <!-- Stats Cards -->
-  <div class="row stats-container">
-    <div class="col-md-3">
-      <div class="card stats-card">
-        <div class="icon bg-primary">
-          <i class="fas fa-map-marked-alt"></i>
-        </div>
-        <h6 class="text-muted">TOTAL TOURS</h6>
-        <h3 class="mt-2" id="total-tours">0</h3>
-        <p class="text-success small">+5% from last month</p>
+  <div class="stats-container">
+    <div class="stats-card mt-2">
+      <div class="icon-circle bg-total">
+        <i class="fas fa-map-marked-alt"></i>
+      </div>
+      <div class="stats-info">
+        <h4 id="total-tours">0</h4>
+        <p>TOTAL TOURS<span class="status-positive">+5% from last month</span></p>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card stats-card">
-        <div class="icon bg-success">
-          <i class="fas fa-users"></i>
-        </div>
-        <h6 class="text-muted">TOTAL TRAVELERS</h6>
-        <h3 class="mt-2">0</h3>
-        <p class="text-success small">+12% from last month</p>
+    <div class="stats-card mt-2">
+      <div class="icon-circle bg-adventure">
+        <i class="fas fa-hiking"></i>
+      </div>
+      <div class="stats-info">
+        <h4 id="total-adventure">0</h4>
+        <p>ADVENTURE TOURS<span class="status-positive">+8% from last month</span></p>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card stats-card">
-        <div class="icon bg-warning">
-          <i class="fas fa-star"></i>
-        </div>
-        <h6 class="text-muted">AVG RATING</h6>
-        <h3 class="mt-2">0</h3>
-        <p class="text-success small">+0.2 from last month</p>
+    <div class="stats-card mt-2">
+      <div class="icon-circle bg-cultural">
+        <i class="fas fa-landmark"></i>
+      </div>
+      <div class="stats-info">
+        <h4 id="total-cultural">0</h4>
+        <p>CULTURAL TOURS<span class="status-positive">+3% from last month</span></p>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="card stats-card">
-        <div class="icon bg-danger">
-          <i class="fas fa-dollar-sign"></i>
-        </div>
-        <h6 class="text-muted">TOTAL REVENUE</h6>
-        <h3 class="mt-2">0</h3>
-        <p class="text-success small">+8% from last month</p>
+    <div class="stats-card mt-2">
+      <div class="icon-circle bg-eco">
+        <i class="fas fa-leaf"></i>
+      </div>
+      <div class="stats-info">
+        <h4 id="total-eco">0</h4>
+        <p>ECO TOURS<span class="status-positive">+4% from last month</span></p>
       </div>
     </div>
   </div>
 
-  <!-- Tours List -->
-  <div class="card">
-    <div class="card-header bg-white py-3">
-      <h5 class="m-0">Tour Listings</h5>
+  <!-- Tours Section -->
+  <div>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5>Tours</h5>
+      <div class="search-box">
+        <input type="text" class="form-control" placeholder="Search tours..." id="search-tour">
+        <button class="btn btn-outline-secondary" type="button">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
     </div>
-    <div class="card-body">
-      <div id="tourList">
-        <!-- Tour list will load here -->
-        <div class="text-center">
-          <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
+
+    <div id="tourList">
+      <!-- Tour list will load here -->
+      <div class="text-center p-4">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>© 2025 Tourist Guide and Travel Management System. All rights reserved.</p>
   </div>
 </div>
 
@@ -328,12 +483,12 @@
       <span class="close">&times;</span>
     </div>
 
-    <form id="tour-form">
+    <form id="tour-form" enctype="multipart/form-data">
       <div class="row">
         <div class="col-md-6">
           <div class="mb-3">
             <label for="tourId" class="form-label">Tour ID</label>
-            <input type="text" class="form-control" id="tourId" required>
+            <input type="text" class="form-control" id="tourId" name="id" required>
           </div>
 
           <div class="mb-3">
@@ -341,59 +496,56 @@
             <div class="input-group">
               <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" id="load-destination-id">Select</button>
               <ul class="dropdown-menu" id="destination-dropdown"></ul>
-              <input type="text" class="form-control" id="destinationId" readonly>
+              <input type="text" class="form-control" id="destinationId" name="destinationId" readonly>
             </div>
           </div>
 
           <div class="mb-3">
             <label for="tourName" class="form-label">Tour Name</label>
-            <input type="text" class="form-control" id="tourName" required maxlength="50">
+            <input type="text" class="form-control" id="tourName" name="name" required maxlength="50">
           </div>
 
           <div class="mb-3">
-            <label for="tourDuration" class="form-label">Tour Duration (Days)</label>
-            <input type="text" class="form-control" id="tourDuration" required maxlength="50">
+            <label for="tourDescription" class="form-label">Description</label>
+            <textarea class="form-control" id="tourDescription" name="description" rows="3" maxlength="200" required></textarea>
           </div>
         </div>
 
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="tourDescription" class="form-label">Description</label>
-            <textarea class="form-control" id="tourDescription" rows="3" maxlength="200" required></textarea>
+            <label for="tourDuration" class="form-label">Duration (Days)</label>
+            <input type="number" class="form-control" id="tourDuration" name="duration" required min="1" max="30">
           </div>
 
           <div class="mb-3">
-            <label for="tourPrice" class="form-label">Tour Price</label>
+            <label for="tourType" class="form-label">Tour Type</label>
+            <div class="input-group">
+              <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" id="loadTourType">Select Type</button>
+              <ul class="dropdown-menu" id="type-dropdown">
+                <li><a class="dropdown-item" href="#" onclick="setTourType('Adventure')">Adventure</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setTourType('Cultural')">Cultural</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setTourType('Eco')">Eco</a></li>
+              </ul>
+              <input type="text" class="form-control" id="tourType" readonly>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="tourPrice" class="form-label">Price</label>
             <div class="input-group">
               <span class="input-group-text">RS.</span>
-              <input type="text" class="form-control" id="tourPrice" required maxlength="50">
+              <input type="number" class="form-control" id="tourPrice" name="price" required>
             </div>
           </div>
 
-<!--          <div class="mb-3">-->
-<!--            <label for="tourImage" class="form-label">Tour Image</label>-->
-<!--            <input type="file" class="form-control" id="tourImage" accept="image/jpeg,image/png,image/jpg">-->
-<!--            <div class="form-text">Upload an image of the tour (JPEG, PNG formats only)</div>-->
-<!--          </div>-->
           <div class="mb-3">
-            <label class="form-label">Tour Image</label>
-            <div id="drag-drop-zone" class="border rounded-3 p-4 text-center" style="background-color: #f8f9fa; cursor: pointer; transition: all 0.3s ease;">
-              <i class="fas fa-cloud-upload-alt text-primary fs-1 mb-3"></i>
-              <p class="mb-1">Drag & Drop your image here</p>
-              <p class="text-muted small mb-3">or click to browse files</p>
-              <p id="selected-file-name" class="mb-0 small fw-bold" style="display: none;"></p>
-              <input type="file" id="tourImage" accept="image/jpeg,image/png,image/jpg" style="display: none;">
-            </div>
-            <div class="form-text">Upload an image of the tour (JPEG, PNG formats only)</div>
-            <div class="mt-2">
-              <img id="imagePreview" src="" alt="Tour Image" style="max-width: 100%; display: none; border-radius: 5px;">
+            <label for="tourImage" class="form-label">Tour Image</label>
+            <input type="file" class="form-control" id="tourImage" name="image" accept="image/*">
+            <div id="imagePreviewContainer" class="mt-2" style="display: none;">
+              <img id="imagePreview" class="tour-image-preview">
             </div>
           </div>
-
-<!--          <div class="mt-2">-->
-<!--            <img id="imagePreview" src="" alt="Tour Image" style="max-width: 100%; display: none; border-radius: 5px;">-->
-<!--          </div>-->
-<!--        </div>-->
+        </div>
       </div>
 
       <div class="d-flex justify-content-end mt-4">
@@ -407,126 +559,159 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-
-  function loadTour() {
+  // Load tours function
+  function loadTours() {
     const tourList = document.getElementById('tourList');
 
-    tourList.innerHTML = '<div class="text-center"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+    tourList.innerHTML = '<div class="text-center p-4"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
 
     $.ajax({
       url: "http://localhost:8080/api/v1/tour",
       method: "GET",
       dataType: "json",
       success: (res) => {
-        const tour = res.data;
-        if (tour.length === 0) {
-          tourList.innerHTML = '<div class="alert alert-info">No tours found.</div>';
+        const tours = res.data;
+        if (tours.length === 0) {
+          tourList.innerHTML = '<div class="alert alert-info m-3">No tours found.</div>';
           return;
         }
 
-        document.getElementById('total-tours').textContent = tour.length;
+        // Update total tours count
+        document.getElementById('total-tours').textContent = tours.length;
 
-        let html = '<div class="row">';
-        tour.forEach(tour => {
-          html += `
-              <div class="col-lg-6 col-xl-4">
-                <div class="card tour-card">
-                  <div class="card-img-top">
-                    ${tour.image ?
-            `<img src="data:image/jpeg;base64,${tour.image}" class="img-fluid" alt="${tour.name}" style="height: 200px; width: 100%; object-fit: cover;">` :
-            `<div class="no-image-placeholder bg-light text-center">
-                        <span class="text-muted">No Image</span>
-                      </div>`
+        // Initialize tour type counts
+        let adventureCount = 0;
+        let culturalCount = 0;
+        let ecoCount = 0;
+
+        // Count tours by type (for demonstration)
+        tours.forEach(tour => {
+          // This is just for demonstration. In real app, you'd have a type field
+          const tourName = tour.name.toLowerCase();
+          if (tourName.includes('adventure')) adventureCount++;
+          else if (tourName.includes('cultural') || tourName.includes('heritage')) culturalCount++;
+          else if (tourName.includes('eco') || tourName.includes('nature')) ecoCount++;
+          else {
+            // Distribute remaining tours randomly
+            const random = Math.floor(Math.random() * 3);
+            if (random === 0) adventureCount++;
+            else if (random === 1) culturalCount++;
+            else ecoCount++;
           }
-                  </div>
-                  <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                      <h5 class="card-title">${tour.name}</h5>
-                      <span class="badge bg-primary rounded-pill">ID: ${tour.id}</span>
-                    </div>
-                    <p class="card-text text-muted small">${tour.description}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <div>
-                        <span class="d-block"><i class="fas fa-map-marker-alt text-danger me-1"></i> Destination: ${tour.destinationId}</span>
-                        <span class="d-block"><i class="fas fa-clock text-warning me-1"></i> ${tour.duration} Days</span>
-                      </div>
-                      <h5 class="text-primary m-0">RS.${tour.price}</h5>
-                    </div>
-                  </div>
-                  <div class="card-footer bg-white border-top-0">
-                    <div class="tour-actions">
-                      <button type="button" class="btn btn-outline-primary btn-sm flex-grow-1"
-                        onclick="editTour('${tour.id}','${tour.destinationId}' ,'${tour.name}', '${tour.description}', '${tour.duration}', '${tour.price}', '${tour.image}')">
-                        <i class="fas fa-edit me-1"></i> Edit
-                      </button>
-                      <button type="button" class="btn btn-outline-danger btn-sm flex-grow-1" onclick="deleteTour('${tour.id}')">
-                        <i class="fas fa-trash me-1"></i> Delete
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            `;
         });
-        html += '</div>';
+
+        document.getElementById('total-adventure').textContent = adventureCount;
+        document.getElementById('total-cultural').textContent = culturalCount;
+        document.getElementById('total-eco').textContent = ecoCount;
+
+        // Create table layout
+        let html = `
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Tour Name</th>
+                <th>Destination</th>
+                <th>Duration</th>
+                <th>Price</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        tours.forEach(tour => {
+          // Determine tour type for badge
+          let tourType = 'Adventure';
+          let badgeClass = 'badge-adventure';
+
+          const tourName = tour.name.toLowerCase();
+          if (tourName.includes('cultural') || tourName.includes('heritage')) {
+            tourType = 'Cultural';
+            badgeClass = 'badge-cultural';
+          } else if (tourName.includes('eco') || tourName.includes('nature')) {
+            tourType = 'Eco';
+            badgeClass = 'badge-eco';
+          } else {
+            // Random assignment for demo
+            const types = ['Adventure', 'Cultural', 'Eco'];
+            const classes = ['badge-adventure', 'badge-cultural', 'badge-eco'];
+            const random = Math.floor(Math.random() * 3);
+            tourType = types[random];
+            badgeClass = classes[random];
+          }
+
+          // Image column content
+          let imageHTML = '';
+          if (tour.imageBase64) {
+            imageHTML = `<img src="data:image/jpeg;base64,${tour.imageBase64}" class="tour-thumbnail" alt="${tour.name}">`;
+          } else {
+            imageHTML = `<div class="no-image-placeholder"><i class="fas fa-image"></i></div>`;
+          }
+
+          html += `
+            <tr>
+              <td>${tour.id}</td>
+              <td>${imageHTML}</td>
+              <td>
+                ${tour.name}
+                <span class="badge ${badgeClass} ms-2">${tourType}</span>
+              </td>
+              <td>${tour.destinationId || 'N/A'}</td>
+              <td>${tour.duration} days</td>
+              <td>RS.${tour.price}</td>
+              <td>
+                <div class="d-flex">
+                  <span class="action-btn btn-edit" style="background-color:#2196F3;color: white ; padding:  5px 10px;border-radius: 4px;font-size: 12px"
+                    onclick="editTour('${tour.id}','${tour.destinationId}','${tour.name}','${tour.description}','${tour.duration}','${tourType}','${tour.price}','${tour.imageBase64 || ''}')">
+                    <i class="fas fa-edit"></i>
+                  </span>
+                  <span class="action-btn btn-delete" style="background-color: #F44336;color: white" onclick="deleteTour('${tour.id}')">
+                    <i class="fas fa-trash"></i>
+                  </span>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+
+        html += '</tbody></table>';
 
         tourList.innerHTML = html;
       },
       error: (err) => {
-        console.error('Error loading tour:', err);
-        tourList.innerHTML = '<div class="alert alert-danger">Failed to load tours.</div>';
+        console.error('Error loading tours:', err);
+        tourList.innerHTML = '<div class="alert alert-danger m-3">Failed to load tours.</div>';
       }
     });
   }
 
-  loadTour();
+  // Load tours on page load
+  $(document).ready(function() {
+    loadTours();
 
-  $("#btn-save").off("click").on("click", (e) => {
-    e.preventDefault();
+    // Search functionality
+    $("#search-tour").on("keyup", function() {
+      const value = $(this).val().toLowerCase();
+      $(".custom-table tbody tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
 
-    const formData = new FormData();
-    const tourId = $("#tourId").val();
-    formData.append("id", tourId);
-    formData.append("destinationId", $("#destinationId").val());
-    formData.append("name", $("#tourName").val());
-    formData.append("description", $("#tourDescription").val());
-    formData.append("duration", $("#tourDuration").val());
-    formData.append("price", $("#tourPrice").val());
-
-    const imageFile = $("#tourImage")[0].files[0];
-    const isUpdate = tourId.trim() !== "";
-
-    // If updating and no new image is selected, don't send the image field
-    if (imageFile) {
-      formData.append("image", imageFile);
-      // } else if (isUpdate && imagePreview.dataset.currentImage) {
-      //   // Optionally, you could send the existing image back
-      //   // This depends on how your backend handles updates
-      //   // formData.append("existingImage", imagePreview.dataset.currentImage);
-      // }
-    }
-
-    const method = isUpdate ? "PUT" : "POST";
-
-    $.ajax({
-      url: "http://localhost:8080/api/v1/tour",
-      method: method,
-      data: formData,
-      contentType: false,
-      processData: false,
-      success: (res) => {
-        console.log("Success:", res);
-        $("#tour-form")[0].reset();
-        $("#tourId").val("");
-        $("#btn-save").text("Save Tour");
-        modal.style.display = "none";
-        loadTour();
-        clearImageUpload();
-      },
-      error: (err) => {
-        console.error("Error:", err);
-        alert("Error saving tour data. Please try again.");
-      },
+    // Preview image when a file is selected
+    $("#tourImage").change(function() {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          $("#imagePreview").attr("src", e.target.result);
+          $("#imagePreviewContainer").show();
+        }
+        reader.readAsDataURL(file);
+      } else {
+        $("#imagePreviewContainer").hide();
+      }
     });
   });
 
@@ -535,15 +720,21 @@
   const closeBtn = document.getElementsByClassName("close")[0];
   const cancelBtn = document.getElementById("btn-cancel");
 
+  // Open modal for adding new tour
   addTourBtn.onclick = function() {
     document.getElementById("modal-title").textContent = "Add New Tour";
     document.getElementById("tour-form").reset();
     document.getElementById("tourId").value = "";
     document.getElementById("btn-save").textContent = "Save Tour";
-    document.getElementById("imagePreview").style.display = "none";
+    document.getElementById("imagePreviewContainer").style.display = "none";
     modal.style.display = "block";
+
+    // Generate a new tour ID
+    const newId = "TOUR" + Math.floor(Math.random() * 900 + 100);
+    document.getElementById("tourId").value = newId;
   }
 
+  // Close modal functions
   closeBtn.onclick = function() {
     modal.style.display = "none";
   }
@@ -558,211 +749,152 @@
     }
   }
 
-
-  // Drag and drop functionality
-  const dragDropZone = document.getElementById('drag-drop-zone');
-  const fileInput = document.getElementById('tourImage');
-  const selectedFileName = document.getElementById('selected-file-name');
-  const imagePreview = document.getElementById('imagePreview');
-
-  // Click on the drop zone to trigger file input
-  dragDropZone.addEventListener('click', () => {
-    fileInput.click();
-  });
-
-  // Handle file selection via the input element
-  fileInput.addEventListener('change', handleFileSelect);
-
-  // Handle drag over
-  dragDropZone.addEventListener('dragover', (e) => {
+  // Save tour
+  $("#tour-form").on("submit", function(e) {
     e.preventDefault();
-    e.stopPropagation();
-    dragDropZone.style.backgroundColor = '#e9f0ff';
-    dragDropZone.style.borderColor = '#0d6efd';
-  });
 
-  // Handle drag leave
-  dragDropZone.addEventListener('dragleave', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    dragDropZone.style.backgroundColor = '#f8f9fa';
-    dragDropZone.style.borderColor = '#dee2e6';
-  });
+    // Create FormData object
+    const formData = new FormData(this);
 
-  // Handle drop
-  dragDropZone.addEventListener('drop', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    dragDropZone.style.backgroundColor = '#f8f9fa';
-    dragDropZone.style.borderColor = '#dee2e6';
+    // Add the tour type
+    formData.append("tourType", $("#tourType").val());
 
-    if (e.dataTransfer.files.length) {
-      fileInput.files = e.dataTransfer.files;
-      handleFileSelect(e, e.dataTransfer.files[0]);
-    }
-  });
+    const isUpdate = $("#tourId").val().trim() !== "";
+    const method = isUpdate ? "PUT" : "POST";
 
-  // Function to handle file selection
-  function handleFileSelect(e, droppedFile = null) {
-    const file = droppedFile || fileInput.files[0];
+    $.ajax({
+      url: "http://localhost:8080/api/v1/tour",
+      type: method,
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function(res) {
+        console.log("Success:", res);
 
-    if (file) {
-      // Check if file is an image
-      if (!file.type.match('image/jpeg') && !file.type.match('image/png') && !file.type.match('image/jpg')) {
-        alert('Please select a valid image file (JPEG or PNG)');
-        return;
+        // Show success message
+        const successMsg = isUpdate ? "Tour updated successfully!" : "New tour added successfully!";
+        const alertHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
+          ${successMsg}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>`;
+
+        $(".main-content").prepend(alertHTML);
+
+        // Auto remove alert after 3 seconds
+        setTimeout(() => {
+          $(".alert").alert('close');
+        }, 3000);
+
+        // Reset form and close modal
+        $("#tour-form")[0].reset();
+        $("#imagePreviewContainer").hide();
+        $("#tourId").val("");
+        $("#tourType").val("");
+        $("#btn-save").text("Save Tour");
+        modal.style.display = "none";
+
+        // Reload tour list
+        loadTours();
+      },
+      error: function(err) {
+        console.error("Error:", err);
+        alert("Error saving tour data. Please try again.");
       }
+    });
+  });
 
-      // Display file name
-      selectedFileName.textContent = file.name;
-      selectedFileName.style.display = 'block';
-
-      // Show image preview
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        imagePreview.src = e.target.result;
-        imagePreview.style.display = 'block';
-      }
-      reader.readAsDataURL(file);
-
-      // Change appearance of drop zone
-      dragDropZone.style.backgroundColor = '#e9f0ff';
-      dragDropZone.style.borderColor = '#0d6efd';
-    }
-  }
-  function clearImageUpload() {
-    fileInput.value = '';
-    selectedFileName.textContent = '';
-    selectedFileName.style.display = 'none';
-    imagePreview.src = '';
-    imagePreview.style.display = 'none';
-    dragDropZone.style.backgroundColor = '#f8f9fa';
-    dragDropZone.style.borderColor = '#dee2e6';
-  }
-
-  // Add this to your existing close modal functions
-  closeBtn.onclick = function() {
-    modal.style.display = "none";
-    clearImageUpload();
-  }
-
-  cancelBtn.onclick = function() {
-    modal.style.display = "none";
-    clearImageUpload();
-  }
-
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = "none";
-      clearImageUpload();
-    }
-  }
-
-
+  // Load destination IDs for dropdown
   $("#load-destination-id").click((e) => {
-    e.preventDefault()
+    e.preventDefault();
+
+    $("#destination-dropdown").html('<li><div class="dropdown-item">Loading...</div></li>');
+
     $.ajax({
       url: "http://localhost:8080/api/v1/destination",
       method: "GET",
       success: (res) => {
-        console.log(res)
-        $("#destination-dropdown").empty()
+        $("#destination-dropdown").empty();
+
+        if (!res.data || res.data.length === 0) {
+          $("#destination-dropdown").append('<li><div class="dropdown-item">No destinations available</div></li>');
+          return;
+        }
+
         res.data.forEach(destination => {
           $("#destination-dropdown").append(`
-              <li><a class="dropdown-item" href="#" onclick="setDestination('${destination.id}')">${destination.id}</a></li>
-            `)
-        })
+            <li><a class="dropdown-item" href="#" onclick="setDestination('${destination.id}')">${destination.id} - ${destination.name || ''}</a></li>
+          `);
+        });
       },
       error: (err) => {
         console.error(err);
-        alert("Error loading destinations. Please try again.");
+        $("#destination-dropdown").html('<li><div class="dropdown-item text-danger">Error loading destinations</div></li>');
       }
-    })
+    });
   });
 
+  // Set destination ID
   function setDestination(destinationId) {
-    $("#destinationId").val(destinationId)
+    $("#destinationId").val(destinationId);
   }
 
-  // function editTour(id, destinationId, name, description, duration, price, image) {
-  //   document.getElementById("modal-title").textContent = "Edit Tour";
-  //   $("#tourId").val(id)
-  //   $("#destinationId").val(destinationId)
-  //   $("#tourName").val(name)
-  //   $("#tourDescription").val(description)
-  //   $("#tourDuration").val(duration)
-  //   $("#tourPrice").val(price)
-  //   $("#btn-save").text("Update Tour");
-  //
-  //   // Show image preview if available
-  //   if (image) {
-  //     $("#imagePreview").attr("src", `data:image/jpeg;base64,${image}`);
-  //     $("#imagePreview").css("display", "block");
-  //   } else {
-  //     $("#imagePreview").css("display", "none");
-  //   }
-  //
-  //   modal.style.display = "block";
-  // }
-  function editTour(id, destinationId, name, description, duration, price, image) {
+  // Set tour type
+  function setTourType(type) {
+    $("#tourType").val(type);
+  }
+
+  // Edit tour
+  function editTour(id, destinationId, name, description, duration, type, price, imageBase64) {
     document.getElementById("modal-title").textContent = "Edit Tour";
     $("#tourId").val(id);
     $("#destinationId").val(destinationId);
     $("#tourName").val(name);
     $("#tourDescription").val(description);
     $("#tourDuration").val(duration);
+    $("#tourType").val(type);
     $("#tourPrice").val(price);
     $("#btn-save").text("Update Tour");
 
-    // Clear any existing file selection
-    fileInput.value = '';
-
     // Show image preview if available
-    if (image && image !== "null" && image !== "undefined") {
-      imagePreview.src = `data:image/jpeg;base64,${image}`;
-      imagePreview.style.display = "block";
-      selectedFileName.textContent = "";
-      selectedFileName.style.display = "block";
-
-      // Store the current image in a data attribute for later use
-      imagePreview.dataset.currentImage = image;
+    if (imageBase64) {
+      $("#imagePreview").attr("src", "data:image/jpeg;base64," + imageBase64);
+      $("#imagePreviewContainer").show();
     } else {
-      imagePreview.style.display = "none";
-      selectedFileName.textContent = "No current image";
-      selectedFileName.style.display = "block";
+      $("#imagePreviewContainer").hide();
     }
 
-    // This line is missing - add it to show the modal
     modal.style.display = "block";
   }
+
+  // Delete tour
   function deleteTour(id) {
     if (confirm("Are you sure you want to delete this tour?")) {
       $.ajax({
         url: `http://localhost:8080/api/v1/tour/delete/${id}`,
         method: "DELETE",
         success: (res) => {
-          loadTour()
-          console.log(res)
+          // Show success message
+          const alertHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
+            Tour deleted successfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>`;
+
+          $(".main-content").prepend(alertHTML);
+
+          // Auto remove alert after 3 seconds
+          setTimeout(() => {
+            $(".alert").alert('close');
+          }, 3000);
+
+          loadTours();
         },
         error: (err) => {
-          console.log(err)
+          console.error(err);
           alert("Error deleting tour. Please try again.");
         }
-      })
+      });
     }
   }
-
-  $("#tourImage").change(function() {
-    const file = this.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        $("#imagePreview").attr("src", e.target.result);
-        $("#imagePreview").css("display", "block");
-      }
-      reader.readAsDataURL(file);
-    }
-  });
 </script>
 </body>
 </html>

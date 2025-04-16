@@ -3,275 +3,269 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Travel World - Login</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <title>Tourist - Login</title>
   <style>
-
-    :root {
-      --primary-color: #0275d8;
-      --secondary-color: #f8f9fa;
-      --accent-color: #fd7e14;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     body {
-      background-color: #f8f9fa;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    #register-btn{
-      background-color: rgba(0, 47, 108, 0.85);
-      border-radius: 20px;
-      width: 100px;
-      height: 35px;
-      color: white;
-      border-color:rgba(0, 47, 108, 0.85) ;
-      margin-top: -4px;
-
+      background-color: #f5f5f5;
     }
 
     .login-container {
-      max-width: 900px;
-      margin: 80px auto;
+      max-width: 400px;
+      margin: 100px auto;
       background: white;
-      border-radius: 12px;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-      overflow: hidden;
+      border-radius: 8px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      padding: 30px;
     }
 
-    .login-image {
-      background-color: white;
-      padding: 30px;
+    .login-logo {
+      text-align: center;
+      margin-bottom: 30px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
-    .login-image img {
-      max-width: 100%;
-      height: auto;
+    .login-logo span {
+      color: #8DC63F;
+      font-size: 32px;
+      font-weight: bold;
+      margin-left: 10px;
     }
 
-    .login-form {
-      background-color: #0275d8;
-      color: white;
-      padding: 50px;
-      position: relative;
-      height: 100%;
+    .login-logo i {
+      font-size: 28px;
+      color: #8DC63F;
     }
 
     .login-form h2 {
       text-align: center;
-      margin-bottom: 30px;
-      font-weight: 600;
+      color: #445270;
+      margin-bottom: 25px;
     }
 
-    .login-form .form-control {
-      border-radius: 8px;
-      padding: 12px 15px;
+    .form-group {
       margin-bottom: 20px;
-      border: none;
     }
 
-    .login-form .btn-login {
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 500;
+    }
+
+    .form-group input {
       width: 100%;
-      background-color: #003366;
-      border: none;
-      color: white;
-      padding: 12px;
-      border-radius: 8px;
-      font-weight: 600;
-      margin-top: 10px;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 15px;
+      transition: border-color 0.3s;
     }
 
-    .login-form .user-icon {
-      position: absolute;
-      top: -30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background-color: black;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
+    .form-group input:focus {
+      border-color: #8DC63F;
+      outline: none;
+    }
+
+    .remember-forgot {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      justify-content: space-between;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .remember-forgot a {
+      color: #8DC63F;
+      text-decoration: none;
+    }
+
+    .remember-forgot a:hover {
+      text-decoration: underline;
+    }
+
+    .btn-login {
+      background-color: #8DC63F;
+      color: white;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-login:hover {
+      background-color: #7ab52e;
     }
 
     .register-link {
       text-align: center;
       margin-top: 20px;
-      color: white;
+      font-size: 14px;
+      color: #666;
     }
 
     .register-link a {
-      color: white;
-      font-weight: 600;
+      color: #8DC63F;
       text-decoration: none;
-    }
-
-    .navbar {
-      background-color: var(--primary-color);
-      padding: 15px 0;
-    }
-
-    .navbar-brand {
-      font-size: 24px;
-      font-weight: bold;
-      color: white !important;
-    }
-
-    .nav-link {
-      color: white !important;
       font-weight: 500;
-      margin: 0 10px;
-    }
-    .footer {
-      background-color: #003366;
-      color: white;
-      padding: 40px 0 20px;
     }
 
-    .footer-title {
-      font-weight: bold;
-      margin-bottom: 20px;
+    .register-link a:hover {
+      text-decoration: underline;
     }
 
-    .footer-links {
-      list-style: none;
-      padding: 0;
+    /* For the location icon */
+    .location-icon {
+      display: inline-block;
+      width: 30px;
+      height: 42px;
+      background-color: #8DC63F;
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      position: relative;
     }
 
-    .footer-links li {
-      margin-bottom: 10px;
+    .location-icon:after {
+      content: '';
+      width: 15px;
+      height: 15px;
+      background-color: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
-
-    .footer-links a {
-      color: #ccc;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-
-    .footer-links a:hover {
-      color: white;
-      text-decoration: none;
-    }
-
-    .social-icons a {
-      color: white;
-      font-size: 20px;
-      margin-right: 15px;
-      transition: all 0.2s;
-    }
-
-    .social-icons a:hover {
-      color: var(--accent-color);
-    }
-
-    .copyright {
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
   </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark">
-  <div class="container">
-    <a class="navbar-brand" href="#">
-      <i class="fas fa-plane-departure me-2"></i>TravelPro
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link active" href="#"> Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#"><button id="register-btn"> Register</button></a>
-      </ul>
-    </div>
+<div class="login-container">
+  <div class="login-logo">
+    <div class="location-icon"></div>
+    <span>Tourist</span>
   </div>
-</nav>
-<div class="container">
-  <div class="login-container row g-0">
-    <div class="col-md-6 login-image">
-      <img src="../img/login-image.jpg" alt="Login illustration">
-    </div>
-    <div class="col-md-6 login-form">
-      <h2>Register</h2>
-      <form>
-        <div class="mb-3">
-          <input type="text" class="form-control" placeholder="user" required>
-        </div>
-        <div class="mb-3">
-          <input type="email" class="form-control" placeholder="user@gmail.com" required>
-        </div>
-        <div class="mb-3">
-          <input type="password" class="form-control" placeholder="••••••••" required>
-        </div>
-        <button type="submit" class="btn btn-login">Login</button>
-      </form>
-      <div class="register-link">
-        <p>Already have an account? <a href="loginForm.html" target="_blank">Login</a></p>
+
+  <div class="login-form">
+    <h2>Login to Your Account</h2>
+
+    <form action="#" method="post">
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email" required>
       </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+      </div>
+
+      <div class="remember-forgot">
+        <div>
+          <input type="checkbox" id="remember" name="remember">
+          <label for="remember">Remember me</label>
+        </div>
+        <a href="#">Forgot Password?</a>
+      </div>
+
+      <button type="submit" class="btn-login">Login</button>
+    </form>
+
+    <div class="register-link">
+      Don't have an account? <a href="#">Register Now</a>
     </div>
   </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.querySelector('.login-form form');
 
-<!-- Footer -->
-<footer class="footer">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-4 col-md-6 mb-4">
-        <h4 class="footer-title">About FlightBook</h4>
-        <p>We offer the best deals on flights, hotels, and holiday packages. Our mission is to make travel accessible and enjoyable for everyone.</p>
-        <div class="social-icons mt-3">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-linkedin-in"></i></a>
-        </div>
-      </div>
-      <div class="col-lg-2 col-md-6 mb-4">
-        <h4 class="footer-title">Quick Links</h4>
-        <ul class="footer-links">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Flights</a></li>
-          <li><a href="#">Holidays</a></li>
-          <li><a href="#">Hotels</a></li>
-          <li><a href="#">Car Rentals</a></li>
-        </ul>
-      </div>
-      <div class="col-lg-2 col-md-6 mb-4">
-        <h4 class="footer-title">Support</h4>
-        <ul class="footer-links">
-          <li><a href="#">FAQs</a></li>
-          <li><a href="#">Contact Us</a></li>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms & Conditions</a></li>
-          <li><a href="#">Sitemap</a></li>
-        </ul>
-      </div>
-      <div class="col-lg-4 col-md-6 mb-4">
-        <h4 class="footer-title">Newsletter</h4>
-        <p>Subscribe to our newsletter and get exclusive deals you won't find anywhere else.</p>
-        <div class="input-group mt-3">
-          <input type="email" class="form-control" placeholder="Your email address">
-          <button class="btn btn-primary">Subscribe</button>
-        </div>
-      </div>
-    </div>
-    <div class="row copyright text-center">
-      <div class="col-md-12">
-        <p>&copy; 2025 FlightBook. All rights reserved.</p>
-      </div>
-    </div>
-  </div>
-</footer>
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      // Create request payload
+      const userData = {
+        email: email,
+        password: password
+      };
+
+      console.log('Sending authentication request with:', email);
+
+      fetch('http://localhost:8080/api/v1/auth/authenticate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(userData)
+      })
+        .then(response => {
+          console.log('Response status:', response.status);
+          return response.json();
+        })
+        .then(data => {
+          // Log full response for debugging
+          console.log('Full response:', data);
+
+          // Check for success status
+          if (data && (data.code === 201 || data.status === 'success')) {
+            console.log('Authentication successful, data:', data);
+
+            // Try different ways to access auth data based on possible response structures
+            let authData = null;
+
+            if (data.content) {
+              authData = data.content;
+            } else if (data.data) {
+              authData = data.data;
+            } else if (data.authDTO) {
+              authData = data.authDTO;
+            } else if (data.email && data.token) {
+              // Response might directly contain the data
+              authData = data;
+            }
+
+            console.log('Extracted auth data:', authData);
+
+            if (authData && authData.email && authData.token) {
+              // Save user data to local storage
+              localStorage.setItem('userEmail', authData.email);
+              localStorage.setItem('userToken', authData.token);
+
+              // Redirect to main page
+              window.location.href = 'Accomodation.html';
+            } else {
+              console.error('Auth data is incomplete:', authData);
+              alert('Login response is incomplete. Please try again.');
+            }
+          } else {
+            // Show error message
+            console.error('Login failed:', data);
+            const errorMessage = data && data.message ? data.message : 'Unknown error';
+            alert('Login failed: ' + errorMessage);
+          }
+        })
+        .catch(error => {
+          console.error('Error during authentication:', error);
+          alert('An error occurred during login. Please try again.');
+        });
+    });
+  });
+</script>
 </body>
 </html>

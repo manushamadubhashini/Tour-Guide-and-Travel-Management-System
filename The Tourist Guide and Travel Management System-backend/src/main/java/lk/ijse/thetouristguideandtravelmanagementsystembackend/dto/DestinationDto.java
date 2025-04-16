@@ -15,6 +15,5 @@ public class DestinationDto {
     private String location;
     private String weather_info;
     private String best_time_to_visit;
-    private MultipartFile image;
 
 }

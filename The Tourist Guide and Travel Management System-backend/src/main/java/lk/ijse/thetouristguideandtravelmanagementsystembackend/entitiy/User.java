@@ -19,15 +19,14 @@ public class User {
     @Id
     @Column(name = "user_id")
     private String id;
-    @Column(name = "user_name",nullable = false,length = 100)
+    @Column(name = "user_name")
     private String userName;
     @Column(nullable = false,length = 200)
     private String email;
-    @Column(nullable = false,length = 50)
+    @Column(nullable = false,length = 255)
     private String password;
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private String role;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<GuideTour> guideTourList=new ArrayList<>();
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)

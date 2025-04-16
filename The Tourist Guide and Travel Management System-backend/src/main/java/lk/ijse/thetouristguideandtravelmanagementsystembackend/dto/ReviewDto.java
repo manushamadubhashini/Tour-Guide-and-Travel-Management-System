@@ -19,6 +19,5 @@ public class ReviewDto {
     private String tourId;
     private String comment;
     private String rating;
-    private MultipartFile image;
     private String touristName;
 }

@@ -26,9 +26,6 @@ public class Destination {
     private String weather_info;
     @Column(length = 300)
     private String best_time_to_visit;
-    @Lob
-    @Column(columnDefinition = "LONGTEXT")
-    private String image;
     @OneToMany(mappedBy = "destination",fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Tour> tourList=new ArrayList<>();
 

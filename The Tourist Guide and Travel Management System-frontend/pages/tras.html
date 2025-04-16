@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TravelPro - Accommodation Management</title>
+  <title>TravelPro - Transport Management</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
@@ -27,7 +27,7 @@
       color: #7bc043;
       font-size: 24px;
       font-weight: 700;
-      border-bottom: 1px solid  #BDBDBD;
+      border-bottom: 1px solid #BDBDBD;
       margin-bottom: 20px;
     }
     .sidebar-brand i{
@@ -35,7 +35,6 @@
       color: var(--primary);
       margin-right: 10px;
       text-align: center;
-      /*margin-bottom: 5px;*/
     }
     .sidebar-brand h2{
       font-size: 21px;
@@ -68,7 +67,7 @@
 
     .nav-item.active, .nav-item:hover  {
       background-color: #DCEDC8;
-      color:  #689F38;
+      color: #689F38;
       border-left: 4px solid #8BC34A;
     }
     .divider {
@@ -159,15 +158,15 @@
       background-color: #7bc043;
     }
 
-    .bg-hotels {
+    .bg-car {
       background-color: #0d6efd;
     }
 
-    .bg-resorts {
+    .bg-van {
       background-color: #fd7e14;
     }
 
-    .bg-homestays {
+    .bg-trishaw {
       background-color: #20c997;
     }
 
@@ -185,7 +184,7 @@
       font-weight: 600;
       padding: 12px 15px;
       text-align: left;
-      /*border-bottom: 1px solid #BDBDBD;*/
+      /*background-color:#7bc043;*/
     }
 
     .custom-table td {
@@ -205,17 +204,17 @@
       font-weight: 500;
     }
 
-    .badge-hotels {
+    .badge-car {
       background-color: #e9f0ff;
       color: #0d6efd;
     }
 
-    .badge-resorts {
+    .badge-van {
       background-color: #fff4e6;
       color: #fd7e14;
     }
 
-    .badge-homestays {
+    .badge-trishaw {
       background-color: #e6fcf5;
       color: #20c997;
     }
@@ -228,7 +227,6 @@
       cursor: pointer;
       border: none;
     }
-
 
     .search-container {
       display: flex;
@@ -326,11 +324,11 @@
       <i class="fas fa-users"></i>
       <span>Guides</span>
     </a>
-    <a href="transport.html" class="nav-item">
+    <a href="transport.html" class="nav-item active">
       <i class="fas fa-shuttle-van"></i>
       <span>Transport</span>
     </a>
-    <a href="Accommodation.html" class="nav-item active">
+    <a href="Accommodation.html" class="nav-item">
       <i class="fas fa-hotel"></i>
       <span>Accommodation</span>
     </a>
@@ -367,66 +365,66 @@
       <p>Welcome back! Here's what's happening with your travel business</p>
     </div>
     <div class="add-btn">
-      <button class="btn btn-primary" id="add-accommodation-btn">
-        <i class="fas fa-plus me-2"></i>Add New Accommodation
+      <button class="btn btn-primary" id="add-transport-btn">
+        <i class="fas fa-plus me-2"></i>Add New Transport
       </button>
     </div>
   </div>
   <hr>
 
-  <div class="stats-container  ">
-    <div class="stats-card mt-2 ">
+  <div class="stats-container">
+    <div class="stats-card mt-2">
       <div class="icon-circle bg-total">
-        <i class="fas fa-bed"></i>
+        <i class="fas fa-shuttle-van"></i>
       </div>
       <div class="stats-info">
-        <h4 id="total-accommodations">0</h4>
-        <p>TOTAL ACCOMMODATIONS<span class="status-positive">+3% from last month</span></p>
+        <h4 id="total-transports">0</h4>
+        <p>TOTAL TRANSPORTS<span class="status-positive">+3% from last month</span></p>
       </div>
     </div>
     <div class="stats-card mt-2">
-      <div class="icon-circle bg-hotels">
-        <i class="fas fa-hotel"></i>
+      <div class="icon-circle bg-car">
+        <i class="fas fa-car"></i>
       </div>
       <div class="stats-info">
-        <h4 id="total-hotels">0</h4>
-        <p>HOTELS<span class="status-positive">+3% from last month</span></p>
+        <h4 id="total-cars">0</h4>
+        <p>CARS<span class="status-positive">+3% from last month</span></p>
       </div>
     </div>
     <div class="stats-card mt-2">
-      <div class="icon-circle bg-resorts">
-        <i class="fas fa-umbrella-beach"></i>
+      <div class="icon-circle bg-van">
+        <i class="fas fa-shuttle-van"></i>
       </div>
       <div class="stats-info">
-        <h4 id="total-resorts">0</h4>
-        <p>Resorts<span class="status-positive">+3% from last month</span></p>
+        <h4 id="total-vans">0</h4>
+        <p>VANS<span class="status-positive">+3% from last month</span></p>
       </div>
     </div>
     <div class="stats-card mt-2">
-      <div class="icon-circle bg-homestays">
-        <i class="fas fa-home"></i>
+      <div class="icon-circle bg-trishaw">
+        <i class="fas fa-taxi"></i>
       </div>
       <div class="stats-info">
-        <h4 id="total-homestays">0</h4>
-        <p>Homestays<span class="status-positive">+3% from last month</span></p>
+        <h4 id="total-trishaws">0</h4>
+        <p>TRISHAWS<span class="status-positive">+3% from last month</span></p>
       </div>
     </div>
   </div>
 
-  <!-- Accommodations Section -->
+  <!-- Transport Section -->
   <div>
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h5>Accommodations</h5>
+      <h5>Transport Options</h5>
       <div class="search-box">
-        <input type="text" class="form-control" placeholder="Search accommodations..." id="search-accommodation">
+        <input type="text" class="form-control" placeholder="Search transport..." id="search-transport">
         <button class="btn btn-outline-secondary" type="button">
           <i class="fas fa-search"></i>
         </button>
       </div>
     </div>
 
-    <div id="accommodationList">
-      <!-- Accommodation list will load here -->
+    <div id="transportList">
+      <!-- Transport list will load here -->
       <div class="text-center p-4">
         <div class="spinner-border" role="status">
           <span class="visually-hidden">Loading...</span>
@@ -441,74 +439,55 @@
   </div>
 </div>
 
-<!-- Add/Edit Accommodation Modal -->
-<div id="accommodationModal" class="custom-modal">
+<!-- Add/Edit Transport Modal -->
+<div id="transportModal" class="custom-modal">
   <div class="modal-content">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h3 id="modal-title">Add New Accommodation</h3>
+      <h3 id="modal-title">Add New Transport</h3>
       <span class="close">&times;</span>
     </div>
 
-    <form id="accommodation-form">
+    <form id="transport-form">
       <div class="row">
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="accommodationId" class="form-label">Accommodation ID</label>
-            <input type="text" class="form-control" id="accommodationId" required>
+            <label for="transportId" class="form-label">Transport ID</label>
+            <input type="text" class="form-control" id="transportId" required>
           </div>
 
           <div class="mb-3">
-            <label for="tourId" class="form-label">Tour ID</label>
+            <label for="transportType" class="form-label">Transport Type</label>
             <div class="input-group">
-              <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" id="load-tour-id">Select</button>
-              <ul class="dropdown-menu" id="tour-dropdown"></ul>
-              <input type="text" class="form-control" id="tourId" readonly>
+              <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" id="loadTransportType">Select Type</button>
+              <ul class="dropdown-menu" id="type-dropdown">
+                <li><a class="dropdown-item" href="#" onclick="setTransportType('CAR')">CAR</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setTransportType('VAN')">VAN</a></li>
+                <li><a class="dropdown-item" href="#" onclick="setTransportType('TRISHAW')">TRISHAW</a></li>
+              </ul>
+              <input type="text" class="form-control" id="transportType" readonly>
             </div>
-          </div>
-
-          <div class="mb-3">
-            <label for="accommodationName" class="form-label">Accommodation Name</label>
-            <input type="text" class="form-control" id="accommodationName" required maxlength="50">
-          </div>
-
-          <div class="mb-3">
-            <label for="accommodationAddress" class="form-label">Address</label>
-            <input type="text" class="form-control" id="accommodationAddress" required maxlength="100">
           </div>
         </div>
 
         <div class="col-md-6">
           <div class="mb-3">
-            <label for="accommodationDescription" class="form-label">Description</label>
-            <textarea class="form-control" id="accommodationDescription" rows="3" maxlength="200" required></textarea>
-          </div>
-
-          <div class="mb-3">
-            <label for="accommodationType" class="form-label">Accommodation Type</label>
-            <div class="input-group">
-              <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" id="loadAccommodationType">Select Type</button>
-              <ul class="dropdown-menu" id="type-dropdown">
-                <li><a class="dropdown-item" href="#" onclick="setAccommodationType('Hotels')">Hotels</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setAccommodationType('Resorts')">Resorts</a></li>
-                <li><a class="dropdown-item" href="#" onclick="setAccommodationType('Homestays')">Homestays</a></li>
-              </ul>
-              <input type="text" class="form-control" id="accommodationType" readonly>
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label for="accommodationPrice" class="form-label">Price per Night</label>
+            <label for="pricePerKM" class="form-label">Price per KM</label>
             <div class="input-group">
               <span class="input-group-text">RS.</span>
-              <input type="text" class="form-control" id="accommodationPrice" required maxlength="50">
+              <input type="number" class="form-control" id="pricePerKM" required min="0" step="0.01">
             </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="passengers" class="form-label">Maximum Passengers</label>
+            <input type="number" class="form-control" id="passengers" required min="1" max="50">
           </div>
         </div>
       </div>
 
       <div class="d-flex justify-content-end mt-4">
         <button type="button" class="btn btn-secondary me-2" id="btn-cancel">Cancel</button>
-        <button type="submit" class="btn btn-primary" id="btn-save">Save Accommodation</button>
+        <button type="submit" class="btn btn-primary" id="btn-save">Save Transport</button>
       </div>
     </form>
   </div>
@@ -517,53 +496,40 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // Load accommodations function
-  function loadAccommodation() {
-    const accommodationList = document.getElementById('accommodationList');
-    const token = localStorage.getItem('userToken');
+  // Load transports function
+  function loadTransport() {
+    const transportList = document.getElementById('transportList');
 
-    accommodationList.innerHTML = '<div class="text-center p-4"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
-    console.log("Token used:", token);
+    transportList.innerHTML = '<div class="text-center p-4"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
 
     $.ajax({
-      url: "http://localhost:8080/api/v1/accommodation",
+      url: "http://localhost:8080/api/v1/transport",
       method: "GET",
       dataType: "json",
-      headers: {
-        'Authorization': `Bearer ${token}`
-      },
       success: (res) => {
-        console.log("Full API response:", res);
-
-        // Check if res.data exists and is an array
-        if (!res.data || !Array.isArray(res.data)) {
-          console.error("Invalid response format:", res);
-          accommodationList.innerHTML = '<div class="alert alert-danger m-3">Invalid data format received from server.</div>';
-          return;
-        }
-        const accommodations = res.data;
-        if (accommodations.length === 0) {
-          accommodationList.innerHTML = '<div class="alert alert-info m-3">No accommodations found.</div>';
+        const transports = res.data;
+        if (transports.length === 0) {
+          transportList.innerHTML = '<div class="alert alert-info m-3">No transport options found.</div>';
           return;
         }
 
-        // Update total accommodations count
-        document.getElementById('total-accommodations').textContent = accommodations.length;
+        // Update total transports count
+        document.getElementById('total-transports').textContent = transports.length;
 
         // Count by type
-        let hotelCount = 0;
-        let resortCount = 0;
-        let homestayCount = 0;
+        let carCount = 0;
+        let vanCount = 0;
+        let trishawCount = 0;
 
-        accommodations.forEach(accommodation => {
-          if (accommodation.type === "Hotels") hotelCount++;
-          else if (accommodation.type === "Resorts") resortCount++;
-          else if (accommodation.type === "Homestays") homestayCount++;
+        transports.forEach(transport => {
+          if (transport.type === "CAR") carCount++;
+          else if (transport.type === "VAN") vanCount++;
+          else if (transport.type === "TRISHAW") trishawCount++;
         });
 
-        document.getElementById('total-hotels').textContent = hotelCount;
-        document.getElementById('total-resorts').textContent = resortCount;
-        document.getElementById('total-homestays').textContent = homestayCount;
+        document.getElementById('total-cars').textContent = carCount;
+        document.getElementById('total-vans').textContent = vanCount;
+        document.getElementById('total-trishaws').textContent = trishawCount;
 
         // Create table layout
         let html = `
@@ -571,38 +537,34 @@
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Accommodation</th>
                 <th>Type</th>
-                <th>Location</th>
-                <th>Related Tour</th>
-                <th>Price</th>
+                <th>Price per KM</th>
+                <th>Max Passengers</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
         `;
 
-        accommodations.forEach(accommodation => {
+        transports.forEach(transport => {
           // Define badge class based on type
-          let badgeClass = 'badge-hotels';
-          if (accommodation.type === 'Resorts') badgeClass = 'badge-resorts';
-          else if (accommodation.type === 'Homestays') badgeClass = 'badge-homestays';
+          let badgeClass = 'badge-car';
+          if (transport.type === 'VAN') badgeClass = 'badge-van';
+          else if (transport.type === 'TRISHAW') badgeClass = 'badge-trishaw';
 
           html += `
             <tr>
-              <td>${accommodation.id}</td>
-              <td>${accommodation.name}</td>
-              <td><span class="badge ${badgeClass}">${accommodation.type}</span></td>
-              <td>${accommodation.address}</td>
-              <td>${accommodation.tourId}</td>
-              <td>RS.${accommodation.price}/night</td>
+              <td>${transport.id}</td>
+              <td><span class="badge ${badgeClass}">${transport.type}</span></td>
+              <td>RS.${transport.pricePerKM}</td>
+              <td>${transport.passengers}</td>
               <td>
                 <div class="d-flex">
-                  <span class="action-btn btn-edit" style="background-color:#2196F3;color: white ; padding:  5px 10px;border-radius: 4px;font-size: 12px"
-                    onclick="editAccommodation('${accommodation.id}','${accommodation.tourId}' ,'${accommodation.name}', '${accommodation.description}', '${accommodation.type}', '${accommodation.address}', '${accommodation.price}')">
+                  <span class="action-btn btn-edit" style="background-color:#2196F3;color: white; padding: 5px 10px;border-radius: 4px;font-size: 12px"
+                    onclick="editTransport('${transport.id}', '${transport.type}', '${transport.pricePerKM}', '${transport.passengers}')">
                     <i class="fas fa-edit"></i>
                   </span>
-                  <span class="action-btn btn-delete" style="background-color: #F44336;color: white" onclick="deleteAccommodation('${accommodation.id}')">
+                  <span class="action-btn btn-delete" style="background-color: #F44336;color: white" onclick="deleteTransport('${transport.id}')">
                     <i class="fas fa-trash"></i>
                   </span>
                 </div>
@@ -613,34 +575,21 @@
 
         html += '</tbody></table>';
 
-        accommodationList.innerHTML = html;
+        transportList.innerHTML = html;
       },
-      error: (xhr, status, error) => {
-        console.error('Error loading accommodations:');
-        console.error('Status:', xhr.status);
-        console.error('Response:', xhr.responseText);
-
-        let errorMessage = "Failed to load accommodations.";
-        if (xhr.status === 401 || xhr.status === 403) {
-          errorMessage = "Authentication error. Please log in again.";
-          // Redirect to login page if unauthorized
-          window.location.href = 'index.html';
-        } else if (xhr.status === 404) {
-          errorMessage = "Accommodation data not found.";
-        } else if (xhr.status === 500) {
-          errorMessage = "Server error. Please try again later.";
-        }
-        accommodationList.innerHTML = `<div class="alert alert-danger m-3">${errorMessage}</div>`;
+      error: (err) => {
+        console.error('Error loading transports:', err);
+        transportList.innerHTML = '<div class="alert alert-danger m-3">Failed to load transport options.</div>';
       }
     });
   }
 
-  // Load accommodations on page load
+  // Load transports on page load
   $(document).ready(function() {
-    loadAccommodation();
+    loadTransport();
 
     // Search functionality
-    $("#search-accommodation").on("keyup", function() {
+    $("#search-transport").on("keyup", function() {
       const value = $(this).val().toLowerCase();
       $(".custom-table tbody tr").filter(function() {
         $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
@@ -648,22 +597,22 @@
     });
   });
 
-  const modal = document.getElementById("accommodationModal");
-  const addAccommodationBtn = document.getElementById("add-accommodation-btn");
+  const modal = document.getElementById("transportModal");
+  const addTransportBtn = document.getElementById("add-transport-btn");
   const closeBtn = document.getElementsByClassName("close")[0];
   const cancelBtn = document.getElementById("btn-cancel");
 
-  // Open modal for adding new accommodation
-  addAccommodationBtn.onclick = function() {
-    document.getElementById("modal-title").textContent = "Add New Accommodation";
-    document.getElementById("accommodation-form").reset();
-    document.getElementById("accommodationId").value = "";
-    document.getElementById("btn-save").textContent = "Save Accommodation";
+  // Open modal for adding new transport
+  addTransportBtn.onclick = function() {
+    document.getElementById("modal-title").textContent = "Add New Transport";
+    document.getElementById("transport-form").reset();
+    document.getElementById("transportId").value = "";
+    document.getElementById("btn-save").textContent = "Save Transport";
     modal.style.display = "block";
 
-    // Generate a new accommodation ID
-    const newId = "ACOM" + Math.floor(Math.random() * 900 + 100);
-    document.getElementById("accommodationId").value = newId;
+    // Generate a new transport ID
+    const newId = "TRAN" + Math.floor(Math.random() * 900 + 100);
+    document.getElementById("transportId").value = newId;
   }
 
   // Close modal functions
@@ -681,41 +630,35 @@
     }
   }
 
-  // Save accommodation
+  // Save transport
   $("#btn-save").off("click").on("click", (e) => {
     e.preventDefault();
 
     // Validate form
-    const form = document.getElementById("accommodation-form");
+    const form = document.getElementById("transport-form");
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
     }
 
-    const id = $("#accommodationId").val();
-    const tourId = $("#tourId").val();
-    const accommodationName = $("#accommodationName").val();
-    const description = $("#accommodationDescription").val();
-    const accommodationType = $("#accommodationType").val();
-    const accommodationAddress = $("#accommodationAddress").val();
-    const accommodationPrice = $("#accommodationPrice").val();
+    const id = $("#transportId").val();
+    const transportType = $("#transportType").val();
+    const pricePerKM = $("#pricePerKM").val();
+    const passengers = $("#passengers").val();
 
     const isUpdate = id.trim() !== "";
 
     const json = {
       "id": id,
-      "tourId": tourId,
-      "name": accommodationName,
-      "description": description,
-      "type": accommodationType,
-      "address": accommodationAddress,
-      "price": accommodationPrice
+      "type": transportType,
+      "pricePerKM": pricePerKM,
+      "passengers": passengers
     }
 
     const method = isUpdate ? "PUT" : "POST";
 
     $.ajax({
-      url: "http://localhost:8080/api/v1/accommodation",
+      url: "http://localhost:8080/api/v1/transport",
       method: method,
       data: JSON.stringify(json),
       contentType: "application/json",
@@ -723,7 +666,7 @@
         console.log("Success:", res);
 
         // Show success message
-        const successMsg = isUpdate ? "Accommodation updated successfully!" : "New accommodation added successfully!";
+        const successMsg = isUpdate ? "Transport updated successfully!" : "New transport option added successfully!";
         const alertHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
           ${successMsg}
           <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -737,91 +680,48 @@
         }, 3000);
 
         // Reset form and close modal
-        $("#accommodation-form")[0].reset();
-        $("#accommodationId").val("");
-        $("#btn-save").text("Save Accommodation");
+        $("#transport-form")[0].reset();
+        $("#transportId").val("");
+        $("#btn-save").text("Save Transport");
         modal.style.display = "none";
 
-        // Reload accommodation list
-        loadAccommodation();
+        // Reload transport list
+        loadTransport();
       },
       error: (err) => {
         console.error("Error:", err);
-        alert("Error saving accommodation data. Please try again.");
+        alert("Error saving transport data. Please try again.");
       },
     });
   });
 
-  // Load tour IDs for dropdown
-  $("#load-tour-id").click((e) => {
-    e.preventDefault();
-
-    $("#tour-dropdown").html('<li><div class="dropdown-item">Loading...</div></li>');
-
-    $.ajax({
-      url: "http://localhost:8080/api/v1/tour",
-      method: "GET",
-      success: (res) => {
-        console.log(res);
-        $("#tour-dropdown").empty();
-
-        if (res.data.length === 0) {
-          $("#tour-dropdown").append('<li><div class="dropdown-item">No tours available</div></li>');
-          return;
-        }
-
-        res.data.forEach(tour => {
-          $("#tour-dropdown").append(`
-            <li><a class="dropdown-item" href="#" onclick="setTour('${tour.id}')">${tour.id} - ${tour.name || ''}</a></li>
-          `);
-        });
-      },
-      error: (err) => {
-        console.error(err);
-        $("#tour-dropdown").html('<li><div class="dropdown-item text-danger">Error loading tours</div></li>');
-      }
-    });
-  });
-
-  // Set tour ID
-  function setTour(tourId) {
-    $("#tourId").val(tourId);
+  // Set transport type
+  function setTransportType(type) {
+    $("#transportType").val(type);
   }
 
-  // Set accommodation type
-  function setAccommodationType(type) {
-    $("#accommodationType").val(type);
-  }
-
-  // Edit accommodation
-  function editAccommodation(id, tourId, name, description, type, address, price) {
-    document.getElementById("modal-title").textContent = "Edit Accommodation";
-    $("#accommodationId").val(id);
-    $("#tourId").val(tourId);
-    $("#accommodationName").val(name);
-    $("#accommodationDescription").val(description);
-    $("#accommodationType").val(type);
-    $("#accommodationAddress").val(address);
-    $("#accommodationPrice").val(price);
-    $("#btn-save").text("Update Accommodation");
+  // Edit transport
+  function editTransport(id, type, pricePerKM, passengers) {
+    document.getElementById("modal-title").textContent = "Edit Transport";
+    $("#transportId").val(id);
+    $("#transportType").val(type);
+    $("#pricePerKM").val(pricePerKM);
+    $("#passengers").val(passengers);
+    $("#btn-save").text("Update Transport");
 
     modal.style.display = "block";
   }
 
-  // Delete accommodation
-  function deleteAccommodation(id) {
-    const token = localStorage.getItem('userToken');
-    if (confirm("Are you sure you want to delete this accommodation?")) {
+  // Delete transport
+  function deleteTransport(id) {
+    if (confirm("Are you sure you want to delete this transport option?")) {
       $.ajax({
-        url: `http://localhost:8080/api/v1/accommodation/delete/${id}`,
+        url: `http://localhost:8080/api/v1/transport/delete/${id}`,
         method: "DELETE",
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
         success: (res) => {
           // Show success message
           const alertHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
-            Accommodation deleted successfully!
+            Transport deleted successfully!
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
           </div>`;
 
@@ -832,12 +732,12 @@
             $(".alert").alert('close');
           }, 3000);
 
-          loadAccommodation();
+          loadTransport();
           console.log(res);
         },
         error: (err) => {
           console.log(err);
-          alert("Error deleting accommodation. Please try again.");
+          alert("Error deleting transport. Please try again.");
         }
       });
     }

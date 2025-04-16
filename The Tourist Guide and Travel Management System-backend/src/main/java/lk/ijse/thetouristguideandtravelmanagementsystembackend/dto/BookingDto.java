@@ -20,6 +20,5 @@ public class BookingDto {
     private String date;
     private double totalAmount;
     private int noOfTravellers;
-    private String bookingStatus;
 }
 

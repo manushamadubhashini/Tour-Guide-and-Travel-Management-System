@@ -3,550 +3,520 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Everest Trips - Manaslu Circuit Trek Checkout</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <title>WebXPay Sri Lanka Payment Integration</title>
   <style>
-    body {
-      background-color: #f8f9fa;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
-    .step-circle {
-      width: 40px;
-      height: 40px;
-      background-color: #1e88e5;
-      color: white;
-      border-radius: 50%;
+
+    body {
+      background-color: #f7f9fc;
       display: flex;
-      align-items: center;
       justify-content: center;
-      font-weight: bold;
-      margin-right: 15px;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
     }
-    .card {
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      border: none;
-      margin-bottom: 20px;
-    }
-    .card-header {
+
+    .container {
       background-color: white;
-      border-bottom: 1px solid #f0f0f0;
-      padding: 20px;
-      border-radius: 12px 12px 0 0 !important;
-    }
-    .card-body {
-      padding: 20px;
-    }
-    .logo {
-      height: 50px;
-    }
-    .discount-badge {
-      background-color: #4caf50;
-      color: white;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: bold;
-    }
-    .price-details {
-      background-color: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      padding: 20px;
-      position: sticky;
-      top: 20px;
-    }
-    .form-control, .form-select {
-      padding: 10px 15px;
-      height: auto;
-      border-radius: 8px;
-    }
-    .image-box {
-      width: 100px;
-      height: 80px;
-      overflow: hidden;
-      border-radius: 8px;
-      margin-right: 15px;
-    }
-    .image-box img {
+      border-radius: 10px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      max-width: 500px;
+      overflow: hidden;
     }
-    .security-message {
-      background-color: #e8f5e9;
-      color: #2e7d32;
-      border-radius: 8px;
-      padding: 10px 15px;
+
+    .header {
+      background-color: #0066b3; /* WebXPay blue */
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+
+    .header p {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .order-summary {
+      padding: 20px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .order-summary h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .item-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .total-row {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      font-size: 16px;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px dashed #ddd;
+    }
+
+    .payment-options {
+      padding: 20px;
+    }
+
+    .payment-options h2 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #333;
+    }
+
+    .payment-methods {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
       margin-bottom: 20px;
     }
-    .payment-logo {
-      height: 25px;
-      margin-right: 10px;
-    }
-    .book-now-btn {
-      background-color: #1e88e5;
-      border: none;
+
+    .payment-method {
+      flex: 1;
+      min-width: 120px;
+      padding: 15px 10px;
+      text-align: center;
+      border: 1px solid #ddd;
       border-radius: 8px;
-      padding: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .payment-method:hover {
+      border-color: #0066b3;
+    }
+
+    .payment-method.selected {
+      border-color: #0066b3;
+      background-color: rgba(0, 102, 179, 0.1);
+    }
+
+    .payment-method img {
+      height: 30px;
+      margin-bottom: 8px;
+    }
+
+    .payment-method p {
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .form-section {
+      padding: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      color: #555;
+      font-weight: 600;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+
+    .form-group input:focus {
+      border-color: #0066b3;
+      outline: none;
+    }
+
+    .button {
+      background-color: #0066b3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 14px;
+      font-size: 16px;
       font-weight: 600;
       width: 100%;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-top: 20px;
     }
-    .custom-control {
-      margin-bottom: 15px;
+
+    .button:hover {
+      background-color: #005291;
+    }
+
+    .secure-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: #777;
+    }
+
+    .secure-badge img {
+      height: 40px;
+      margin-bottom: 10px;
+    }
+
+    .card-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .card-row .form-group:first-child {
+      flex: 2;
+    }
+
+    .card-row .form-group {
+      flex: 1;
+    }
+
+    .payment-logos {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .payment-logos img {
+      height: 25px;
+    }
+
+    /* Local payment methods section */
+    .local-payment {
+      padding: 20px;
+      border-top: 1px solid #eee;
+    }
+
+    .bank-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .bank-option {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .bank-option:hover {
+      border-color: #0066b3;
+    }
+
+    .bank-option img {
+      height: 30px;
+      margin-bottom: 5px;
+    }
+
+    .bank-option p {
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      .card-row {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .payment-methods {
+        flex-direction: column;
+      }
+
+      .bank-options {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
-  <div class="container">
-    <a class="navbar-brand d-flex align-items-center" href="#">
-      <div style="color: #1e88e5; font-size: 24px; font-weight: bold;">
-        <span style="color: #ff7043;">🏔️ EVEREST</span> TRIPS
-      </div>
-    </a>
-    <div class="ms-auto d-flex align-items-center">
-                <span class="text-success me-3">
-                    <i class="fas fa-lock me-1"></i> Secure Payment
-                </span>
+<div class="container">
+  <div class="header">
+    <h1>WebXPay Payment</h1>
+    <p>Secure Checkout</p>
+  </div>
+
+  <div class="order-summary">
+    <h2>Order Summary</h2>
+    <div class="item-row">
+      <span>Premium T-shirt</span>
+      <span>LKR 3,500.00</span>
+    </div>
+    <div class="item-row">
+      <span>Shipping</span>
+      <span>LKR 350.00</span>
+    </div>
+    <div class="total-row">
+      <span>Total</span>
+      <span>LKR 3,850.00</span>
     </div>
   </div>
-</nav>
 
-<div class="container my-4">
-  <div class="row">
-    <div class="col-lg-8">
-      <h2 class="mb-4">Confirm & Pay</h2>
-
-      <!-- Step 1: Travelers -->
-      <div class="card">
-        <div class="card-header d-flex align-items-center">
-          <div class="step-circle">1</div>
-          <h4 class="mb-0">Travellers</h4>
-        </div>
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <div>
-              <span>No. of Travellers (Adult: 18-80)</span>
-            </div>
-            <div class="d-flex align-items-center">
-              <button class="btn btn-outline-secondary rounded-circle" id="decrease-btn" style="width: 38px; height: 38px; padding: 0;">-</button>
-              <span class="mx-3" id="noOfTravellers">0</span>
-              <button class="btn btn-outline-secondary rounded-circle" id="increase-btn" style="width: 38px; height: 38px; padding: 0;">+</button>
-            </div>
-          </div>
-          <div class="text-primary">
-            <i class="fas fa-tag me-2"></i> Group Discount
-          </div>
-        </div>
+  <div class="payment-options">
+    <h2>Select Payment Method</h2>
+    <div class="payment-methods">
+      <div class="payment-method selected" data-method="card">
+        <img src="/api/placeholder/80/50" alt="Credit/Debit Card">
+        <p>Card Payment</p>
       </div>
-
-      <!-- Step 2: Accommodation -->
-      <div class="card">
-        <div class="card-header d-flex align-items-center">
-          <div class="step-circle">2</div>
-          <h4 class="mb-0">Accommodation</h4>
-        </div>
-        <div class="card-body">
-          <div class="mb-3">
-            <div class="d-flex align-items-center mb-3">
-              <i class="fas fa-bed me-2"></i>
-              <span>Please choose a room(s) for 2 Travellers.</span>
-            </div>
-          </div>
-          <hr>
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-              <h5>Single Room</h5>
-              <p class="text-muted mb-0">A cozy room for one guest, ideal for solo travelers.</p>
-            </div>
-            <div class="text-end">
-              <div class="d-flex align-items-center justify-content-end mb-2">
-                <div class="me-3">
-                  <span class="fw-bold">USD $70</span><br>
-                  <small>per traveller</small>
-                </div>
-                <select class="form-select" style="width: 100px;">
-                  <option selected>0 Traveller</option>
-                  <option>1 Traveller</option>
-                  <option>2 Travellers</option>
-                </select>
-              </div>
-              <a href="#" class="text-primary">View Details</a>
-            </div>
-          </div>
-          <hr>
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <h5>Twin Room</h5>
-              <p class="text-muted mb-0">A comfortable room with two beds.</p>
-            </div>
-            <div class="text-end">
-              <div class="d-flex align-items-center justify-content-end mb-2">
-                <div class="me-3">
-                  <span class="fw-bold">USD $60</span><br>
-                  <small>per traveller</small>
-                </div>
-                <select class="form-select" style="width: 100px;">
-                  <option>0 Traveller</option>
-                  <option>1 Traveller</option>
-                  <option selected>2 Travellers</option>
-                </select>
-              </div>
-              <a href="#" class="text-primary">View Details</a>
-            </div>
-          </div>
-        </div>
+      <div class="payment-method" data-method="frimi">
+        <img src="/api/placeholder/80/50" alt="Frimi">
+        <p>Frimi</p>
       </div>
-
-      <!-- Step 3: Add-ons -->
-      <div class="card">
-        <div class="card-header d-flex align-items-center">
-          <div class="step-circle">3</div>
-          <h4 class="mb-0">Add-ons</h4>
-        </div>
-        <div class="card-body">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex">
-              <div class="image-box">
-<!--                <img src="/api/placeholder/100/80" alt="Kathmandu Sightseeing">-->
-              </div>
-              <div>
-                <h5>1 Day Kathmandu Sightseeing</h5>
-                <p class="text-muted mb-0">Enhance your trek with a 1-day guided tour of Kathmandu's UNESCO sites, including Swayambhunath and Boudhanath. Perfect for immersing in Nepal's rich culture.</p>
-              </div>
-            </div>
-            <div class="text-end">
-              <div class="fw-bold mb-2">USD $200</div>
-              <input type="number" class="form-control text-center" min="0" value="0" style="width: 80px; float: right;">
-            </div>
-          </div>
-          <hr>
-
-          <h5 class="mb-3">Airport Pickup</h5>
-          <div class="mb-3">
-            <select class="form-select">
-              <option selected>Airport pickup in taxi (4 people)</option>
-              <option>Private car pickup (2 people)</option>
-              <option>Shared van pickup (8 people)</option>
-            </select>
-          </div>
-
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex">
-              <div class="image-box">
-<!--                <img src="/api/placeholder/100/80" alt="Airport Taxi">-->
-              </div>
-              <div>
-                <h5>Airport pickup in taxi (4 people)</h5>
-                <p class="text-muted mb-0">Convenient airport transfer for up to 4 people in a private taxi, ensuring a smooth start to your journey.</p>
-              </div>
-            </div>
-            <div class="text-end">
-              <div class="fw-bold mb-2">USD $20</div>
-              <input type="number" class="form-control text-center" min="0" value="0" style="width: 80px; float: right;">
-            </div>
-          </div>
-          <hr>
-
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <div class="d-flex">
-              <div class="image-box">
-<!--                <img src="/api/placeholder/100/80" alt="Private Trek">-->
-              </div>
-              <div>
-                <h5>Private Trek</h5>
-                <p class="text-muted mb-0">You have the option to make this trek a private journey instead of joining a group.</p>
-              </div>
-            </div>
-            <div class="text-end">
-              <div class="fw-bold mb-2">USD $200</div>
-              <input type="number" class="form-control text-center" min="0" value="0" style="width: 80px; float: right;">
-            </div>
-          </div>
-          <hr>
-
-          <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex">
-              <div class="image-box">
-<!--                <img src="/api/placeholder/100/80" alt="Helicopter">-->
-              </div>
-              <div>
-                <h5>Helicopter from Lukla to Kathmandu</h5>
-                <p class="text-muted mb-0">If you prefer to fly directly to Kathmandu airport instead of taking the regular flight to Ramechhap followed by a 5-hour drive to Kathmandu.</p>
-              </div>
-            </div>
-            <div class="text-end">
-              <div class="fw-bold mb-2">USD $600</div>
-              <input type="number" class="form-control text-center" min="0" value="0" style="width: 80px; float: right;">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Step 4: Traveller Details -->
-      <div class="card">
-        <div class="card-header d-flex align-items-center">
-          <div class="step-circle">4</div>
-          <h4 class="mb-0">Add Traveller Details</h4>
-        </div>
-        <div class="card-body">
-          <h5 class="mb-3">Traveller 1 (Lead Traveller)</h5>
-          <div class="row mb-3">
-            <div class="col-12 mb-2">
-              <label class="form-label">Full Name <span class="text-danger">*</span></label>
-            </div>
-            <div class="col-md-3 mb-3">
-              <select class="form-select">
-                <option selected>Title</option>
-                <option>Mr.</option>
-                <option>Mrs.</option>
-                <option>Ms.</option>
-                <option>Dr.</option>
-              </select>
-            </div>
-            <div class="col-md-4.5 mb-3">
-              <input type="text" class="form-control" placeholder="First Name">
-            </div>
-            <div class="col-md-4.5 mb-3">
-              <input type="text" class="form-control" placeholder="Last Name">
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Email Address <span class="text-danger">*</span></label>
-              <input type="email" class="form-control" placeholder="Email Address">
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Phone Number <span class="text-danger">*</span></label>
-              <input type="tel" class="form-control" placeholder="1234567890">
-            </div>
-          </div>
-          <div class="row mb-4">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
-              <div class="row">
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="DD">
-                </div>
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="MM">
-                </div>
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="YYYY">
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Nationality <span class="text-danger">*</span></label>
-              <select class="form-select">
-                <option selected>Select Nationality</option>
-                <option>United States</option>
-                <option>United Kingdom</option>
-                <option>Canada</option>
-                <option>Australia</option>
-                <option>Germany</option>
-                <option>France</option>
-                <option>Japan</option>
-                <option>India</option>
-                <option>Nepal</option>
-              </select>
-            </div>
-          </div>
-
-          <h5 class="mb-3 mt-4">Traveller 2 (Adult)</h5>
-          <div class="row mb-3">
-            <div class="col-12 mb-2">
-              <label class="form-label">Full Name <span class="text-danger">*</span></label>
-            </div>
-            <div class="col-md-3 mb-3">
-              <select class="form-select">
-                <option selected>Title</option>
-                <option>Mr.</option>
-                <option>Mrs.</option>
-                <option>Ms.</option>
-                <option>Dr.</option>
-              </select>
-            </div>
-            <div class="col-md-4.5 mb-3">
-              <input type="text" class="form-control" placeholder="First Name">
-            </div>
-            <div class="col-md-4.5 mb-3">
-              <input type="text" class="form-control" placeholder="Last Name">
-            </div>
-          </div>
-          <div class="row mb-4">
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
-              <div class="row">
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="DD">
-                </div>
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="MM">
-                </div>
-                <div class="col">
-                  <input type="text" class="form-control" placeholder="YYYY">
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="form-label">Nationality <span class="text-danger">*</span></label>
-              <select class="form-select">
-                <option selected>Select Nationality</option>
-                <option>United States</option>
-                <option>United Kingdom</option>
-                <option>Canada</option>
-                <option>Australia</option>
-                <option>Germany</option>
-                <option>France</option>
-                <option>Japan</option>
-                <option>India</option>
-                <option>Nepal</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Step 5: Special Requests -->
-      <div class="card">
-        <div class="card-header d-flex align-items-center">
-          <div class="step-circle">5</div>
-          <h4 class="mb-0">Special Requests/Comments</h4>
-        </div>
-        <div class="card-body">
-          <textarea class="form-control" rows="5" placeholder="Enter your notes here..."></textarea>
-        </div>
-      </div>
-
-      <!-- Step 6: Payment Details -->
-      <div class="card">
-        <div class="card-header d-flex align-items-center">
-          <div class="step-circle">6</div>
-          <h4 class="mb-0">Add Payment Details</h4>
-        </div>
-        <div class="card-body">
-          <div class="security-message mb-4">
-            <i class="fas fa-lock me-2"></i> This is a secure and SSL-encrypted payment. Your credit card details are safe.
-          </div>
-
-          <div class="mb-4">
-            <h5 class="mb-3">Select Your Payment Method <span class="text-danger">*</span></h5>
-            <div class="form-check mb-3 border rounded p-3">
-              <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" checked>
-              <label class="form-check-label d-flex justify-content-between align-items-center w-100" for="creditCard">
-                <span>Pay By Card</span>
-                <span>
-<!--                                        <img src="/api/placeholder/30/20" alt="Visa" class="payment-logo">-->
-<!--                                        <img src="/api/placeholder/30/20" alt="Mastercard" class="payment-logo">-->
-<!--                                        <img src="/api/placeholder/30/20" alt="Amex" class="payment-logo">-->
-                                    </span>
-              </label>
-            </div>
-            <div class="form-check border rounded p-3">
-              <input class="form-check-input" type="radio" name="paymentMethod" id="payLater">
-              <label class="form-check-label d-flex justify-content-between align-items-center w-100" for="payLater">
-                <span>Book Now & Pay Later</span>
-                <i class="fas fa-info-circle"></i>
-              </label>
-            </div>
-          </div>
-
-          <button class="btn btn-primary book-now-btn">Book Now</button>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="col-lg-4">
-      <div class="price-details">
-        <h4 class="mb-4">Price Details</h4>
-
-        <div class="mb-3">
-          <h5 class="mb-3">Traveller(s):</h5>
-          <div class="d-flex justify-content-between align-items-center mb-2">
-            <div>
-              Adult: 2 x USD $1200 <span class="discount-badge ms-2">20% Off</span>
-            </div>
-            <div class="fw-bold">USD $2400</div>
-          </div>
-        </div>
-
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <div>
-            Bank Charge <i class="fas fa-info-circle ms-1"></i>
-          </div>
-          <div class="fw-bold">USD $84</div>
-        </div>
-
-        <hr>
-
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <div class="fw-bold">Total:</div>
-          <div class="fw-bold fs-4">USD $2484</div>
-        </div>
+      <div class="payment-method" data-method="genie">
+        <img src="/api/placeholder/80/50" alt="Genie">
+        <p>Genie</p>
       </div>
     </div>
+
+    <div class="payment-logos">
+      <img src="/api/placeholder/50/30" alt="Visa">
+      <img src="/api/placeholder/50/30" alt="Mastercard">
+      <img src="/api/placeholder/50/30" alt="American Express">
+    </div>
+  </div>
+
+  <div id="card-form" class="form-section">
+    <div class="form-group">
+      <label for="cardholder">Cardholder Name</label>
+      <input type="text" id="cardholder" placeholder="Name on card" required>
+    </div>
+
+    <div class="form-group">
+      <label for="card-number">Card Number</label>
+      <input type="text" id="card-number" placeholder="•••• •••• •••• ••••" maxlength="19" required>
+    </div>
+
+    <div class="card-row">
+      <div class="form-group">
+        <label for="expiry">Expiry Date</label>
+        <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" required>
+      </div>
+
+      <div class="form-group">
+        <label for="cvv">CVV</label>
+        <input type="text" id="cvv" placeholder="•••" maxlength="4" required>
+      </div>
+    </div>
+
+    <button type="button" id="pay-button" class="button">Pay LKR 3,850.00</button>
+  </div>
+
+  <div id="bank-form" class="local-payment" style="display: none;">
+    <h2>Select Your Bank</h2>
+    <div class="bank-options">
+      <div class="bank-option" data-bank="boc">
+        <img src="/api/placeholder/60/40" alt="Bank of Ceylon">
+        <p>Bank of Ceylon</p>
+      </div>
+      <div class="bank-option" data-bank="peoples">
+        <img src="/api/placeholder/60/40" alt="People's Bank">
+        <p>People's Bank</p>
+      </div>
+      <div class="bank-option" data-bank="commercial">
+        <img src="/api/placeholder/60/40" alt="Commercial Bank">
+        <p>Commercial Bank</p>
+      </div>
+      <div class="bank-option" data-bank="sampath">
+        <img src="/api/placeholder/60/40" alt="Sampath Bank">
+        <p>Sampath Bank</p>
+      </div>
+      <div class="bank-option" data-bank="hnb">
+        <img src="/api/placeholder/60/40" alt="HNB">
+        <p>Hatton National</p>
+      </div>
+      <div class="bank-option" data-bank="dfcc">
+        <img src="/api/placeholder/60/40" alt="DFCC">
+        <p>DFCC Bank</p>
+      </div>
+    </div>
+
+    <button type="button" id="bank-button" class="button">Continue to Bank</button>
+  </div>
+
+  <div class="secure-badge">
+    <img src="/api/placeholder/150/60" alt="WebXPay Secure">
+    <p>Your payment is secure with WebXPay SSL encryption.</p>
+    <p>WebXPay is a licensed payment facilitator by Central Bank of Sri Lanka.</p>
   </div>
 </div>
 
-<footer class="py-4 bg-light mt-5">
-  <div class="container">
-    <div class="d-flex justify-content-between align-items-center">
-      <div>Copyright © 2013-2025</div>
-      <div>Powered by Tripcart</div>
-    </div>
-  </div>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  // // Initialize tooltips
-  // const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-  // const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  //   return new bootstrap.Tooltip(tooltipTriggerEl)
-  // })
-  //
-  // // Traveler count functionality
-  // document.addEventListener('DOMContentLoaded', function() {
-  //   // Form validation (basic example)
-  //   const bookNowBtn = document.querySelector('.book-now-btn');
-  //   bookNowBtn.addEventListener('click', function(e) {
-  //     e.preventDefault();
-  //     alert('Your booking for Manaslu Circuit Trek has been submitted successfully!');
-  //   });
-  //
-  //   // Add-on selection handling
-  //   const addonInputs = document.querySelectorAll('input[type="number"]');
-  //   addonInputs.forEach(input => {
-  //     input.addEventListener('change', function() {
-  //       // In a real application, this would update the total price
-  //       console.log('Add-on quantity updated');
-  //     });
-  //   });
-  // });
-  document.addEventListener("DOMContentLoaded",function (){
-    const travellersSpan=document.getElementById("noOfTravellers")
-    const increaseBtn=document.getElementById("increase-btn")
-    const decreaseBtn=document.getElementById("decrease-btn")
+  document.addEventListener('DOMContentLoaded', function() {
+    // Format card number with spaces
+    const cardNumberInput = document.getElementById('card-number');
+    cardNumberInput.addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+      let formattedValue = '';
+      for (let i = 0; i < value.length; i++) {
+        if (i > 0 && i % 4 === 0) {
+          formattedValue += ' ';
+        }
+        formattedValue += value[i];
+      }
+      e.target.value = formattedValue;
+    });
 
-    let travellersCount=parseInt(travellersSpan.textContent) || 0
+    // Format expiry date
+    const expiryInput = document.getElementById('expiry');
+    expiryInput.addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 2) {
+        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+      }
+      e.target.value = value;
+    });
 
-    increaseBtn.addEventListener("click",function (){
-      travellersCount++
-      travellersSpan.textContent=travellersCount
-    })
-    decreaseBtn.addEventListener("click",function (){
-      if (travellersCount>0) {
-        travellersCount--
-        travellersSpan.textContent = travellersCount
+    // Payment method selection
+    const paymentMethods = document.querySelectorAll('.payment-method');
+    const cardForm = document.getElementById('card-form');
+    const bankForm = document.getElementById('bank-form');
+
+    paymentMethods.forEach(method => {
+      method.addEventListener('click', function() {
+        // Remove selected class from all methods
+        paymentMethods.forEach(m => m.classList.remove('selected'));
+
+        // Add selected class to clicked method
+        this.classList.add('selected');
+
+        // Show/hide appropriate form
+        const methodType = this.getAttribute('data-method');
+        if (methodType === 'card') {
+          cardForm.style.display = 'block';
+          bankForm.style.display = 'none';
+        } else {
+          cardForm.style.display = 'none';
+          bankForm.style.display = 'block';
+        }
+      });
+    });
+
+    // Bank option selection
+    const bankOptions = document.querySelectorAll('.bank-option');
+    let selectedBank = null;
+
+    bankOptions.forEach(bank => {
+      bank.addEventListener('click', function() {
+        // Toggle selected style
+        bankOptions.forEach(b => b.style.borderColor = '#ddd');
+        this.style.borderColor = '#0066b3';
+        selectedBank = this.getAttribute('data-bank');
+      });
+    });
+
+    // WebXPay Integration Code
+    function initiateWebXPayPayment() {
+      // Replace with your actual WebXPay merchant ID and secret key
+      const merchantId = 'YOUR_MERCHANT_ID';
+      const secretKey = 'YOUR_SECRET_KEY';
+
+      // Create order details object
+      const orderDetails = {
+        orderId: 'ORD' + Math.floor(Math.random() * 1000000),
+        amount: 3850.00,
+        currency: 'LKR',
+        customerEmail: 'customer@example.com',
+        customerPhone: '0771234567',
+        items: [{
+          itemName: 'Premium T-shirt',
+          quantity: 1,
+          unitPrice: 3500.00
+        }],
+        shipping: 350.00
+      };
+
+      // In a real implementation, you would send this data to your server
+      // Your server would then:
+      // 1. Create a secure hash using the secret key
+      // 2. Submit the payment request to WebXPay
+      // 3. Redirect the customer to the WebXPay payment page
+
+      // For demonstration purposes, we'll simulate this process
+      console.log('Initiating WebXPay payment with the following details:', {
+        merchantId,
+        orderDetails
+      });
+
+      // Simulate payment processing
+      alert('Redirecting to WebXPay payment gateway...');
+
+      // In a real implementation, you would redirect to WebXPay's payment URL:
+      window.location.href = 'https://webxpay.com/index.php?route=checkout/billing&merchant_id=' +
+         merchantId + '&order_id=' + orderDetails.orderId + '&hash=' + generatedHash;
+    }
+
+    // Bank payment integration
+    function initiateBankPayment(bank) {
+      console.log(`Initiating bank payment via ${bank}`);
+      alert(`Redirecting to ${bank} online banking portal...`);
+
+      // In a real implementation, you would redirect to the selected bank's payment page
+      // through WebXPay's API
+    }
+
+    // Add click event to pay button
+    const payButton = document.getElementById('pay-button');
+    payButton.addEventListener('click', function() {
+      // Validate card form
+      const cardholder = document.getElementById('cardholder').value;
+      const cardNumber = document.getElementById('card-number').value;
+      const expiry = document.getElementById('expiry').value;
+      const cvv = document.getElementById('cvv').value;
+
+      if (!cardholder || !cardNumber || !expiry || !cvv) {
+        alert('Please fill in all card details');
+        return;
       }
 
-    })
-  })
+      initiateWebXPayPayment();
+    });
+
+    // Add click event to bank button
+    const bankButton = document.getElementById('bank-button');
+    bankButton.addEventListener('click', function() {
+      if (!selectedBank) {
+        alert('Please select a bank');
+        return;
+      }
+
+      initiateBankPayment(selectedBank);
+    });
+  });
 </script>
 </body>
 </html>

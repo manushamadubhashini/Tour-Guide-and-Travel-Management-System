@@ -4,5 +4,8 @@ import lk.ijse.thetouristguideandtravelmanagementsystembackend.entitiy.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepo extends JpaRepository<User,String> {
+     User findByEmail(String userName);
+
+    boolean existsByEmail(String userName);
 
 }

@@ -15,8 +15,8 @@ public class ReviewController {
     @Autowired
     private ReviewService reviewService;
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseUtil save(@ModelAttribute ReviewDto reviewDto){
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil save(@RequestBody ReviewDto reviewDto){
         reviewService.save(reviewDto);
         return new ResponseUtil(201,"Review is Successfully",reviewDto);
     }

@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   const packagesContainer = document.getElementById('packagesContainer');
   const API_BASE_URL = 'http://localhost:8080/api/v1';
+  const token = localStorage.getItem('userToken');
 
   function generateStars(rating) {
     const fullStars = Math.floor(rating);
@@ -18,15 +19,20 @@ document.addEventListener('DOMContentLoaded', function() {
     return starsHTML;
   }
 
-  fetch(`${API_BASE_URL}/tour`)
+  fetch(`${API_BASE_URL}/tour`, {
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  })
     .then(response => {
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
       return response.json();
     })
-    .then(response => {
-      const packages = response.data || [];
+    .then(responseData => {
+      const packages = responseData.data || [];
       packagesContainer.innerHTML = ''; // Clear loading spinner
 
       packages.forEach(pkg => {
@@ -116,17 +122,20 @@ document.addEventListener('DOMContentLoaded', function() {
           e.preventDefault();
           const tourId = this.getAttribute('data-id');
 
-          fetch(`${API_BASE_URL}/tour/${tourId}`)
+          fetch(`${API_BASE_URL}/tour/${tourId}`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          })
             .then(response => {
               if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error(`HTTP error! Status: ${response.status}`);
               }
               return response.json();
             })
-            .then(tourResponse => {
-              const tour = tourResponse.data || tourResponse;
-              console.log('Tour Details:', tour);
-
+            .then(responseData => {
+              const tour = responseData.data || {};
               if (tour && tour.id) {
                 // Store tour data in localStorage for checkout page
                 localStorage.setItem('selectedTour', JSON.stringify(tour));

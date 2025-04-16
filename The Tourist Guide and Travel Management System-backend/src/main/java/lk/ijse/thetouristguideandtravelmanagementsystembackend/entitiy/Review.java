@@ -21,8 +21,6 @@ public class Review {
     private String comment;
     @Column(nullable = false)
     private String rating;
-    @Column(name = "image_path")
-    private String imagePath;
     @Column(name = "tourist_name",nullable = false)
     private String touristName;
 

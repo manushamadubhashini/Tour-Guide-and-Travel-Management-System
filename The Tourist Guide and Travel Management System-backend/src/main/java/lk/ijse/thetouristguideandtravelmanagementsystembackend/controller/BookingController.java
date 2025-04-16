@@ -24,7 +24,7 @@ public class BookingController {
     }
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil getAll(){
-        return new ResponseUtil(200,"Booking is Load",null);
+        return new ResponseUtil(200,"Booking is Load",bookingService.getAll());
     }
     @DeleteMapping("delete/{id}")
     public ResponseUtil delete(@PathVariable(value = "id") String id){

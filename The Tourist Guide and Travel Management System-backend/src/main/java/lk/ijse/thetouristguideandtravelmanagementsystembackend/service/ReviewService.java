@@ -29,28 +29,24 @@ public class ReviewService {
                 if (review.getId() == null) {
                     review.setId(UUID.randomUUID().toString());
                 }
-                if (reviewDto.getImage() != null && !reviewDto.getImage().isEmpty()) {
-                    review.setImagePath(DataConversionUtil.saveToFileSystem(reviewDto.getImage()));
-                }
                 reviewRepo.save(review);
                 System.out.println("Save SuccessFully!");
 
-        }catch (FileConversionException e){
-            throw new FileConversionException("Cannot convert image to base64", e);
         }catch (RuntimeException e){
             throw new RuntimeException("Not Saved!");
         }
     }
     public List<ReviewDto>  getAll(){
-        return modelMapper.map(reviewRepo.findAll(),new TypeToken<List<ReviewDto>>(){}.getType());
+        try {
+            return modelMapper.map(reviewRepo.findAll(),new TypeToken<List<ReviewDto>>(){}.getType());
+        }catch (RuntimeException e){
+            throw new RuntimeException("Not Load");
+        }
+
     }
     public void delete(String id){
         try {
             if (reviewRepo.existsById(id)){
-                Review review = reviewRepo.findById(id).orElse(null);
-                if (review!= null && review.getImagePath() != null) {
-                    DataConversionUtil.deleteFromFileSystem(review.getImagePath());
-                }
                 reviewRepo.deleteById(id);
                 System.out.println("Deleted Successfully!");
             }

@@ -10,7 +10,6 @@
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <link href="../css/style.css" rel="stylesheet">
 
   <!-- Icon Font Stylesheet -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -21,90 +20,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
 
+  <link href="../css/style.css" rel="stylesheet">
+
   <style>
-
-    /* Add these styles to your existing style section */
-
-    .gallery-thumbnail:hover {
-      opacity: 0.8;
-      transform: scale(1.02);
-      transition: all 0.3s ease;
-    }
-
-    .thumbnail-row::-webkit-scrollbar {
-      height: 5px;
-    }
-
-    .thumbnail-row::-webkit-scrollbar-track {
-      background: #f1f1f1;
-      border-radius: 10px;
-    }
-
-    .thumbnail-row::-webkit-scrollbar-thumb {
-      background: #888;
-      border-radius: 10px;
-    }
-
-    .thumbnail-row::-webkit-scrollbar-thumb:hover {
-      background: #555;
-    }
-
-    #mainGalleryImage {
-      transition: all 0.3s ease;
-    }
-
-    .carousel-thumbnail {
-      transition: all 0.2s ease;
-      border: 3px solid transparent;
-    }
-
-    .carousel-thumbnail:hover {
-      border-color: var(--primary-color);
-    }
-
-    /* Update the photo-count-badge position to match your screenshot */
-    .photo-count-badge {
-      position: absolute;
-      bottom: 15px;
-      left: 15px; /* Changed from right to left */
-      background-color: rgba(0,0,0,0.6);
-      color: white;
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-
-    /* Add more spacing between gallery and details */
-    #tourGalleryContainer {
-      animation: fadeIn 1.2s ease-out;
-      margin-bottom: 30px;
-    }
-
-    /* Style the "Show all photos" button to match your design */
-    #viewAllPhotos {
-      border: 1px solid #333;
-      border-radius: 5px;
-      padding: 8px 16px;
-      transition: all 0.3s ease;
-    }
-
-    #viewAllPhotos:hover {
-      background-color: #333;
-      color: white;
-    }
-
-    /* Animation for gallery */
-    #tourGalleryContainer {
-      animation: fadeIn 1.2s ease-out;
-    }
-
-    .gallery-thumbnail, #mainGalleryImage {
-      animation: slideInFromBottom 1s ease-out;
-    }
-
+    /* Animations */
     @keyframes slideInFromBottom {
       0% {
         opacity: 0;
@@ -114,25 +33,6 @@
         opacity: 1;
         transform: translateY(0);
       }
-    }
-
-    :root {
-      --primary-color: #ff9800;
-      --text-color: #333;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      /*font-family: "JetBrains Mono ExtraLight";*/
-      /*background-color: #f4f4f4;*/
-      /*color: var(--text-color);*/
-      /*overflow-x: hidden;*/
-      animation: pageLoad 1s ease-out;
     }
 
     @keyframes pageLoad {
@@ -168,49 +68,96 @@
       }
     }
 
-    .gallery-thumbnail:hover {
-      opacity: 0.8;
-      transform: scale(1.02);
-      transition: all 0.3s ease;
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
     }
 
-    .photo-count-badge {
-      position: absolute;
-      bottom: 15px;
-      left: 15px;
-      background-color: rgba(0,0,0,0.6);
-      color: white;
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 5px;
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
     }
 
+    @keyframes shimmer {
+      0% {
+        background-position: -1000px 0;
+      }
+      100% {
+        background-position: 1000px 0;
+      }
+    }
 
+    /* Variables */
+    :root {
+      --primary-color: #ff9800;
+      --secondary-color: #7AB730;
+      --text-color: #333;
+      --light-gray: #f8f9fa;
+      --border-radius: 10px;
+      --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      animation: pageLoad 1s ease-out;
+      background-color: #f9f9f9;
+      color: var(--text-color);
+    }
+
+    .container {
+      margin-top: 6%;
+    }
+
+    /* Tour Details Section */
     .tour-image {
       max-width: 100%;
       height: auto;
-      border-radius: 10px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
       animation: slideInFromLeft 1s ease-out;
+      transition: transform 0.3s ease;
+    }
+
+    .tour-image:hover {
+      transform: scale(1.02);
     }
 
     .booking-card {
       background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
       padding: 25px;
       animation: slideInFromRight 1s ease-out;
       position: sticky;
-      top: 100px; /* Adjust this value to control when the card starts sticking */
-      max-height: 80vh; /* Limit height to prevent it from being too large */
-      overflow-y: auto; /* Add scrollbar if content is too tall */
-      z-index: 1000; /* Ensure it appears above other content */
+      top: 100px;
+      max-height: 80vh;
+      overflow-y: auto;
+      z-index: 1000;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-
+    .booking-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
 
     .tour-title {
       font-weight: 700;
@@ -234,29 +181,30 @@
       padding: 5px 10px;
       border-radius: 20px;
       font-size: 0.9rem;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .detail-item:hover {
+      background-color: #e0e0e0;
+      transform: translateY(-2px);
     }
 
     .book-now-btn {
-      background-color: var(--primary-color);
+      background-color: var(--secondary-color);
       color: white;
       border: none;
       width: 100%;
       padding: 12px;
       border-radius: 8px;
-      transition: background-color 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      font-weight: 600;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .book-now-btn:hover {
-      background-color: #f57c00;
-    }
-
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
+      background-color: #6aa029;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
 
     .review-stars {
@@ -270,203 +218,340 @@
     .navbar {
       animation: slideInFromLeft 0.8s ease-out;
     }
-    .description{
+
+    .description {
       font-size: 15px;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
     }
-    /*h4{*/
-    /*  font-weight: 700;*/
-    /*  font-size: 18px;*/
-    /*  font-family: "JetBrains Mono ExtraLight";*/
-    /*}*/
-    /*h2{*/
-    /*  font-family: "JetBrains Mono ExtraLight";*/
-    /*}*/
 
-    /* Previous CSS remains the same */
-
+    /* Map Container */
     #mapContainer {
-      height: 300px;
+      height: 400px;
       width: 100%;
-      border-radius: 10px;
+      border-radius: var(--border-radius);
       margin-top: 20px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      box-shadow: var(--box-shadow);
+      animation: fadeIn 1.5s ease-out;
     }
-    .container{
-      margin-top: 6%;
+
+    /* Skeleton Loading */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 1000px 100%;
+      animation: shimmer 2s infinite linear;
+      border-radius: var(--border-radius);
+      height: 20px;
+      margin-bottom: 10px;
     }
-    .review-container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 20px;
+
+    .skeleton-title {
+      height: 40px;
+      width: 70%;
+    }
+
+    .skeleton-text {
+      height: 15px;
+    }
+
+    .skeleton-button {
+      height: 50px;
+      margin-top: 20px;
+    }
+
+    /* Feature Cards */
+    .feature-card {
       background-color: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .star-rating {
-      color: #ffc107;
-      cursor: pointer;
-      font-size: 17px;
-    }
-    .review-input {
-      border-radius: 20px;
-      padding: 10px 15px;
-    }
-    .submit-btn {
-      background-color: #ff9800;
-      color: white;
-      border: none;
-      border-radius: 20px;
-      padding: 10px 20px;
-    }
-    .submit-btn:hover {
-      background-color: #f57c00;
-    }
-    .existing-review {
-      border-top: 1px solid #e0e0e0;
-      padding: 15px 0;
-    }
-    .user-avatar {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      object-fit: cover;
-      margin-right: 15px;
-    }
-    #reviewForm {
-      margin-bottom: 20px;
-    }
-    .drop-zone {
-      border: 2px dashed #ccc;
-      border-radius: 20px;
-      width: 100%;
-      text-align: center;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
       padding: 20px;
-      transition: background-color 0.3s ease;
+      margin-bottom: 20px;
+      animation: fadeIn 1.5s ease-out;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    .drop-zone.drag-over {
-      background-color: #f0f0f0;
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
     }
-    .drop-zone-text {
+
+    .feature-icon {
+      font-size: 2rem;
+      color: var(--secondary-color);
+      margin-bottom: 15px;
+    }
+
+    /* Call to Action */
+    .cta-section {
+      background-color: var(--secondary-color);
+      color: white;
+      padding: 40px;
+      border-radius: var(--border-radius);
+      margin: 40px 0;
+      animation: fadeIn 1.6s ease-out;
+    }
+
+    .cta-section h3 {
+      font-weight: 700;
+    }
+
+    .cta-btn {
+      background-color: white;
+      color: var(--secondary-color);
+      border: none;
+      padding: 10px 25px;
+      border-radius: 50px;
+      font-weight: 600;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Countdown Timer */
+    .countdown-container {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .countdown-item {
+      background-color: white;
+      padding: 10px 15px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      text-align: center;
+      min-width: 70px;
+    }
+
+    .countdown-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--secondary-color);
+    }
+
+    .countdown-label {
+      font-size: 0.8rem;
       color: #888;
     }
-    .drop-zone-preview {
-      max-width: 200px;
-      max-height: 200px;
-      margin: 10px auto;
-      border-radius: 10px;
+
+    /* FAQs */
+    .faq-item {
+      margin-bottom: 15px;
+      animation: fadeIn 1.7s ease-out;
     }
-    .remove-image {
+
+    .faq-question {
+      background-color: white;
+      padding: 15px;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: var(--box-shadow);
+      font-weight: 600;
+      position: relative;
+    }
+
+    .faq-question:hover {
+      background-color: #f9f9f9;
+    }
+
+    .faq-question::after {
+      content: '+';
       position: absolute;
-      top: 5px;
-      right: 5px;
-      background: rgba(0,0,0,0.5);
-      color: white;
-      border: none;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .faq-question.active::after {
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    .faq-answer {
+      padding: 15px;
+      background-color: #f9f9f9;
+      border-radius: 0 0 var(--border-radius) var(--border-radius);
+      margin-top: -5px;
+      display: none;
+      animation: slideInFromBottom 0.3s ease-out;
+    }
+
+    /* Testimonials */
+    .testimonial-card {
+      background-color: white;
+      padding: 20px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 20px;
+      position: relative;
+      animation: fadeIn 1.8s ease-out;
+    }
+
+    .testimonial-card::before {
+      content: '"';
+      position: absolute;
+      top: -15px;
+      left: 20px;
+      font-size: 4rem;
+      color: var(--secondary-color);
+      opacity: 0.2;
+    }
+
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 15px;
+    }
+
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .testimonial-author img {
+      width: 50px;
+      height: 50px;
       border-radius: 50%;
-      width: 30px;
-      height: 30px;
+      object-fit: cover;
+    }
+
+    /* Booking Form */
+    .booking-form {
+      background-color: white;
+      padding: 25px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      animation: fadeIn 1.9s ease-out;
+    }
+
+    .form-control {
+      border-radius: var(--border-radius);
+      padding: 12px 15px;
+      margin-bottom: 15px;
+    }
+
+    /* Modal */
+    .modal-content {
+      border-radius: var(--border-radius);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      background-color: var(--secondary-color);
+      color: white;
+    }
+
+    /* Discount Badge */
+    .discount-badge {
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      background-color: #dc3545;
+      color: white;
+      padding: 10px;
+      border-radius: 50%;
+      font-weight: 700;
+      width: 60px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-    }
-    /* Fixed height gallery styles */
-    #tourGalleryContainer {
-      margin-bottom: 40px;
-    }
-
-    .gallery-thumbnail {
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-
-    .gallery-thumbnail:hover {
-      opacity: 0.9;
-      transform: scale(1.01);
-    }
-
-    /* Match exact spacing to your screenshot */
-    .row.g-3 {
-      --bs-gutter-x: 1rem;
-      --bs-gutter-y: 1rem;
-    }
-
-    /* Ensure consistent image heights */
-    #tourGalleryContainer img {
-      width: 100%;
-      object-fit: cover;
-      border-radius: 8px;
-    }
-
-    /* Style the photo count badge to match screenshot */
-    .photo-count-badge {
-      position: absolute;
-      bottom: 15px;
-      left: 15px;
-      background-color: rgba(0,0,0,0.6);
-      color: white;
-      padding: 5px 10px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      display: flex;
-      align-items: center;
-      gap: 5px;
+      animation: pulse 2s infinite;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       z-index: 2;
     }
 
-    /* Style the show all photos button */
-    #viewAllPhotos {
-      white-space: nowrap;
+    /* Weather Info */
+    .weather-info {
       background-color: white;
-      color: #333;
-      border: none;
-      font-weight: 500;
-      transition: all 0.2s ease;
+      padding: 15px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
-    #viewAllPhotos:hover {
-      background-color: #f8f9fa;
-      transform: scale(1.05);
+    .weather-icon {
+      font-size: 2rem;
+      color: var(--secondary-color);
     }
 
-    /* Image loading animation */
-    .gallery-thumbnail {
-      animation: fadeIn 0.8s ease-out;
+    /* Included/Not Included Lists */
+    .features-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    .features-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .features-list .included {
+      color: var(--secondary-color);
+    }
+
+    .features-list .not-included {
+      color: #dc3545;
+    }
+
+    /* Hero Pulse Effect */
+    .pulse-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.2);
+      z-index: 1;
+    }
+
+    .pulse-circle::before, .pulse-circle::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.4);
+      z-index: -1;
+      animation: pulse 2s infinite;
+    }
+
+    .pulse-circle::after {
+      animation-delay: 0.5s;
+    }
+
+    @media (max-width: 768px) {
+      .tour-details {
+        flex-direction: column;
+      }
+
+      .booking-card {
+        position: static;
+        margin-top: 20px;
+      }
+
+      .countdown-container {
+        flex-wrap: wrap;
+      }
     }
   </style>
 </head>
 <body>
-
-<!-- Topbar Start -->
-<div class="container-fluid bg-dark px-5 d-none d-lg-block">
-  <div class="row gx-0">
-    <div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
-      <div class="d-inline-flex align-items-center" style="height: 45px;">
-        <small class="me-3 text-light"><i class="fa fa-map-marker-alt me-2"></i>123 Street, New York, USA</small>
-        <small class="me-3 text-light"><i class="fa fa-phone-alt me-2"></i>+012 345 6789</small>
-        <small class="text-light"><i class="fa fa-envelope-open me-2"></i>info@example.com</small>
-      </div>
-    </div>
-    <div class="col-lg-4 text-center text-lg-end">
-      <div class="d-inline-flex align-items-center" style="height: 45px;">
-        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-twitter fw-normal"></i></a>
-        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-facebook-f fw-normal"></i></a>
-        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-linkedin-in fw-normal"></i></a>
-        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-instagram fw-normal"></i></a>
-        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle" href=""><i class="fab fa-youtube fw-normal"></i></a>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Topbar End -->
-
-
 <!-- Navbar & Hero Start -->
 <div class="container-fluid position-relative p-0">
   <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
@@ -482,12 +567,12 @@
         <a href="index.html" class="nav-item nav-link">Home</a>
         <a href="about.html" class="nav-item nav-link">About</a>
         <a href="service.html" class="nav-item nav-link">Services</a>
-        <a href="package.html" class="nav-item nav-link">Packages</a>
+        <a href="package.html" class="nav-item nav-link active">Packages</a>
         <div class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown">Pages</a>
+          <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
           <div class="dropdown-menu m-0">
             <a href="destination.html" class="dropdown-item">Destination</a>
-            <a href="booking.html" class="dropdown-item active">Booking</a>
+            <a href="booking.html" class="dropdown-item">Booking</a>
             <a href="team.html" class="dropdown-item">Travel Guides</a>
             <a href="testimonial.html" class="dropdown-item">Testimonial</a>
             <a href="404.html" class="dropdown-item">404 Page</a>
@@ -502,13 +587,13 @@
   <div class="container-fluid bg-primary py-5 mb-5 hero-header">
     <div class="container py-5">
       <div class="row justify-content-center py-5">
-        <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
-          <h1 class="display-3 text-white animated slideInDown">Booking</h1>
+        <div class="col-lg-10 pt-lg-5 mt-lg-2 text-center">
+          <h1 class="display-3 text-white animated slideInDown top-name">Packages</h1>
           <nav aria-label="breadcrumb">
-            <ol class="breadcrumb justify-content-center">
+            <ol class="breadcrumb justify-content-center list">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item"><a href="#">Pages</a></li>
-              <li class="breadcrumb-item text-white active" aria-current="page">Booking</li>
+              <li class="breadcrumb-item text-white active" aria-current="page">Packages</li>
             </ol>
           </nav>
         </div>
@@ -516,294 +601,621 @@
     </div>
   </div>
 </div>
-<button type="button" class="btn btn-primary w-100 py-3 mb-3 book-now" data-bs-toggle="modal" data-bs-target="#bookingModal">
-  Book Now
-</button>
-<!-- Tour Gallery Container -->
-<div class="container" id="tourGalleryContainer">
-  <h2 class="text-center mb-4">Tour Gallery</h2>
-  </div>
+<!-- Navbar & Hero End -->
 
-  <!-- View All Photos Button -->
-  <div class="text-center mb-4">
-    <button id="viewAllPhotos" class="btn btn-outline-primary">
-      <i class="bi bi-images me-2"></i>View All Photos (5)
-    </button>
-  </div>
-</div>
 
-<!-- Your existing tourDetailsContainer div remains as is -->
+
+<!-- Main Content -->
 <div class="container mt-4">
+  <!-- Tour Details Section -->
   <div id="tourDetailsContainer" class="row">
-    <div class="text-center">
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="container mt-5">
-  <div class="review-container">
-    <h2 class="text-center mb-4">Tour Reviews</h2>
+    <!-- Left Column (Tour Info) -->
+    <div class="col-lg-8">
+      <!-- Main Tour Info -->
+      <div class="card mb-4">
+        <div class="card-body">
+          <h2 class="tour-title mb-3">Amazing Paris Tour Package</h2>
 
-    <!-- Review Submission Form -->
-    <form id="reviewForm" enctype="multipart/form-data">
-      <div class="mb-3 d-flex align-items-center">
-        <label class="me-3"><h6>Your Rating:</h6></label>
-        <div id="ratingStars" class="star-rating">
-          <i class="bi bi-star" data-rating="1"></i>
-          <i class="bi bi-star" data-rating="2"></i>
-          <i class="bi bi-star" data-rating="3"></i>
-          <i class="bi bi-star" data-rating="4"></i>
-          <i class="bi bi-star" data-rating="5"></i>
-        </div>
-        <input type="hidden" id="ratingInput" name="rating" required>
-      </div>
-
-      <!-- Name Input -->
-      <div class="mb-3">
-        <input type="text" id="nameInput" class="form-control review-input" placeholder="Your Name" required>
-      </div>
-
-      <!-- Comment Input -->
-      <div class="mb-3">
-        <textarea id="commentInput" class="form-control review-input" placeholder="Share your thoughts..." rows="3" required></textarea>
-      </div>
-
-      <div class="mb-3">
-        <label class="form-label">Tour Image</label>
-        <div id="drag-drop-zone" class="border rounded-3 p-4 text-center" style="background-color: #f8f9fa; cursor: pointer; transition: all 0.3s ease;">
-          <i class="fas fa-cloud-upload-alt text-primary fs-1 mb-3"></i>
-          <p class="mb-1">Drag & Drop your image here</p>
-          <p class="text-muted small mb-3">or click to browse files</p>
-          <p id="selected-file-name" class="mb-0 small fw-bold" style="display: none;"></p>
-          <input type="file" id="tourImage" accept="image/jpeg,image/png,image/jpg" style="display: none;">
-        </div>
-        <div class="form-text">Upload an image of the tour (JPEG, PNG formats only)</div>
-        <div class="mt-2">
-          <img id="imagePreview" src="" alt="Tour Image" style="max-width: 100%; display: none; border-radius: 5px;">
-        </div>
-      </div>
-      <button type="submit" class="submit-btn w-100" id="submit-btn">Submit Review</button>
-    </form>
-
-    <!-- Reviews Section -->
-    <div class="reviews-section mt-4">
-      <h5 class="mb-3">Existing Reviews (<span id="reviewCount">0</span>)</h5>
-      <div id="reviewsContainer">
-        <!-- Reviews will be dynamically added here -->
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const tourDetailsContainer = document.getElementById('tourDetailsContainer');
-    const tourGalleryContainer = document.getElementById('tourGalleryContainer');
-    const API_BASE_URL = 'http://localhost:8080/api/v1';
-
-    function logError(message, error) {
-      console.error('Detailed Error Log:', {
-        message: message,
-        fullError: error,
-        apiResponseStructure: error ? Object.keys(error) : 'No error object'
-      });
-      tourDetailsContainer.innerHTML = `
-      <div class="alert alert-danger text-center">
-        <strong>Error:</strong> ${message}
-        <br>Please check the console for more details.
-      </div>
-    `;
-    }
-
-    function getUrlParameter(name) {
-      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-      var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-      var results = regex.exec(location.search);
-      return results === null ? '' : decodeURIComponent(results[1]);
-    }
-
-    const tourId = getUrlParameter('id');
-    console.log('Tour ID from URL:', tourId);
-
-    if (!tourId) {
-      logError('No tour ID provided in the URL. Please select a valid tour.');
-      return;
-    }
-
-    fetch(`${API_BASE_URL}/tour/${tourId}`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      }
-    })
-      .then(response => {
-        console.log('API Response Status:', response.status);
-        console.log('Response Headers:', Object.fromEntries(response.headers.entries()));
-
-        if (response.status === 404) {
-          throw new Error('Tour not found. Please check the tour ID.');
-        }
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        return response.json();
-      })
-      .then(data => {
-        console.log('Full API Response:', data);
-
-        // New, more flexible data extraction
-        let tour;
-        if (data.code === 200 && data.data) {
-          tour = data.data;
-        } else if (Array.isArray(data)) {
-          tour = data[0];
-        } else if (data.tour) {
-          tour = data.tour;
-        } else {
-          tour = data;
-        }
-
-        if (!tour || !tour.id) {
-          throw new Error('Invalid tour data structure. Please check backend response.');
-        }
-
-        // Add mock gallery images if needed
-        tour = fetchTourWithGallery(tour);
-
-        renderTourDetails(tour);
-        renderTourGallery(tour);
-      })
-      .catch(error => {
-        console.error('Fetch Error:', error);
-        logError(error.message, error);
-      });
-
-    function renderTourDetails(tour) {
-      // Fallback for missing data with default values
-      const safeGet = (value, defaultValue = 'Not Available') =>
-        value !== undefined && value !== null ? value : defaultValue;
-
-      // Modify location to use destination information if available
-      const location = tour.name
-        ? `${safeGet(tour.name, 'Unknown Location')}`
-        : safeGet(tour.location, 'Unknown Location');
-
-      // Default coordinates if not provided (using a placeholder location)
-      const defaultLat = 0;
-      const defaultLng = 0;
-      const latitude = tour.latitude || defaultLat;
-      const longitude = tour.longitude || defaultLng;
-
-      tourDetailsContainer.innerHTML = `
-      <div class="container mt-4">
-        <div class="row">
-          <div class="col-lg-8">
-
-
-            <h2 class="tour-title mb-3">${safeGet(tour.name)}</h2>
-
-            <div class="tour-details">
-              <div class="detail-item">
-                <span class="review-stars">${generateStars(4.5)}</span>
-                <span>(2 Reviews)</span>
-              </div>
-              <div class="detail-item">
-                <i class="bi bi-geo-alt"></i>
-                <span>${location}</span>
-              </div>
-              <div class="detail-item">
-                <i class="bi bi-calendar"></i>
-                <span>${safeGet(tour.duration, 'N/A')} Days</span>
-              </div>
-              <div class="detail-item">
-                <i class="bi bi-cash"></i>
-                <span>$${safeGet(tour.price, 'Not Specified')}/per person</span>
-              </div>
-              <div class="detail-item">
-                <i class="bi bi-people"></i>
-                <span>Group Tour</span>
-              </div>
-            </div>
-
-            <div class="description-section mt-4">
-              <h4 class="mb-3">Description</h4>
-              <p class="description">
-                ${safeGet(tour.description)}
-              </p>
-            </div>
-
-            <div id="mapContainer"></div>
-          </div>
-
-
-    <!-- Right Column (Booking Card) -->
-    <div class="col-lg-4">
-      <div class="booking-card sticky-top" style="top: 100px; z-index: 100;">
-        <!-- Discount Banner -->
-        <div class="position-absolute end-0 top-0 translate-middle-y" style="transform: rotate(45deg) translateX(20px);">
-          <div class="bg-danger text-white px-5 py-1" style="transform: rotate(-45deg);">
-            <strong>20% Off</strong>
-          </div>
-        </div>
-
-        <!-- Price Section -->
-        <div class="mb-4">
-          <p class="mb-1 text-muted">From <span style="text-decoration: line-through;">USD ${tour.price}</span></p>
-          <h2 class="mb-0">USD $${tour.price} <small class="text-muted">/Adult</small></h2>
-
-          <!-- Rating -->
-          <div class="mt-2">
-            <span class="review-stars me-2">
+          <div class="tour-details">
+            <div class="detail-item">
               <i class="bi bi-star-fill text-warning"></i>
               <i class="bi bi-star-fill text-warning"></i>
               <i class="bi bi-star-fill text-warning"></i>
               <i class="bi bi-star-fill text-warning"></i>
               <i class="bi bi-star-half text-warning"></i>
-            </span>
-            <a href="#reviewsSection" class="text-primary">reviews</a>
+              <span>(32 Reviews)</span>
+            </div>
+            <div class="detail-item">
+              <i class="bi bi-geo-alt"></i>
+              <span>Paris, France</span>
+            </div>
+            <div class="detail-item">
+              <i class="bi bi-calendar"></i>
+              <span>7 Days</span>
+            </div>
+            <div class="detail-item">
+              <i class="bi bi-cash"></i>
+              <span>$1,199/person</span>
+            </div>
+            <div class="detail-item">
+              <i class="bi bi-people"></i>
+              <span>Max 12 People</span>
+            </div>
+            <div class="detail-item">
+              <i class="bi bi-translate"></i>
+              <span>English/French Guide</span>
+            </div>
+          </div>
+
+          <!-- Weather Info -->
+          <div class="weather-info">
+            <i class="bi bi-sun weather-icon"></i>
+            <div>
+              <h6 class="mb-0">Current Weather</h6>
+              <p class="mb-0">24°C - Sunny</p>
+            </div>
+          </div>
+
+          <div class="description-section mt-4">
+            <h4 class="mb-3">Tour Description</h4>
+            <p class="description">
+              Experience the magic of Paris with our comprehensive 7-day tour package. Visit iconic landmarks like the Eiffel Tower, Louvre Museum, and Notre-Dame Cathedral. Enjoy romantic Seine River cruises, explore charming Montmartre, and indulge in exquisite French cuisine at authentic local restaurants. This tour includes luxury accommodations, expert guides, and skip-the-line access to major attractions.
+            </p>
+            <p class="description">
+              Our carefully crafted itinerary ensures you'll experience both famous highlights and hidden gems of the City of Light. With small group sizes, you'll enjoy personalized attention and the flexibility to customize parts of your experience based on your interests.
+            </p>
+          </div>
+
+          <!-- Tour Highlights -->
+          <div class="mt-4">
+            <h4 class="mb-3">Tour Highlights</h4>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="feature-card">
+                  <i class="bi bi-building feature-icon"></i>
+                  <h5>Eiffel Tower Visit</h5>
+                  <p>Skip-the-line access with spectacular views from the top level.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="feature-card">
+                  <i class="bi bi-palette feature-icon"></i>
+                  <h5>Louvre Museum</h5>
+                  <p>Guided tour of the world's largest art museum, home to the Mona Lisa.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="feature-card">
+                  <i class="bi bi-water feature-icon"></i>
+                  <h5>Seine River Cruise</h5>
+                  <p>Romantic evening cruise with dinner and champagne.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="feature-card">
+                  <i class="bi bi-cup-hot feature-icon"></i>
+                  <h5>Culinary Experience</h5>
+                  <p>French cooking class and wine tasting session with local experts.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Map Section -->
+          <div id="mapContainer" class="mt-4"></div>
+
+          <!-- What's Included Section -->
+          <div class="row mt-4">
+            <div class="col-md-6">
+              <h4 class="mb-3">What's Included</h4>
+              <ul class="features-list">
+                <li><i class="bi bi-check-circle included"></i> 6 nights accommodation</li>
+                <li><i class="bi bi-check-circle included"></i> Airport transfers</li>
+                <li><i class="bi bi-check-circle included"></i> Daily breakfast</li>
+                <li><i class="bi bi-check-circle included"></i> Professional guide</li>
+                <li><i class="bi bi-check-circle included"></i> Skip-the-line tickets</li>
+                <li><i class="bi bi-check-circle included"></i> Seine River dinner cruise</li>
+                <li><i class="bi bi-check-circle included"></i> Wine tasting experience</li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <h4 class="mb-3">Not Included</h4>
+              <ul class="features-list">
+                <li><i class="bi bi-x-circle not-included"></i> Flights to/from Paris</li>
+                <li><i class="bi bi-x-circle not-included"></i> Travel insurance</li>
+                <li><i class="bi bi-x-circle not-included"></i> Personal expenses</li>
+                <li><i class="bi bi-x-circle not-included"></i> Optional activities</li>
+                <li><i class="bi bi-x-circle not-included"></i> Lunch and dinner (except where mentioned)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- FAQ Section -->
+          <div class="mt-4">
+            <h4 class="mb-3">Frequently Asked Questions</h4>
+            <div class="faq-item">
+              <div class="faq-question">What is the best time to visit Paris?</div>
+              <div class="faq-answer">
+                The best time to visit Paris is from April to June and October to early November when the weather is mild and crowds are smaller. Summer (July-August) is peak tourist season with longer days but more crowds.
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">Is there a dress code for any activities?</div>
+              <div class="faq-answer">
+                Smart casual attire is suitable for most activities. For restaurant dinners and some cultural venues, we recommend more formal attire. Comfortable walking shoes are essential for city tours.
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">Can dietary restrictions be accommodated?</div>
+              <div class="faq-answer">
+                Yes, we can accommodate most dietary restrictions. Please inform us at the time of booking so we can make appropriate arrangements with restaurants and for included meals.
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">Is this tour suitable for children?</div>
+              <div class="faq-answer">
+                This tour is suitable for children aged 8 and above. Some activities can be adjusted for families with younger children - please contact us to discuss options.
+              </div>
+            </div>
+          </div>
+
+          <!-- Testimonials -->
+          <div class="mt-4">
+            <h4 class="mb-3">What Our Customers Say</h4>
+            <div class="testimonial-card">
+              <p class="testimonial-text">This Paris tour exceeded all my expectations! Our guide Marie was incredibly knowledgeable and made every site come alive with fascinating stories. The skip-the-line access saved us so much time, and the hotel was perfectly located.</p>
+            </div>
           </div>
         </div>
-
-        <!-- Benefits List -->
-        <div class="mb-4">
-          <div class="d-flex align-items-center mb-3">
-            <i class="bi bi-check-circle-fill text-success me-2"></i>
-            <span>Best Price Guarantee</span>
-          </div>
-          <div class="d-flex align-items-center mb-3">
-            <i class="bi bi-check-circle-fill text-success me-2"></i>
-            <span>The tour is fully customizable</span>
-          </div>
-          <div class="d-flex align-items-center mb-3">
-            <i class="bi bi-check-circle-fill text-success me-2"></i>
-            <span>Professional Local Guide</span>
-          </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <button type="button" class="btn btn-primary w-100 py-3 mb-3 book-now" data-bs-toggle="modal" data-bs-target="#bookingModal">
-          Book Now
-        </button>
-
-        <button type="button" class="btn btn-outline-primary w-100 py-3">
-          Ask a Question
-        </button>
       </div>
     </div>
   </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const tourDetailsContainer = document.getElementById('tourDetailsContainer');
+    const API_BASE_URL = 'http://localhost:8080/api/v1';
+
+    // Skeleton loading template that will show while data is loading
+    function showLoadingSkeleton() {
+      tourDetailsContainer.innerHTML = `
+      <div class="col-lg-8">
+        <div class="skeleton skeleton-title"></div>
+        <div class="d-flex flex-wrap gap-2 mb-4">
+          <div class="skeleton" style="width: 120px; height: 30px; border-radius: 20px;"></div>
+          <div class="skeleton" style="width: 100px; height: 30px; border-radius: 20px;"></div>
+          <div class="skeleton" style="width: 90px; height: 30px; border-radius: 20px;"></div>
+          <div class="skeleton" style="width: 130px; height: 30px; border-radius: 20px;"></div>
+        </div>
+
+        <div class="mb-4">
+          <div class="skeleton" style="height: 30px; width: 40%;"></div>
+          <div class="skeleton skeleton-text" style="width: 100%;"></div>
+          <div class="skeleton skeleton-text" style="width: 100%;"></div>
+          <div class="skeleton skeleton-text" style="width: 90%;"></div>
+          <div class="skeleton skeleton-text" style="width: 95%;"></div>
+        </div>
+
+        <div class="skeleton" style="height: 300px; width: 100%;"></div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="booking-card skeleton" style="height: 400px;"></div>
+      </div>
+    `;
+    }
+
+    // Error display function with retry option
+    function displayError(message, error) {
+      console.error('Error Details:', { message, error });
+      tourDetailsContainer.innerHTML = `
+      <div class="col-12">
+        <div class="alert alert-danger text-center p-4 animate__animated animate__fadeIn">
+          <i class="bi bi-exclamation-triangle-fill fs-1 mb-3 d-block"></i>
+          <h4>Oops! Something went wrong</h4>
+          <p>${message}</p>
+          <button id="retryButton" class="btn btn-outline-danger mt-3">
+            <i class="bi bi-arrow-repeat"></i> Try Again
+          </button>
         </div>
       </div>
     `;
 
+      // Add event listener to retry button
+      setTimeout(() => {
+        const retryButton = document.getElementById('retryButton');
+        if (retryButton) {
+          retryButton.addEventListener('click', () => {
+            loadTourData();
+          });
+        }
+      }, 100);
+    }
+
+    function getUrlParameter(name) {
+      name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+      const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+      const results = regex.exec(location.search);
+      return results === null ? '' : decodeURIComponent(results[1]);
+    }
+
+    // Main function to load tour data
+    function loadTourData() {
+      const tourId = getUrlParameter('id');
+      console.log('Tour ID from URL:', tourId);
+
+      if (!tourId) {
+        displayError('No tour ID provided in the URL. Please select a valid tour from our packages page.', null);
+        return;
+      }
+
+      // Show skeleton loading
+      showLoadingSkeleton();
+      const token = localStorage.getItem('userToken');
+
+      // Fetch tour data
+      fetch(`${API_BASE_URL}/tour/${tourId}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+        .then(response => {
+          console.log('API Response Status:', response.status);
+
+          if (response.status === 404) {
+            throw new Error('Tour not found. Please check the tour ID.');
+          }
+
+          if (!response.ok) {
+            throw new Error(`Server error! Status: ${response.status}`);
+          }
+
+          return response.json();
+        })
+        .then(data => {
+          console.log('API Response Data:', data);
+
+          // Handle different response formats - flexible data extraction
+          let tour;
+          if (data.code === 200 && data.data) {
+            tour = data.data;
+          } else if (Array.isArray(data)) {
+            tour = data[0];
+          } else if (data.tour) {
+            tour = data.tour;
+          } else {
+            tour = data;
+          }
+
+          if (!tour || (typeof tour === 'object' && !tour.id && !tour.name)) {
+            throw new Error('Invalid tour data structure received from server.');
+          }
+
+          // Render tour details with animation
+          renderTourDetails(tour);
+        })
+        .catch(error => {
+          displayError(error.message || 'Failed to load tour details', error);
+        });
+    }
+
+    function renderTourDetails(tour) {
+      // Safely get tour data with fallbacks
+      const safeGet = (value, defaultValue = 'Not Available') =>
+        value !== undefined && value !== null ? value : defaultValue;
+
+      // Format location information
+      const location = tour.name;
+
+
+      // Calculate price and discount
+      const originalPrice = parseFloat(safeGet(tour.price, '0'));
+      const discountPercentage = 20; // 20% discount
+      const discountedPrice = (originalPrice * (100 - discountPercentage) / 100).toFixed(2);
+
+      const defaultLat = 0;
+      const defaultLng = 0;
+      const latitude = tour.latitude || defaultLat;
+      const longitude = tour.longitude || defaultLng;
+
+      const imageSource = tour.imageBase64
+        ? `data:image/jpeg;base64,${tour.imageBase64}`
+        : (tour.image || 'https://via.placeholder.com/800x500?text=Beautiful+Tour');
+      // Build the tour details HTML
+      const detailsHTML = `
+      <div class="col-lg-8 animate__animated animate__fadeIn">
+        <!-- Main Tour Image with Overlay -->
+        <div class="position-relative mb-4">
+          <img src="${imageSource}" alt="${tour.name}" class="tour-image w-100">
+          <div class="position-absolute bottom-0 start-0 w-100 p-3"
+            style="background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);">
+            <h2 class="text-white mb-0">${safeGet(tour.name)}</h2>
+          </div>
+        </div>
+
+        <!-- Tour Title and Details -->
+        <h2 class="tour-title mb-3">${safeGet(tour.name)}</h2>
+
+        <div class="tour-details">
+          <div class="detail-item">
+            <span class="review-stars">${generateStars(tour.rating || 4.5)}</span>
+            <span>(${tour.reviewCount || 32} Reviews)</span>
+          </div>
+          <div class="detail-item">
+            <i class="bi bi-geo-alt"></i>
+            <span>${location}</span>
+          </div>
+          <div class="detail-item">
+            <i class="bi bi-calendar"></i>
+            <span>${safeGet(tour.duration, 'N/A')} Days</span>
+          </div>
+          <div class="detail-item">
+            <i class="bi bi-cash"></i>
+            <span>$${safeGet(tour.price, 'N/A')}/person</span>
+          </div>
+          <div class="detail-item">
+            <i class="bi bi-people"></i>
+            <span>Max ${safeGet(tour.maxGroupSize, '12')} People</span>
+          </div>
+          <div class="detail-item">
+            <i class="bi bi-translate"></i>
+            <span>${safeGet(tour.languages, 'English')} Guide</span>
+          </div>
+        </div>
+
+        <!-- Weather Info -->
+        <div class="weather-info">
+          <i class="bi bi-sun weather-icon"></i>
+          <div>
+            <h6 class="mb-0">Current Weather</h6>
+            <p class="mb-0">${tour.weather?.temperature || '24°C'} - ${tour.weather?.condition || 'Sunny'}</p>
+          </div>
+        </div>
+
+        <!-- Tour Description -->
+        <div class="description-section mt-4">
+          <h4 class="mb-3">Tour Description</h4>
+          <p class="description">${safeGet(tour.description, 'No description available for this tour.')}</p>
+
+          ${tour.longDescription ? `<p class="description">${tour.longDescription}</p>` : ''}
+        </div>
+
+        <!-- Tour Highlights -->
+        <div class="mt-4">
+          <h4 class="mb-3">Tour Highlights</h4>
+          <div class="row">
+            ${generateHighlights(tour.highlights || [])}
+          </div>
+        </div>
+
+        <!-- Map Section -->
+        <div id="mapContainer" class="mt-4"></div>
+
+        <!-- What's Included Section -->
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <h4 class="mb-3">What's Included</h4>
+            <ul class="features-list">
+              ${generateIncludedList(tour.included || [])}
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <h4 class="mb-3">Not Included</h4>
+            <ul class="features-list">
+              ${generateNotIncludedList(tour.notIncluded || [])}
+            </ul>
+          </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="mt-4">
+          <h4 class="mb-3">Frequently Asked Questions</h4>
+          ${generateFaqSection(tour.faqs || [])}
+        </div>
+
+        <!-- Testimonials -->
+        <div class="mt-4">
+          <h4 class="mb-3">What Our Customers Say</h4>
+          ${generateTestimonials(tour.testimonials || [])}
+        </div>
+      </div>
+
+      <!-- Booking Card - Right Column -->
+      <div class="col-lg-4 animate__animated animate__fadeIn" style="animation-delay: 0.3s">
+        <div class="booking-card sticky-top">
+          <!-- Discount Badge -->
+          <div class="position-relative">
+            <div class="discount-badge">${discountPercentage}% Off</div>
+          </div>
+
+          <!-- Price Section -->
+          <div class="mb-4">
+            <p class="mb-1 text-muted">From <span style="text-decoration: line-through;">USD $${safeGet(tour.price)}</span></p>
+            <h2 class="mb-0">USD $${discountedPrice} <small class="text-muted">/per person</small></h2>
+
+            <!-- Rating -->
+            <div class="mt-2">
+              <span class="review-stars me-2">
+                ${generateStars(tour.rating || 4.5)}
+              </span>
+              <a href="#reviewsSection" class="text-primary">${tour.reviewCount || 32} reviews</a>
+            </div>
+          </div>
+
+          <!-- Benefits List -->
+          <div class="mb-4">
+            <div class="d-flex align-items-center mb-3">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              <span>Best Price Guarantee</span>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              <span>The tour is fully customizable</span>
+            </div>
+            <div class="d-flex align-items-center mb-3">
+              <i class="bi bi-check-circle-fill text-success me-2"></i>
+              <span>Professional Local Guide</span>
+            </div>
+          </div>
+
+
+
+          <!-- Action Buttons -->
+          <button type="button" class="btn btn-primary w-100 py-3 mb-3 book-now-btn">
+            Book Now
+          </button>
+
+          <button type="button" class="btn btn-outline-primary w-100 py-3" data-bs-toggle="modal" data-bs-target="#inquiryModal">
+            Ask a Question
+          </button>
+        </div>
+      </div>
+    `;
+
+      // Update the container with the tour details
+      tourDetailsContainer.innerHTML = detailsHTML;
+
       // Initialize map after rendering
-      initializeMap(latitude, longitude, location);
+      setTimeout(() => {
+        initializeMap(latitude, longitude, location);
+        setupEventListeners();
+      }, 500);
+    }
+
+    // Helper function to generate star ratings
+    function generateStars(rating) {
+      const fullStars = Math.floor(rating);
+      const halfStar = rating % 1 >= 0.5;
+      let starsHTML = '';
+
+      for (let i = 1; i <= 5; i++) {
+        if (i <= fullStars) {
+          starsHTML += '<i class="bi bi-star-fill text-warning"></i>';
+        } else if (i === fullStars + 1 && halfStar) {
+          starsHTML += '<i class="bi bi-star-half text-warning"></i>';
+        } else {
+          starsHTML += '<i class="bi bi-star text-warning"></i>';
+        }
+      }
+
+      return starsHTML;
+    }
+
+    // Helper for generating tour highlights
+    function generateHighlights(highlights) {
+      if (!highlights.length) {
+        // Default highlights if none provided
+        highlights = [
+          { title: 'Eiffel Tower Visit', description: 'Skip-the-line access with spectacular views from the top level.', icon: 'building' },
+          { title: 'Louvre Museum', description: 'Guided tour of the world\'s largest art museum, home to the Mona Lisa.', icon: 'palette' },
+          { title: 'Seine River Cruise', description: 'Romantic evening cruise with dinner and champagne.', icon: 'water' },
+          { title: 'Culinary Experience', description: 'French cooking class and wine tasting session with local experts.', icon: 'cup-hot' }
+        ];
+      }
+
+      return highlights.map(highlight => `
+      <div class="col-md-6">
+        <div class="feature-card">
+          <i class="bi bi-${highlight.icon || 'check-circle'} feature-icon"></i>
+          <h5>${highlight.title}</h5>
+          <p>${highlight.description}</p>
+        </div>
+      </div>
+    `).join('');
+    }
+
+    // Helper for included items list
+    function generateIncludedList(included) {
+      if (!included.length) {
+        // Default included items if none provided
+        included = [
+          '6 nights accommodation',
+          'Airport transfers',
+          'Daily breakfast',
+          'Professional guide',
+          'Skip-the-line tickets',
+          'Seine River dinner cruise',
+          'Wine tasting experience'
+        ];
+      }
+
+      return included.map(item => `
+      <li><i class="bi bi-check-circle included"></i> ${item}</li>
+    `).join('');
+    }
+
+    // Helper for not included items list
+    function generateNotIncludedList(notIncluded) {
+      if (!notIncluded.length) {
+        // Default not included items if none provided
+        notIncluded = [
+          'Flights to/from destination',
+          'Travel insurance',
+          'Personal expenses',
+          'Optional activities',
+          'Lunch and dinner (except where mentioned)'
+        ];
+      }
+
+      return notIncluded.map(item => `
+      <li><i class="bi bi-x-circle not-included"></i> ${item}</li>
+    `).join('');
+    }
+
+    // Helper for FAQ section
+    function generateFaqSection(faqs) {
+      if (!faqs.length) {
+        // Default FAQs if none provided
+        faqs = [
+          { question: 'What is the best time to visit?', answer: 'The best time to visit is from April to June and October to early November when the weather is mild and crowds are smaller.' },
+          { question: 'Is there a dress code for any activities?', answer: 'Smart casual attire is suitable for most activities. For restaurant dinners and some cultural venues, we recommend more formal attire.' },
+          { question: 'Can dietary restrictions be accommodated?', answer: 'Yes, we can accommodate most dietary restrictions. Please inform us at the time of booking.' },
+          { question: 'Is this tour suitable for children?', answer: 'This tour is suitable for children aged 8 and above. Some activities can be adjusted for families with younger children.' }
+        ];
+      }
+
+      return faqs.map((faq, index) => `
+      <div class="faq-item">
+        <div class="faq-question" data-faq-id="${index}">${faq.question}</div>
+        <div class="faq-answer" id="faq-answer-${index}">${faq.answer}</div>
+      </div>
+    `).join('');
+    }
+
+    // Helper for testimonials
+    function generateTestimonials(testimonials) {
+      if (!testimonials.length) {
+        // Default testimonial if none provided
+        testimonials = [
+          { text: 'This tour exceeded all my expectations! Our guide was incredibly knowledgeable and made every site come alive with fascinating stories. The skip-the-line access saved us so much time, and the hotel was perfectly located.', author: 'Sarah M.', rating: 5 }
+        ];
+      }
+
+      return testimonials.map(testimonial => `
+      <div class="testimonial-card">
+        <p class="testimonial-text">${testimonial.text}</p>
+        <div class="testimonial-author">
+          <div>
+            <strong>${testimonial.author}</strong>
+            <div>${generateStars(testimonial.rating || 5)}</div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+    }
+
+    // Get tomorrow's date for date picker min value
+    function getTomorrowDate() {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      return tomorrow.toISOString().split('T')[0];
     }
 
     function initializeMap(lat, lng, locationName) {
@@ -836,9 +1248,9 @@
     function renderMap(lat, lng, locationName) {
       const map = L.map('mapContainer').setView([lat, lng], 10);
 
-      // Add OpenStreetMap tiles
-      L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; Stadia Maps, OpenMapTiles, OpenStreetMap contributors'
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+        maxZoom: 19
       }).addTo(map);
 
       // Add marker
@@ -848,314 +1260,121 @@
         .openPopup();
     }
 
-    function generateStars(rating) {
-      const fullStars = Math.floor(rating);
-      const halfStar = rating % 1 >= 0.5;
-      let starsHTML = '';
 
-      for (let i = 1; i <= 5; i++) {
-        if (i <= fullStars) {
-          starsHTML += '<i class="bi bi-star-fill"></i>';
-        } else if (i === fullStars + 1 && halfStar) {
-          starsHTML += '<i class="bi bi-star-half"></i>';
-        } else {
-          starsHTML += '<i class="bi bi-star"></i>';
+    function setupEventListeners() {
+      // Set up Book Now button
+      const bookNowButtons = document.querySelectorAll('.book-now-btn');
+      bookNowButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          const tourId = getUrlParameter('id');
+          const dateInput = document.getElementById('tourDate');
+          const travelersInput = document.getElementById('travelers');
+
+          // Validate date selection
+          if (!dateInput.value) {
+            alert('Please select a tour date');
+            dateInput.focus();
+            return;
+          }
+
+          // Redirect to checkout with parameters
+          const travelers = travelersInput ? travelersInput.value : '2';
+          window.location.href = `checkout.html?id=${tourId}&date=${dateInput.value}&travelers=${travelers}`;
+        });
+      });
+
+      // Set up FAQ accordions
+      const faqQuestions = document.querySelectorAll('.faq-question');
+      faqQuestions.forEach(question => {
+        question.addEventListener('click', function() {
+          this.classList.toggle('active');
+          const faqId = this.getAttribute('data-faq-id');
+          const answer = document.getElementById(`faq-answer-${faqId}`);
+
+          if (answer.style.display === 'block') {
+            // Close this answer
+            answer.style.display = 'none';
+          } else {
+            // Close all other answers first
+            document.querySelectorAll('.faq-answer').forEach(a => {
+              a.style.display = 'none';
+            });
+            // Open this answer
+            answer.style.display = 'block';
+          }
+        });
+      });
+
+      // Initialize tooltips if any
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+
+      // Handle travelers selection to show group discount message
+      const travelersSelect = document.getElementById('travelers');
+      if (travelersSelect) {
+        travelersSelect.addEventListener('change', function() {
+          if (parseInt(this.value) >= 6) {
+            alert('Group discount available! You qualify for a special 5% additional discount for groups of 6 or more.');
+          }
+        });
+      }
+    }
+
+    // Start loading data
+    loadTourData();
+
+    // Update countdown timer
+    function updateCountdown() {
+      const daysElement = document.getElementById('countdown-days');
+      const hoursElement = document.getElementById('countdown-hours');
+      const minutesElement = document.getElementById('countdown-minutes');
+      const secondsElement = document.getElementById('countdown-seconds');
+
+      if (!daysElement || !hoursElement || !minutesElement || !secondsElement) {
+        return; // Elements not found
+      }
+
+      // Set the date we're counting down to (5 days from now)
+      const countDownDate = new Date();
+      countDownDate.setDate(countDownDate.getDate() + 5);
+
+      function updateTimer() {
+        // Get current date and time
+        const now = new Date().getTime();
+
+        // Calculate time remaining
+        const distance = countDownDate.getTime() - now;
+
+        // Time calculations
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Display the result with leading zeros
+        daysElement.textContent = days.toString().padStart(2, '0');
+        hoursElement.textContent = hours.toString().padStart(2, '0');
+        minutesElement.textContent = minutes.toString().padStart(2, '0');
+        secondsElement.textContent = seconds.toString().padStart(2, '0');
+
+        // If the countdown is finished, clear interval
+        if (distance < 0) {
+          clearInterval(timerInterval);
+          daysElement.textContent = "00";
+          hoursElement.textContent = "00";
+          minutesElement.textContent = "00";
+          secondsElement.textContent = "00";
         }
       }
 
-      return starsHTML;
+      // Update timer immediately and then every second
+      updateTimer();
+      const timerInterval = setInterval(updateTimer, 1000);
     }
 
-    function renderTourGallery(tour) {
-      // Check if we have gallery images
-      if (!tour.galleryImages && !tour.image) {
-        // If no gallery images, don't render gallery section
-        tourGalleryContainer.style.display = 'none';
-        return;
-      }
-
-      // Prepare gallery images array
-      let galleryImages = [];
-
-      // Add main image if available
-      if (tour.image) {
-        galleryImages.push({
-          src: `data:image/jpeg;base64,${tour.image}`,
-          alt: `${tour.name} - Main Image`
-        });
-      }
-
-      // Add additional gallery images if available
-      if (tour.galleryImages && Array.isArray(tour.galleryImages)) {
-        tour.galleryImages.forEach((img, index) => {
-          galleryImages.push({
-            src: typeof img === 'string' ? img : `data:image/jpeg;base64,${img}`,
-            alt: `${tour.name} - Gallery Image ${index + 1}`
-          });
-        });
-      }
-
-      // If no images available, use placeholders
-      if (galleryImages.length === 0) {
-        // Create 4 placeholder images
-        for (let i = 1; i <= 4; i++) {
-          galleryImages.push({
-            src: `https://via.placeholder.com/800x600?text=Tour+Image+${i}`,
-            alt: `${tour.name} - Placeholder ${i}`
-          });
-        }
-      }
-
-      // We need at least 4 images for this layout
-      while (galleryImages.length < 4) {
-        galleryImages.push({
-          src: `https://via.placeholder.com/800x600?text=Tour+Image+${galleryImages.length + 1}`,
-          alt: `${tour.name} - Placeholder ${galleryImages.length + 1}`
-        });
-      }
-
-      // Create gallery HTML - Grid Layout with increased heights
-      let galleryHTML = `
-    <div class="row g-3">
-      <!-- Main Large Image (Left Side) - INCREASED HEIGHT -->
-      <div class="col-md-6 position-relative">
-        <img src="${galleryImages[0].src}" class="img-fluid w-100 h-100 rounded shadow gallery-thumbnail"
-             alt="${galleryImages[0].alt}" style="object-fit: cover; min-height: 590px; max-height: 200px;">
-
-        <!-- Photo count badge -->
-        <div class="photo-count-badge">
-          <i class="bi bi-camera-fill"></i> ${galleryImages.length} photos
-        </div>
-      </div>
-
-      <!-- Right Side Grid -->
-      <div class="col-md-6">
-        <div class="row g-3">
-          <!-- Top Image (Full Width) - INCREASED HEIGHT -->
-          <div class="col-12">
-            <img src="${galleryImages[1].src}" class="img-fluid w-100 rounded shadow gallery-thumbnail"
-                 alt="${galleryImages[1].alt}" style="object-fit: cover; height: 310px;">
-          </div>
-
-          <!-- Bottom Row - Two Images Side by Side - INCREASED HEIGHT -->
-          <div class="col-6">
-            <img src="${galleryImages[2].src}" class="img-fluid w-100 rounded shadow gallery-thumbnail"
-                 alt="${galleryImages[2].alt}" style="object-fit: cover; height: 260px;">
-          </div>
-          <div class="col-6 position-relative">
-            <img src="${galleryImages[3].src}" class="img-fluid w-100 rounded shadow gallery-thumbnail"
-                 alt="${galleryImages[3].alt}" style="object-fit: cover; height: 260px; filter: brightness(0.85);">
-            <!-- "Show all photos" button overlaid on the last image -->
-            <div class="position-absolute top-50 start-50 translate-middle">
-              <button class="btn btn-light btn-sm rounded-pill shadow-sm px-3 py-2" id="viewAllPhotos">
-                <i class="bi bi-grid me-2"></i>Show all photos
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-
-      // Set the HTML content
-      tourGalleryContainer.innerHTML = galleryHTML;
-
-      // Add event listener to "Show all photos" button
-      const viewAllButton = document.getElementById('viewAllPhotos');
-      if (viewAllButton) {
-        viewAllButton.addEventListener('click', function() {
-          openPhotoGalleryModal(galleryImages);
-        });
-      }
-    }
-    // If your API doesn't provide gallery images, we can simulate them
-    function fetchTourWithGallery(tour) {
-      // If tour doesn't have galleryImages property, add mock data
-      if (!tour.galleryImages) {
-        // For demonstration purposes, create mock gallery from the main image
-        // In production, you would fetch this from your API
-        tour.galleryImages = [
-          // These URLs should be replaced with your actual gallery images
-          '../img/car.jpg',
-          'https://images.unsplash.com/photo-1501555088652-021faa106b9b',
-          'https://images.unsplash.com/photo-1506197603052-3cc9c3a201bd',
-          'https://images.unsplash.com/photo-1544735716-392fe2489ffa'
-        ];
-      }
-      return tour;
-    }
-
-    // Review functionality
-    const ratingStars = document.querySelectorAll('#ratingStars i');
-    const ratingInput = document.getElementById('ratingInput');
-    const reviewForm = document.getElementById('reviewForm');
-    const dragDropZone = document.getElementById('drag-drop-zone');
-    const fileInput = document.getElementById('tourImage');
-    const imagePreview = document.getElementById('imagePreview');
-    const selectedFileName = document.getElementById('selected-file-name');
-
-    // Handle star rating selection
-    ratingStars.forEach(star => {
-      star.addEventListener('click', function() {
-        const rating = parseInt(this.getAttribute('data-rating'));
-        updateStarRating(rating);
-        ratingInput.value = rating;
-      });
-
-      star.addEventListener('mouseover', function() {
-        const rating = parseInt(this.getAttribute('data-rating'));
-        highlightStars(rating);
-      });
-    });
-
-    document.getElementById('ratingStars').addEventListener('mouseout', function() {
-      const currentRating = parseInt(ratingInput.value) || 0;
-      highlightStars(currentRating);
-    });
-
-    function updateStarRating(rating) {
-      ratingInput.value = rating;
-      highlightStars(rating);
-    }
-
-    function highlightStars(rating) {
-      ratingStars.forEach(star => {
-        const starRating = parseInt(star.getAttribute('data-rating'));
-        if (starRating <= rating) {
-          star.classList.remove('bi-star');
-          star.classList.add('bi-star-fill');
-        } else {
-          star.classList.remove('bi-star-fill');
-          star.classList.add('bi-star');
-        }
-      });
-    }
-
-    // Handle drag and drop file upload
-    dragDropZone.addEventListener('click', () => {
-      fileInput.click();
-    });
-
-    dragDropZone.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      dragDropZone.classList.add('border-primary');
-    });
-
-    dragDropZone.addEventListener('dragleave', () => {
-      dragDropZone.classList.remove('border-primary');
-    });
-
-    dragDropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      dragDropZone.classList.remove('border-primary');
-
-      if (e.dataTransfer.files.length) {
-        fileInput.files = e.dataTransfer.files;
-        handleFileSelect(e.dataTransfer.files[0]);
-      }
-    });
-
-    fileInput.addEventListener('change', (e) => {
-      if (fileInput.files.length) {
-        handleFileSelect(fileInput.files[0]);
-      }
-    });
-
-    function handleFileSelect(file) {
-      if (file && file.type.match('image.*')) {
-        selectedFileName.textContent = file.name;
-        selectedFileName.style.display = 'block';
-
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          imagePreview.src = e.target.result;
-          imagePreview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-
-    // Handle review submission
-    reviewForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-
-      const rating = document.getElementById('ratingInput').value;
-      const name = document.getElementById('nameInput').value;
-      const comment = document.getElementById('commentInput').value;
-
-      if (!rating || !name || !comment) {
-        alert('Please fill out all fields before submitting your review.');
-        return;
-      }
-
-      // Here you would typically send this data to your backend API
-      // For demonstration, we'll just add it to the page
-      addReviewToPage({
-        name: name,
-        rating: rating,
-        comment: comment,
-        date: new Date().toLocaleDateString(),
-        image: imagePreview.style.display !== 'none' ? imagePreview.src : null
-      });
-
-      // Reset form
-      reviewForm.reset();
-      updateStarRating(0);
-      imagePreview.style.display = 'none';
-      selectedFileName.style.display = 'none';
-    });
-
-    function addReviewToPage(review) {
-      const reviewsContainer = document.getElementById('reviewsContainer');
-      const reviewCount = document.getElementById('reviewCount');
-
-      // Create review HTML
-      const reviewHTML = `
-      <div class="existing-review">
-        <div class="d-flex">
-          <img src="${review.image || 'https://via.placeholder.com/60x60?text=User'}"
-               alt="${review.name}" class="user-avatar">
-          <div>
-            <h6>${review.name}</h6>
-            <div class="star-rating mb-1">
-              ${generateStars(review.rating)}
-            </div>
-            <small class="text-muted">${review.date}</small>
-            <p class="mt-2">${review.comment}</p>
-          </div>
-        </div>
-      </div>
-    `;
-
-      // Add to page
-      reviewsContainer.innerHTML = reviewHTML + reviewsContainer.innerHTML;
-
-      // Update count
-      const currentCount = parseInt(reviewCount.textContent);
-      reviewCount.textContent = currentCount + 1;
-    }
+    // Initialize countdown timer
+    updateCountdown();
   });
-  // Add this to your existing script
-  // Find all "Book Now" buttons
-  const bookNowButtons = document.querySelectorAll('.book-now');
-
-  // Add click event listener to each button
-  bookNowButtons.forEach(button => {
-    button.addEventListener('click', function(e) {
-      e.preventDefault();
-      // Get the current tour ID from the URL
-      const urlParams = new URLSearchParams(window.location.search);
-      const tourId = "TOUR002"
-      // Redirect to checkout page with the tour ID
-      window.location.href = `test3.html?id=${tourId}`;
-    });
-  });
-
 </script>
-
-<!-- Bootstrap JS and dependencies -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../js/main.js"></script>
-
-</body>
-</html>

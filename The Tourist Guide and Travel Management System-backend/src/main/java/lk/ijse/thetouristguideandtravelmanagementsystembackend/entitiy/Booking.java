@@ -38,8 +38,6 @@ public class Booking {
     private double totalAmount;
     @Column(name = "no_of_travellers",nullable = false)
     private int noOfTravellers;
-    @Enumerated
-    @Column(name = "status", nullable = false)
-    private BookingStatus bookingStatus;
+
 
 }

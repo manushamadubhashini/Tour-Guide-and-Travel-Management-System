@@ -1,17 +1,16 @@
 package lk.ijse.thetouristguideandtravelmanagementsystembackend.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserDto {
-    private String id;
-    private String username;
+@Component
+public class AuthDTO {
     private String email;
-    private String password;
-    private String role;
+    private String token;
 }

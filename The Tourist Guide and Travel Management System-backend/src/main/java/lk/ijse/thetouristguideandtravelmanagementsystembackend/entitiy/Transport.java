@@ -22,14 +22,8 @@ public class Transport {
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false,length = 50)
     private TransportType transportType;
-    @Column(nullable = false)
-    private String location;
-    @Column(nullable = false)
-    private String distance;
     @Column(name = "price_per_km",nullable = false)
     private double pricePerKm;
-    @Column(nullable = false)
-    private double price;
     @Column(nullable = false)
     private int passengers;
     @OneToMany(mappedBy = "transport",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
