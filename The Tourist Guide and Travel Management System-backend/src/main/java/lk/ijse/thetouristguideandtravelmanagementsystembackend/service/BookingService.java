@@ -35,14 +35,12 @@ public class BookingService {
         try {
             Booking booking = new Booking();
 
-            // Set IDs and simple properties
             if (bookingDto.getBookingId() == null) {
                 booking.setId(UUID.randomUUID().toString());
             } else {
                 booking.setId(bookingDto.getBookingId());
             }
 
-            // Get and set entity references
             User user = userRepo.findById(bookingDto.getTouristId())
                     .orElseThrow(() -> new RuntimeException("Invalid User ID"));
             booking.setUser(user);
@@ -59,7 +57,6 @@ public class BookingService {
                     .orElseThrow(() -> new RuntimeException("Invalid Transport ID"));
             booking.setTransport(transport);
 
-            // Set other properties
             booking.setDate(bookingDto.getDate());
             booking.setTotalAmount(bookingDto.getTotalAmount());
             booking.setNoOfTravellers(bookingDto.getNoOfTravellers());

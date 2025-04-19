@@ -16,30 +16,41 @@ import java.time.LocalDateTime;
 @Table(name = "payment")
 public class Payment {
     @Id
-    @Column(name = "payment_id")
-    private String id;
-    @OneToOne
-    @JoinColumn(name = "booking_id",nullable = false)
-    private Booking booking;
-    @Enumerated(EnumType.STRING) // Added EnumType.STRING to store enum as string
-    @Column(name = "method", nullable = false)
-    private PaymentMethod paymentMethod;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    @Column(nullable = false)
-    private double amount;
+    @Column(name = "order_id", nullable = false)
+    private String orderId;
 
-    @Enumerated(EnumType.STRING)
-    private PaymentStatus status = PaymentStatus.PENDING;
+    @Column(name = "first_name")
+    private String firstName;
 
-    private String payherePaymentId;
+    @Column(name = "last_name")
+    private String lastName;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "email")
+    private String email;
 
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    @Column(name = "payment_title")
+    private String paymentTitle;
 
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    @Column(name = "amount", nullable = false)
+    private Double amount;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "sender_id")
+    private Long senderId;
+
+    @Column(name = "receiver_id")
+    private Long receiverId;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now();
     }
-
 }

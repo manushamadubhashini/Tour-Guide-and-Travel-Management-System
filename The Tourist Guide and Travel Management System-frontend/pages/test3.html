@@ -403,74 +403,30 @@
           </div>
         </div>
       </div>
-      <!-- Payment Details Section -->
-      <div class="card mb-4 animate__animated animate__fadeInUp animate__delay-2s">
+      <!-- Add this after the Accommodation Section and before the Payment Details Section -->
+      <div class="card mb-4 animate__animated animate__fadeInUp animate__delay-1s">
         <div class="card-body">
           <div class="section-header">
             <div class="section-number">3</div>
-            <h3 class="mb-0">Payment Details</h3>
+            <h3 class="mb-0">Transportation</h3>
           </div>
 
-          <div class="row mb-3">
-            <div class="col-md-6 mb-3">
-              <label for="cardName" class="form-label">Name on Card</label>
-              <input type="text" class="form-control" id="cardName" placeholder="John Smith">
-            </div>
-            <div class="col-md-6 mb-3">
-              <label for="cardNumber" class="form-label">Card Number</label>
-              <div class="input-group">
-                <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456">
-                <span class="input-group-text">
-                  <i class="fab fa-cc-visa me-1"></i>
-                  <i class="fab fa-cc-mastercard me-1"></i>
-                  <i class="fab fa-cc-amex"></i>
-                </span>
+          <div class="alert alert-info" id="transportAlert">
+            <i class="bi bi-info-circle-fill me-2"></i>
+            Please select a transportation option for your trip
+          </div>
+
+          <div id="transportContainer">
+            <!-- Transport options will be loaded here -->
+            <div class="text-center my-4">
+              <div class="spinner-border text-primary float-animation" role="status">
+                <span class="visually-hidden">Loading...</span>
               </div>
+              <p class="mt-2">Loading transportation options...</p>
             </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <label for="expiryMonth" class="form-label">Expiry Month</label>
-              <select class="form-select" id="expiryMonth">
-                <option selected>MM</option>
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <!-- Add all months -->
-                <option value="12">12</option>
-              </select>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="expiryYear" class="form-label">Expiry Year</label>
-              <select class="form-select" id="expiryYear">
-                <option selected>YYYY</option>
-                <option value="2025">2025</option>
-                <option value="2026">2026</option>
-                <option value="2027">2027</option>
-                <option value="2028">2028</option>
-                <option value="2029">2029</option>
-              </select>
-            </div>
-            <div class="col-md-4 mb-3">
-              <label for="cvv" class="form-label">CVV</label>
-              <div class="input-group">
-                <input type="text" class="form-control" id="cvv" placeholder="123">
-                <span class="input-group-text">
-                  <i class="fa fa-question-circle" data-bs-toggle="tooltip" title="3-digit security code on the back of your card"></i>
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div class="form-check mt-3">
-            <input class="form-check-input" type="checkbox" id="saveCard">
-            <label class="form-check-label" for="saveCard">
-              Save this card for future bookings
-            </label>
           </div>
         </div>
       </div>
-
       <!-- Submit Button -->
       <div class="d-grid gap-2 animate__animated animate__fadeInUp animate__delay-3s">
         <button class="btn btn-primary btn-lg" type="button" id="completeBooking">
@@ -480,7 +436,7 @@
           <i class="fa fa-shield-alt me-1"></i> Your payment information is secure and encrypted
         </p>
       </div>
-    </div>
+      </div>
 
     <!-- Right Column - Tour Summary -->
     <div class="col-lg-4">
@@ -586,6 +542,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+  let tourId="";
+  let accoId="";
+  let transId="";
   document.addEventListener('DOMContentLoaded', function() {
     // Common functions to handle URL parameters
     function getUrlParameter(name) {
@@ -602,6 +561,8 @@
     initializeCheckoutPage();
 
     function initializeCheckoutPage() {
+
+      tourId= getUrlParameter('id');
       // Load tour data first
       loadTourData();
 
@@ -611,11 +572,12 @@
       // Setup traveler count handlers
       setupTravelerCountHandlers();
 
-      // Add event listener to complete booking button
-      const completeBookingBtn = document.getElementById('completeBooking');
-      if (completeBookingBtn) {
-        completeBookingBtn.addEventListener('click', handleCompleteBooking);
-      }
+
+      // // Add event listener to complete booking button
+      // const completeBookingBtn = document.getElementById('completeBooking');
+      // if (completeBookingBtn) {
+      //   completeBookingBtn.addEventListener('click', handleCompleteBooking);
+      // }
     }
 
     function loadTourData() {
@@ -750,7 +712,7 @@
       ];
 
       // Fetch accommodations from API or use fallback
-      fetch(`${API_BASE_URL}/accommodation`)
+      fetch(`${API_BASE_URL}/accommodation/${tourId}`)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -767,6 +729,7 @@
           } else {
             accommodations = [response];
           }
+
 
           renderAccommodationOptions(accommodations);
         })
@@ -796,6 +759,7 @@
 
       // Generate accommodation cards with unique IDs for each row
       accommodations.forEach((accommodation, index) => {
+        accoId=`${accommodation.id}`
         // Create a unique ID for each accommodation
         const accommodationId = `accommodation-${index}`;
         html += `
@@ -1225,7 +1189,401 @@
       }
     }
   });
-</script>
+  // Transport-related functions
+  function loadTransportOptions() {
+    const transportContainer = document.getElementById('transportContainer');
+    if (!transportContainer) return;
 
+    // Show loading indicator
+    transportContainer.innerHTML = `
+    <div class="text-center my-4">
+      <div class="spinner-border text-primary float-animation" role="status">
+        <span class="visually-hidden">Loading transportation...</span>
+      </div>
+      <p class="mt-2">Loading transportation options...</p>
+    </div>
+  `;
+
+    // Sample transport data (fallback if API fails)
+    const fallbackTransports = [
+      { id: "T001", type: "Standard Car", pricePerKM: 2, passengers: 4 },
+      { id: "T002", type: "Premium SUV", pricePerKM: 3.5, passengers: 6 },
+      { id: "T003", type: "Van", pricePerKM: 4, passengers: 12 },
+      { id: "T004", type: "Luxury Coach", pricePerKM: 10, passengers: 20 }
+    ];
+
+    // Make sure API_BASE_URL is defined
+    const API_BASE_URL = window.API_BASE_URL || '/api';
+
+    // Fetch transport options from API or use fallback
+    fetch(`http://localhost:8080/api/v1/transport/${tourId}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(response => {
+        // Extract transports - handle different response formats
+        let transports;
+        if (response.data) {
+          transports = response.data;
+        } else if (Array.isArray(response)) {
+          transports = response;
+        } else {
+          transports = [response];
+        }
+
+        renderTransportOptions(transports);
+      })
+      .catch(error => {
+        console.error('Error fetching transportation options:', error);
+        // Use fallback data if API call fails
+        renderTransportOptions(fallbackTransports);
+      });
+  }
+
+  function renderTransportOptions(transports) {
+    const transportContainer = document.getElementById('transportContainer');
+    if (!transportContainer) return;
+
+    if (transports.length === 0) {
+      transportContainer.innerHTML = '<div class="alert alert-info">No transportation options available.</div>';
+      return;
+    }
+
+    let html = `
+    <div class="alert alert-info" id="transportAlert">
+      <i class="bi bi-info-circle-fill me-2"></i>
+      Please select a transportation option for your trip
+    </div>
+    <p class="mb-3">Select the best transportation option based on your group size. All prices are per kilometer traveled.</p>
+  `;
+
+    // Generate transport option cards
+    transports.forEach((transport, index) => {
+      // Make sure we have a getTotalTravelers function or provide a fallback
+      const getTotalTravelers = window.getTotalTravelers || function() { return 1; };
+
+      // Calculate if this transport can accommodate the traveler count
+      const travelers = getTotalTravelers();
+      const sufficientCapacity = transport.passengers >= travelers;
+      const capacityClass = sufficientCapacity ? 'text-success' : 'text-danger';
+      const capacityIcon = sufficientCapacity ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill';
+      const capacityMessage = sufficientCapacity ?
+        `Sufficient for your group of ${travelers}` :
+        `Insufficient for your group of ${travelers}`;
+
+      // Create a unique ID for each transport option
+      const transportId = `transport-${transport.id}`;
+
+      transId=`${transport.id}`;
+
+      html += `
+      <div class="card border mb-3 position-relative" id="${transportId}">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col-lg-1 text-center mb-3 mb-lg-0">
+              <i class="${getTransportIcon(transport.type)} fa-2x text-primary"></i>
+            </div>
+            <div class="col-lg-4 mb-3 mb-lg-0">
+              <h5 class="mb-1">${transport.type}</h5>
+              <p class="mb-0 text-muted">Capacity: ${transport.passengers} passengers</p>
+              <div class="${capacityClass} small">
+                <i class="bi ${capacityIcon} me-1"></i>${capacityMessage}
+              </div>
+            </div>
+            <div class="col-lg-3 mb-3 mb-lg-0 text-center">
+              <h5>$${transport.pricePerKM.toFixed(2)}</h5>
+              <p class="text-muted mb-0">per kilometer</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+              <p class="text-muted mb-2">Average journey: 250 km</p>
+              <p class="text-primary fw-bold mb-3">
+                Estimated cost: $${(transport.pricePerKM * 250).toFixed(2)}
+              </p>
+              <button class="btn btn-outline-primary select-transport w-100 w-lg-auto"
+                data-transport-id="${transport.id}"
+                data-transport-type="${transport.type}"
+                data-transport-price="${transport.pricePerKM}"
+                data-transport-capacity="${transport.passengers}">
+                Select
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="selected-badge position-absolute" style="top: 10px; right: 10px; display: none;">
+          <div class="badge bg-primary p-2">
+            <i class="bi bi-check-lg me-1"></i> Selected
+          </div>
+        </div>
+      </div>
+    `;
+    });
+
+    // Update the DOM
+    transportContainer.innerHTML = html;
+
+    // Add event listeners for transport selection buttons
+    const selectButtons = document.querySelectorAll('.select-transport');
+    selectButtons.forEach(button => {
+      button.addEventListener('click', function() {
+        const transportId = this.getAttribute('data-transport-id');
+        const transportType = this.getAttribute('data-transport-type');
+        const transportPrice = parseFloat(this.getAttribute('data-transport-price'));
+        const transportCapacity = parseInt(this.getAttribute('data-transport-capacity'));
+
+        selectTransport(transportId, transportType, transportPrice, transportCapacity);
+      });
+    });
+  }
+
+  function getTransportIcon(transportType) {
+    // Map transport types to appropriate FontAwesome icons
+    const type = transportType.toLowerCase();
+    if (type.includes('car')) return 'fas fa-car';
+    if (type.includes('suv')) return 'fas fa-truck';
+    if (type.includes('van')) return 'fas fa-shuttle-van';
+    if (type.includes('coach') || type.includes('bus')) return 'fas fa-bus';
+    return 'fas fa-car'; // Default icon
+  }
+
+  function selectTransport(transportId, transportType, transportPrice, transportCapacity) {
+    // Clear all previously selected transport options
+    document.querySelectorAll('.selected-badge').forEach(badge => {
+      badge.style.display = 'none';
+    });
+
+    // Highlight the selected transport
+    const selectedTransportCard = document.getElementById(`transport-${transportId}`);
+    if (selectedTransportCard) {
+      const badge = selectedTransportCard.querySelector('.selected-badge');
+      if (badge) badge.style.display = 'block';
+    }
+
+    // Make sure we have a getTotalTravelers function or provide a fallback
+    const getTotalTravelers = window.getTotalTravelers || function() { return 1; };
+
+    // Check if capacity is sufficient
+    const travelers = getTotalTravelers();
+    if (transportCapacity < travelers) {
+      alert(`Warning: The selected ${transportType} has a capacity of ${transportCapacity} passengers, which is less than your group size of ${travelers}.`);
+    }
+
+    // Store the selected transport details (for form submission later)
+    window.selectedTransport = {
+      id: transportId,
+      type: transportType,
+      pricePerKM: transportPrice,
+      passengers: transportCapacity
+    };
+
+    // Update the alert
+    const transportAlert = document.getElementById('transportAlert');
+    if (transportAlert) {
+      transportAlert.className = 'alert alert-success';
+      transportAlert.innerHTML = `
+      <i class="bi bi-check-circle-fill me-2"></i>
+      ${transportType} selected for your trip
+    `;
+    }
+
+    // Update price calculation with transport costs included
+    if (typeof updatePriceCalculationWithTransport === 'function') {
+      updatePriceCalculationWithTransport(transportPrice);
+    }
+  }
+
+  // Fixed function to update price calculation with transport
+  function updatePriceCalculationWithTransport(transportPricePerKM) {
+    // Check if updatePriceCalculation exists before calling it
+    if (typeof updatePriceCalculation === 'function') {
+      updatePriceCalculation();
+    }
+
+    // Then add transport costs
+    if (transportPricePerKM) {
+      const averageDistance = 250; // km
+      const transportCost = transportPricePerKM * averageDistance;
+
+      // Get the existing elements from the price breakdown
+      const priceBreakdown = document.getElementById('priceBreakdown');
+      const totalPriceElement = document.getElementById('totalPrice');
+
+      if (priceBreakdown && totalPriceElement) {
+        // Get current total
+        const currentTotal = parseFloat(totalPriceElement.textContent) || 0;
+
+        // Remove any existing transport cost entry
+        const existingTransportDiv = Array.from(priceBreakdown.querySelectorAll('div.d-flex.justify-content-between.mb-2'))
+          .find(div => div.textContent.includes('Transportation'));
+        if (existingTransportDiv) {
+          existingTransportDiv.remove();
+        }
+
+        // Create transport cost element
+        const transportDiv = document.createElement('div');
+        transportDiv.className = 'd-flex justify-content-between mb-2';
+        transportDiv.innerHTML = `
+        <div>Transportation (250 km x $${transportPricePerKM.toFixed(2)})</div>
+        <div>$${transportCost.toFixed(2)}</div>
+      `;
+
+        // Find where to insert transport cost
+        const hrElement = priceBreakdown.querySelector('hr');
+        const totalDiv = priceBreakdown.querySelector('div.d-flex.justify-content-between.fw-bold');
+
+        // Insert transport div appropriately
+        if (hrElement) {
+          priceBreakdown.insertBefore(transportDiv, hrElement);
+        } else if (totalDiv) {
+          const newHr = document.createElement('hr');
+          priceBreakdown.insertBefore(transportDiv, totalDiv);
+          priceBreakdown.insertBefore(newHr, totalDiv);
+        } else {
+          priceBreakdown.appendChild(transportDiv);
+        }
+
+        // Update total price
+        const newTotal = currentTotal + transportCost;
+        totalPriceElement.textContent = newTotal.toFixed(2);
+      }
+    }
+  }
+
+  // Add an initialization function to be called when the page loads
+  function initTransport() {
+    loadTransportOptions();
+  }
+
+  // Call init when the DOM is fully loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTransport);
+  } else {
+    // DOM already loaded, call init directly
+    initTransport();
+  }
+  $("#completeBooking").click((e) => {
+    e.preventDefault();
+
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    const formattedDate = `${year}/${month}/${day}`;
+
+    const id = "BOOK" + Math.floor(1000 + Math.random() * 9000); // Generate random booking ID
+    const touristId = "U8908";
+    const toursId = tourId;
+    const accommodationsId = accoId;
+    const transportId = transId;
+    const date = formattedDate;
+    const totalAmount = $("#totalPrice").text();
+    const noOfTravellers = $("#travelerCount").text();
+
+    const bookingData = {
+      "bookingId": id,
+      "touristId": touristId,
+      "tourId": toursId,
+      "accommodationId": accommodationsId,
+      "transportId": transportId,
+      "date": date,
+      "totalAmount": totalAmount,
+      "noOfTravellers": noOfTravellers
+    };
+
+
+
+    showLoadingOverlay("Processing your booking...");
+
+    $.ajax({
+      url: "http://localhost:8080/api/v1/booking",
+      method: "POST",
+      data: JSON.stringify(bookingData),
+      contentType: "application/json",
+      success: (res) => {
+        // Store the booking data in session storage
+        sessionStorage.setItem('bookingData', JSON.stringify({
+          bookingId: id,
+          tourId: toursId,
+          tourName: $("#tourName").text(),
+          startDate: $("#tourStartDate").text(),
+          travelers: noOfTravellers,
+          packagePrice: $("#packagePrice").text().replace('$', '') || "0",
+          accommodationPrice: $("#accommodationPrice").text().replace('$', '') || "0",
+          processingFee: $("#processingFee").text().replace('$', '') || "0",
+          totalAmount: $("#totalPrice").text().replace('$', '') || "0",
+          customerInfo: {
+            firstName: "John", // Replace with actual form data
+            lastName: "Doe",
+            email: "john@example.com",
+            phone: "0771234567",
+            address: "123 Main St",
+            city: "Colombo",
+            country: "Sri Lanka"
+          }
+        }));
+
+        console.log("Booking created successfully:", res);
+
+        // Show success message
+        showSuccessMessage("Booking created successfully! Redirecting to payment page...");
+
+        // Use absolute path to payment.html to ensure we're navigating correctly
+        setTimeout(() => {
+          window.open("payment.html", "_blank");
+        }, 1500);
+      },
+      error: (err) => {
+        console.error("Error creating booking:", err);
+        hideLoadingOverlay();
+
+        // Show error message
+        showErrorMessage("There was an error processing your booking. Please try again.");
+      }
+    });
+  });
+
+  // Helper functions for UI feedback
+  function showLoadingOverlay(message) {
+    const overlay = `
+    <div id="loadingOverlay" class="loading-overlay">
+      <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <p class="mt-3">${message}</p>
+    </div>
+  `;
+    $('body').append(overlay);
+  }
+
+  function hideLoadingOverlay() {
+    $('#loadingOverlay').remove();
+  }
+
+  function showSuccessMessage(message) {
+    const alert = `
+    <div class="alert alert-success animate__animated animate__fadeIn" id="successAlert">
+      <i class="fas fa-check-circle me-2"></i>${message}
+    </div>
+  `;
+    $('#bookingForm').prepend(alert);
+  }
+
+  function showErrorMessage(message) {
+    const alert = `
+    <div class="alert alert-danger animate__animated animate__fadeIn" id="errorAlert">
+      <i class="fas fa-exclamation-circle me-2"></i>${message}
+    </div>
+  `;
+    $('#bookingForm').prepend(alert);
+
+    // Auto-dismiss after 5 seconds
+    setTimeout(() => {
+      $('#errorAlert').addClass('animate__fadeOut');
+      setTimeout(() => $('#errorAlert').remove(), 500);
+    }, 5000);
+  }
+</script>
 </body>
 </html>

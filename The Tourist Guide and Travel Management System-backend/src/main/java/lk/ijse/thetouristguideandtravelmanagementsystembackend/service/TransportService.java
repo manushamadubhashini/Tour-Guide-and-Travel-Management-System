@@ -1,8 +1,10 @@
 package lk.ijse.thetouristguideandtravelmanagementsystembackend.service;
 
 import lk.ijse.thetouristguideandtravelmanagementsystembackend.dto.TransportDto;
+import lk.ijse.thetouristguideandtravelmanagementsystembackend.entitiy.Accommodation;
 import lk.ijse.thetouristguideandtravelmanagementsystembackend.entitiy.Transport;
 import lk.ijse.thetouristguideandtravelmanagementsystembackend.entitiy.enums.TransportType;
+import lk.ijse.thetouristguideandtravelmanagementsystembackend.repo.AccommodationRepo;
 import lk.ijse.thetouristguideandtravelmanagementsystembackend.repo.TransportRepo;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -18,6 +20,7 @@ public class TransportService {
     private TransportRepo transportRepo;
     @Autowired
     private ModelMapper modelMapper;
+    private AccommodationRepo accommodationRepo;
 
     public void save(TransportDto transportDto){
         try{
@@ -42,6 +45,13 @@ public class TransportService {
             e.printStackTrace();
             throw new RuntimeException("Not Load");
         }
+
+    }
+    public List<TransportDto> findByTourId(String id){
+        List<Transport> transports=transportRepo.findByTourId(id);
+        return modelMapper.map(transports,new TypeToken<List<TransportDto>>(){}.getType());
+
+
 
     }
     public void delete(String id){

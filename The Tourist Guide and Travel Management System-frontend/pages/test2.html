@@ -1267,19 +1267,12 @@
       bookNowButtons.forEach(button => {
         button.addEventListener('click', function() {
           const tourId = getUrlParameter('id');
-          const dateInput = document.getElementById('tourDate');
-          const travelersInput = document.getElementById('travelers');
 
-          // Validate date selection
-          if (!dateInput.value) {
-            alert('Please select a tour date');
-            dateInput.focus();
-            return;
-          }
+          // Simply redirect without validation since the fields don't exist
+          window.location.href = `test3.html?id=${tourId}`;
 
-          // Redirect to checkout with parameters
-          const travelers = travelersInput ? travelersInput.value : '2';
-          window.location.href = `checkout.html?id=${tourId}&date=${dateInput.value}&travelers=${travelers}`;
+          // Or if you want to add default values
+          // window.location.href = `test3.html?id=${tourId}&date=2025-04-25&travelers=2`;
         });
       });
 

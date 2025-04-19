@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @RestController
 @RequestMapping("api/v1/transport")
 @CrossOrigin
@@ -34,6 +36,10 @@ public class TransportController {
         transportService.update(transportDto);
         return new ResponseUtil(200,"Accommodation is updated",transportDto);
 
+    }
+    @GetMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil findByTourId(@PathVariable(value = "id") String id){
+        return new ResponseUtil(200,"Transport is load",transportService.findByTourId(id));
     }
 }
 

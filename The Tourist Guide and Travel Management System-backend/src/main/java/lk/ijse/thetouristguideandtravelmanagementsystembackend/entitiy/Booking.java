@@ -38,6 +38,9 @@ public class Booking {
     private double totalAmount;
     @Column(name = "no_of_travellers",nullable = false)
     private int noOfTravellers;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private BookingStatus bookingStatus;
 
 
 }

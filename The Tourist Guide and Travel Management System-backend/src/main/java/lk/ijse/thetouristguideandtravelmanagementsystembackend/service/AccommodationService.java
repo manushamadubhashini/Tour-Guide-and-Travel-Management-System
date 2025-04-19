@@ -44,6 +44,10 @@ public class AccommodationService {
     public List<AccommodationDto> getAll(){
         return modelMapper.map(accommodationRepo.findAll(),new TypeToken<List<AccommodationDto>>(){}.getType());
     }
+    public List<AccommodationDto> findByTourId(String tourId) {
+        List<Accommodation> accommodations = accommodationRepo.findByTourId(tourId);
+        return modelMapper.map(accommodations, new TypeToken<List<AccommodationDto>>(){}.getType());
+    }
     public void delete(String id){
 
         try {

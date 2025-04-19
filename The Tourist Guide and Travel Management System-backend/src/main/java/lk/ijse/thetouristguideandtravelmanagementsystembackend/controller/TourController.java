@@ -22,24 +22,23 @@ public class TourController {
     public TourController(TourService tourService) {
         this.tourService = tourService;
     }
-    @PreAuthorize("hasAnyRole('user')")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseUtil save(@ModelAttribute TourDto tourDto){
         tourService.save(tourDto);
         return new ResponseUtil(201,"Tour is Saved!",tourDto);
     }
-    @PreAuthorize("hasAnyRole('user')")
+//    @PreAuthorize("hasAnyRole('user')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil getAll(){
         return new ResponseUtil(200,"Tour Load",tourService.getAll());
     }
-    @PreAuthorize("hasAnyRole('user')")
+//    @PreAuthorize("hasAnyRole('user')")
     @DeleteMapping(path = "delete/{id}")
     public ResponseUtil delete(@PathVariable(value = "id")String id){
         tourService.delete(id);
         return new ResponseUtil(200,"Tour Deleted!",id);
     }
-    @PreAuthorize("hasAnyRole('user')")
+//    @PreAuthorize("hasAnyRole('user')")
     @PutMapping
     public ResponseUtil update(@ModelAttribute TourDto tourDto){
         tourService.update(tourDto);
@@ -53,7 +52,7 @@ public class TourController {
 //            return new ResponseUtil(404, "Tour Not Found", null);
 //        }
 //    }
-@PreAuthorize("hasAnyRole('user')")
+//@PreAuthorize("hasAnyRole('user')")
 @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 public ResponseUtil getTourById(@PathVariable String id) {
     try {

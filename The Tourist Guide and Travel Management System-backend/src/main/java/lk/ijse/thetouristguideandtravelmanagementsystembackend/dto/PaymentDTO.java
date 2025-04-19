@@ -8,12 +8,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class PaymentDTO {
-    private String paymentId;
-    private String bookingId;
-    private double amount;
-    private String paymentMethod;
+    private String orderId;
+    private String hash;
+    private String amount;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String paymentTitle;
     private String status;
-    private String payherePaymentId;
-    private String createdAt;
-    private String updatedAt;
+    private Long senderId;
+    private Long receiverId;
 }

@@ -19,6 +19,9 @@ public class Transport {
     @Id
     @Column(name = "trasport_id")
     private String id;
+    @ManyToOne
+    @JoinColumn(name = "tour_id",nullable = false)
+    private Tour tour;
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false,length = 50)
     private TransportType transportType;

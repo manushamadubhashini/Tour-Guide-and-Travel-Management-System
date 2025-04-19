@@ -5,214 +5,84 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PayHere Payment Gateway</title>
   <!-- Bootstrap CSS -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     .payment-card {
-      max-width: 500px;
-      margin: 0 auto;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
-
-    .form-control:focus, .form-select:focus {
-      border-color: #6c63ff;
-      box-shadow: 0 0 0 0.25rem rgba(108, 99, 255, 0.25);
-    }
-
-    .btn-primary {
-      background-color: #6c63ff;
-      border-color: #6c63ff;
-    }
-
-    .btn-primary:hover {
-      background-color: #5a52d5;
-      border-color: #5a52d5;
-    }
-
     .payment-header {
       background-color: #f8f9fa;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid #dee2e6;
       border-radius: 10px 10px 0 0;
     }
-
-    .card-icons {
-      font-size: 24px;
-      color: #6c6c6c;
+    .btn-pay {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      transition: all 0.3s;
     }
-
+    .btn-pay:hover {
+      background-color: #2980b9;
+      transform: translateY(-2px);
+    }
     .success-message {
       display: none;
-      text-align: center;
-    }
-
-    .success-checkmark {
-      font-size: 60px;
-      color: #28a745;
+      background-color: #d4edda;
+      color: #155724;
+      padding: 15px;
+      border-radius: 5px;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
 <div class="container py-5">
-  <div class="row">
-    <div class="col-12">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
       <div class="card payment-card">
-        <div class="payment-header p-4">
-          <div class="d-flex justify-content-between align-items-center">
-            <h3 class="mb-0">Payment Details</h3>
-            <div class="card-icons">
-              <i class="bi bi-credit-card me-2"></i>
-              <i class="bi bi-paypal"></i>
-            </div>
-          </div>
+        <div class="card-header payment-header">
+          <h3 class="text-center mb-0">PayHere Payment Gateway</h3>
         </div>
-
-        <div class="card-body p-4">
-          <!-- Payment Form -->
-          <form id="payment-form">
-            <div class="row g-3">
-              <!-- Order Summary -->
-              <div class="col-12 mb-3">
-                <h5>Order Summary</h5>
-                <div class="bg-light p-3 rounded">
-                  <div class="d-flex justify-content-between mb-2">
-                    <span>Product Total</span>
-                    <span>$<span id="product-total">99.00</span></span>
-                  </div>
-                  <div class="d-flex justify-content-between mb-2">
-                    <span>Shipping</span>
-                    <span>$<span id="shipping">5.00</span></span>
-                  </div>
-                  <div class="d-flex justify-content-between mb-2">
-                    <span>Tax</span>
-                    <span>$<span id="tax">10.00</span></span>
-                  </div>
-                  <hr>
-                  <div class="d-flex justify-content-between fw-bold">
-                    <span>Total</span>
-                    <span>$<span id="total-amount">114.00</span></span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Customer Information -->
-              <div class="col-12">
-                <h5>Customer Information</h5>
-              </div>
-
+        <div class="card-body">
+          <form id="paymentForm">
+            <div class="row mb-3">
               <div class="col-md-6">
-                <label for="first-name" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="first-name" required>
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstName" required>
               </div>
-
               <div class="col-md-6">
-                <label for="last-name" class="form-label">Last Name</label>
-                <input type="text" class="form-control" id="last-name" required>
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="lastName" required>
               </div>
-
-              <div class="col-12">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" required>
-              </div>
-
-              <div class="col-12">
-                <label for="phone" class="form-label">Phone</label>
-                <input type="tel" class="form-control" id="phone" required>
-              </div>
-
-              <!-- Payment Method -->
-              <div class="col-12 mt-4">
-                <h5>Payment Method</h5>
-              </div>
-
-              <div class="col-12">
-                <div class="form-check mb-3">
-                  <input class="form-check-input" type="radio" name="payment-method" id="credit-card" checked>
-                  <label class="form-check-label" for="credit-card">
-                    Credit Card
-                  </label>
-                </div>
-
-                <div id="credit-card-details">
-                  <div class="mb-3">
-                    <label for="card-number" class="form-label">Card Number</label>
-                    <input type="text" class="form-control" id="card-number" placeholder="1234 5678 9012 3456" required>
-                  </div>
-
-                  <div class="row g-3 mb-3">
-                    <div class="col-md-6">
-                      <label for="expiry-date" class="form-label">Expiry Date</label>
-                      <input type="text" class="form-control" id="expiry-date" placeholder="MM/YY" required>
-                    </div>
-                    <div class="col-md-6">
-                      <label for="cvv" class="form-label">CVV</label>
-                      <input type="text" class="form-control" id="cvv" placeholder="123" required>
-                    </div>
-                  </div>
-
-                  <div class="mb-3">
-                    <label for="card-name" class="form-label">Name on Card</label>
-                    <input type="text" class="form-control" id="card-name" required>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Billing Address -->
-              <div class="col-12 mt-4">
-                <h5>Billing Address</h5>
-              </div>
-
-              <div class="col-12">
-                <label for="address" class="form-label">Address</label>
-                <input type="text" class="form-control" id="address" required>
-              </div>
-
-              <div class="col-md-6">
-                <label for="city" class="form-label">City</label>
-                <input type="text" class="form-control" id="city" required>
-              </div>
-
-              <div class="col-md-6">
-                <label for="zip" class="form-label">ZIP Code</label>
-                <input type="text" class="form-control" id="zip" required>
-              </div>
-
-              <div class="col-12">
-                <label for="country" class="form-label">Country</label>
-                <select class="form-select" id="country" required>
-                  <option value="">Select Country</option>
-                  <option value="US">United States</option>
-                  <option value="CA">Canada</option>
-                  <option value="UK">United Kingdom</option>
-                  <option value="AU">Australia</option>
-                  <option value="IN">India</option>
-                </select>
-              </div>
-
-              <div class="col-12 mt-4">
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="save-info">
-                  <label class="form-check-label" for="save-info">
-                    Save this information for next time
-                  </label>
-                </div>
-              </div>
-
-              <div class="col-12 mt-4">
-                <button type="submit" class="btn btn-primary w-100 py-3">Pay $114.00</button>
-              </div>
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="mb-3">
+              <label for="phone" class="form-label">Phone Number</label>
+              <input type="tel" class="form-control" id="phone">
+            </div>
+            <div class="mb-3">
+              <label for="paymentTitle" class="form-label">Payment For</label>
+              <input type="text" class="form-control" id="paymentTitle" required>
+            </div>
+            <div class="mb-3">
+              <label for="amount" class="form-label">Amount (LKR)</label>
+              <input type="number" step="0.01" class="form-control" id="amount" required>
+            </div>
+            <div class="text-center">
+              <button type="button" id="payButton" class="btn btn-pay">
+                <i class="bi bi-credit-card me-2"></i>Pay with PayHere
+              </button>
             </div>
           </form>
-
-          <!-- Success Message (Hidden initially) -->
-          <div class="success-message" id="success-message">
-            <div class="py-5">
-              <div class="success-checkmark mb-4">✓</div>
-              <h3>Payment Successful!</h3>
-              <p class="mb-4">Your payment has been processed successfully. A confirmation email has been sent to your email address.</p>
-              <p class="mb-1"><strong>Transaction ID:</strong> <span id="transaction-id"></span></p>
-              <p class="mb-4"><strong>Amount Paid:</strong> $<span id="paid-amount">114.00</span></p>
-              <button type="button" class="btn btn-outline-primary" id="back-button">Return to Store</button>
-            </div>
+          <div id="successMessage" class="success-message">
+            <h4>Payment Successful!</h4>
+            <p>Your order ID: <span id="orderIdDisplay"></span></p>
           </div>
         </div>
       </div>
@@ -220,137 +90,118 @@
   </div>
 </div>
 
-<!-- PayHere SDK -->
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- PayHere JS -->
 <script type="text/javascript" src="https://www.payhere.lk/lib/payhere.js"></script>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- Bootstrap Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.3/font/bootstrap-icons.min.css">
-
-<!-- Bootstrap JS Bundle with Popper -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-
-<!-- Custom JavaScript -->
 <script>
-  // Frontend fixes for the payment form script
-  document.addEventListener('DOMContentLoaded', function() {
-    const paymentForm = document.getElementById('payment-form');
-
-    // Set up PayHere event handlers
+  $(document).ready(function() {
+    // PayHere configuration
     payhere.onCompleted = function onCompleted(orderId) {
       console.log("Payment completed. OrderID:" + orderId);
-      // Show success message with transaction ID
-      document.getElementById('transaction-id').textContent = orderId;
-      document.getElementById('payment-form').style.display = 'none';
-      document.getElementById('success-message').style.display = 'block';
+      $('#successMessage').show();
+      $('#orderIdDisplay').text(orderId);
+      $('#paymentForm').hide();
+
+      // Save payment details to database
+      savePaymentDetails(orderId);
     };
 
     payhere.onDismissed = function onDismissed() {
       console.log("Payment dismissed");
-      alert("Payment was dismissed");
-
-      // Re-enable the submit button if it was disabled
-      const submitButton = paymentForm.querySelector('button[type="submit"]');
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.textContent = 'Pay $' + document.getElementById('total-amount').textContent;
-      }
     };
 
     payhere.onError = function onError(error) {
-      console.log("Payment error: " + error);
-      alert("Payment error: " + error);
-
-      // Re-enable the submit button if it was disabled
-      const submitButton = paymentForm.querySelector('button[type="submit"]');
-      if (submitButton) {
-        submitButton.disabled = false;
-        submitButton.textContent = 'Pay $' + document.getElementById('total-amount').textContent;
-      }
+      console.log("Error:", error);
+      alert("Payment Error: " + error);
     };
 
-    // Form submission handler
-    paymentForm.addEventListener('submit', function(e) {
-      e.preventDefault();
+    // Handle pay button click
+    $('#payButton').click(function() {
+      const firstName = $('#firstName').val();
+      const lastName = $('#lastName').val();
+      const email = $('#email').val();
+      const phone = $('#phone').val();
+      const paymentTitle = $('#paymentTitle').val();
+      const amount = $('#amount').val();
 
-      // Validate form
-      if (!paymentForm.checkValidity()) {
-        e.stopPropagation();
-        paymentForm.classList.add('was-validated');
+      if (!firstName || !lastName || !email || !paymentTitle || !amount) {
+        alert("Please fill all required fields");
         return;
       }
 
-      // Show loading state
-      const submitButton = paymentForm.querySelector('button[type="submit"]');
-      const originalButtonText = submitButton.textContent;
-      submitButton.disabled = true;
-      submitButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Processing...';
+      // Calculate hash from backend
+      $.ajax({
+        url: "http://localhost:8080/api/v1/payments",
+        type: "PUT",
+        dataType: "json",
+        data: {
+          amount: parseFloat(amount)
+        },
+        success: function(response) {
+          console.log("Hash calculated:", response);
 
-      // Gather form data
-      const formData = {
-        bookingId: "BOOK008", // Generate a temporary booking ID if not available
-        paymentMethod: "CREDIT_CARD",
-        firstName: document.getElementById('first-name').value.trim(),
-        lastName: document.getElementById('last-name').value.trim(),
-        email: document.getElementById('email').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        address: document.getElementById('address').value.trim(),
-        city: document.getElementById('city').value.trim(),
-        country: document.getElementById('country').value,
-        amount: parseFloat(document.getElementById('total-amount').textContent)
+          // Configure payment
+          const payment = {
+            sandbox: true,
+            merchant_id: "1230021",
+            return_url: "",
+            cancel_url: "",
+            notify_url: "https://117d-2402-4000-2150-3035-d501-5f81-e44-3351.ngrok-free.app/api/v1/paymnets/notify ",
+            order_id: response.orderId,
+            items: paymentTitle,
+            amount: response.amount,
+            currency: "LKR",
+            hash: response.hash,
+            first_name: firstName,
+            last_name: lastName,
+            email: email,
+            phone: phone || "",
+            address: "",
+            city: "",
+            country: ""
+          };
+
+          console.log("Payment config:", payment);
+
+          // Start payment
+          payhere.startPayment(payment);
+        },
+        error: function(error) {
+          console.error("Error calculating hash:", error);
+          alert("Error preparing payment. Please try again.");
+        }
+      });
+    });
+
+    // Function to save payment details
+    function savePaymentDetails(orderId) {
+      const paymentData = {
+        orderId: orderId,
+        firstName: $('#firstName').val(),
+        lastName: $('#lastName').val(),
+        email: $('#email').val(),
+        paymentTitle: $('#paymentTitle').val(),
+        amount: $('#amount').val(),
+        status: "COMPLETED"
       };
 
-      // Call the backend API to initiate payment
-      fetch('http://localhost:8080/api/v1/payments/initiate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
+      $.ajax({
+        url: "http://localhost:8080/api/v1/payments",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(paymentData),
+        success: function(response) {
+          console.log("Payment saved successfully:", response);
         },
-        body: JSON.stringify(formData)
-      })
-        .then(response => {
-          if (!response.ok) {
-            return response.json().then(data => {
-              throw new Error(data.error || 'Failed to initiate payment');
-            });
-          }
-          return response.json();
-        })
-        // Inside your payment form submit handler
-        .then(data => {
-          console.log("Full response from server:", data);
-          console.log("PayHere data:", data.payhereData);
-
-          // Check if payhereData exists and has all required properties
-          if (data.payhereData &&
-            data.payhereData.merchant_id &&
-            data.payhereData.order_id &&
-            data.payhereData.amount) {
-            try {
-              console.log("Starting PayHere payment with:", JSON.stringify(data.payhereData));
-              // Start PayHere payment with the data from backend
-              payhere.startPayment(data.payhereData);
-            } catch (err) {
-              console.error("Error starting PayHere payment:", err);
-              throw new Error("Invalid payment gateway response: " + err.message);
-            }
-          } else {
-            console.error("Missing required PayHere data:", data);
-            throw new Error('Missing required payment gateway data');
-          }
-        })
-
-    });
-
-    // Back button handler
-    document.getElementById('back-button').addEventListener('click', function() {
-      // Reset the form
-      paymentForm.reset();
-      paymentForm.style.display = 'block';
-      document.getElementById('success-message').style.display = 'none';
-    });
-
-    // Input formatting helpers (unchanged)
-    // ... rest of the input formatting code
+        error: function(error) {
+          console.error("Error saving payment:", error);
+        }
+      });
+    }
   });
 </script>
 </body>

@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class TransportDto {
     private String id;
+    private String tourId;
     private String type;
     private double pricePerKM;
     private int passengers;

@@ -38,4 +38,10 @@ public class AccommodationController {
         return new ResponseUtil(200,"Accommodation is updated",accommodationDto);
 
     }
+    @GetMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseUtil getTourById(@PathVariable(value = "id") String id){
+        return new ResponseUtil(200,"Accommodation is load",accommodationService.findByTourId(id));
+
+
+    }
 }
