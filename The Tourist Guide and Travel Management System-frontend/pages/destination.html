@@ -335,48 +335,42 @@
 <body>
 <!-- Sidebar -->
 <div class="sidebar">
-  <div class="sidebar-brand">
-    <i class="fas fa-map-marker-alt"></i>
-    <h2>TravelPro</h2>
-  </div>
   <nav>
-    <a href="Dashboard.html" class="nav-item">
+    <a href="../pages/Dashbaord.html" class="nav-item">
       <i class="fas fa-th-large"></i>
       <span>Dashboard</span>
     </a>
-    <a href="tour.html" class="nav-item">
+    <a href="../pages/tour.html" class="nav-item">
       <i class="fas fa-map-marked-alt"></i>
       <span>Tours</span>
     </a>
-    <a href="guide.html" class="nav-item">
-      <i class="fas fa-users"></i>
-      <span>Guides</span>
+    <a href="../pages/booking.html" class="nav-item">
+      <i class="fas fa-calendar-check"></i>
+      <span>Bookings</span>
     </a>
-    <a href="transport.html" class="nav-item">
+    <a href="../pages/tras.html" class="nav-item">
       <i class="fas fa-shuttle-van"></i>
       <span>Transport</span>
     </a>
-    <a href="Accommodation.html" class="nav-item">
+    <a href="../pages/Accomodation.html" class="nav-item">
       <i class="fas fa-hotel"></i>
       <span>Accommodation</span>
     </a>
-    <a href="tourists.html" class="nav-item">
-      <i class="fas fa-user-friends"></i>
-      <span>Tourists</span>
-    </a>
-    <a href="destinations.html" class="nav-item active">
+    <a href="../pages/destination.html" class="nav-item active">
       <i class="fas fa-globe"></i>
       <span>Destinations</span>
     </a>
-    <div class="divider"></div>
-    <a href="notifications.html" class="nav-item">
-      <i class="fas fa-bell"></i>
-      <span>Notifications</span>
+    <a href="../pages/paymnetManage.html" class="nav-item">
+      <i class="fas fa-credit-card"></i>
+      <span>Payments</span>
     </a>
-    <a href="reviews.html" class="nav-item">
+    <div class="divider"></div>
+
+    <a href="../pages/Review.html" class="nav-item">
       <i class="fas fa-star"></i>
       <span>Reviews</span>
     </a>
+
     <a href="settings.html" class="nav-item">
       <i class="fas fa-cog"></i>
       <span>Settings</span>
@@ -581,6 +575,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   // Load destinations function
+  const token = localStorage.getItem('userToken');
   function loadDestinations() {
     const destinationList = document.getElementById('destinationList');
 
@@ -589,6 +584,9 @@
     $.ajax({
       url: "http://localhost:8080/api/v1/destination",
       method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
       dataType: "json",
       success: (res) => {
         const destinations = res.data;
@@ -751,6 +749,9 @@
     $.ajax({
       url: "http://localhost:8080/api/v1/destination",
       method: isUpdate ? "PUT" : "POST",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
       data: formData,
       processData: false,
       contentType: false,
@@ -885,8 +886,11 @@
   function deleteDestination(id) {
     if (confirm("Are you sure you want to delete this destination?")) {
       $.ajax({
-        url: `http://localhost:8080/api/v1/destination/${id}`,
+        url: `http://localhost:8080/api/v1/destination/delete/${id}`,
         method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
         success: function(response) {
           // Show success message
           const alertHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -947,6 +951,9 @@
     $.ajax({
       url: "http://localhost:8080/api/v1/destination",
       method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
       dataType: "json",
       success: function(res) {
         const destinations = res.data;
@@ -1019,6 +1026,9 @@
         $.ajax({
           url: "http://localhost:8080/api/v1/destination",
           method: "POST",
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
           data: destinationData,
           processData: false,
           contentType: false,

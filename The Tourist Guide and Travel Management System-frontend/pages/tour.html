@@ -348,43 +348,41 @@
     <h2>TravelPro</h2>
   </div>
   <nav>
-    <a href="Dashboard.html" class="nav-item">
+    <a href="../pages/Dashbaord.html" class="nav-item">
       <i class="fas fa-th-large"></i>
       <span>Dashboard</span>
     </a>
-    <a href="tour.html" class="nav-item active">
+    <a href="../pages/tour.html" class="nav-item active">
       <i class="fas fa-map-marked-alt"></i>
       <span>Tours</span>
     </a>
-    <a href="guide.html" class="nav-item">
-      <i class="fas fa-users"></i>
-      <span>Guides</span>
+    <a href="../pages/booking.html" class="nav-item">
+      <i class="fas fa-calendar-check"></i>
+      <span>Bookings</span>
     </a>
-    <a href="transport.html" class="nav-item">
+    <a href="../pages/tras.html" class="nav-item">
       <i class="fas fa-shuttle-van"></i>
       <span>Transport</span>
     </a>
-    <a href="Accommodation.html" class="nav-item">
+    <a href="../pages/Accomodation.html" class="nav-item">
       <i class="fas fa-hotel"></i>
       <span>Accommodation</span>
     </a>
-    <a href="tourists.html" class="nav-item">
-      <i class="fas fa-user-friends"></i>
-      <span>Tourists</span>
-    </a>
-    <a href="destinations.html" class="nav-item">
+    <a href="../pages/destination.html" class="nav-item">
       <i class="fas fa-globe"></i>
       <span>Destinations</span>
     </a>
-    <div class="divider"></div>
-    <a href="notifications.html" class="nav-item">
-      <i class="fas fa-bell"></i>
-      <span>Notifications</span>
+    <a href="../pages/paymnetManage.html" class="nav-item ">
+      <i class="fas fa-credit-card"></i>
+      <span>Payments</span>
     </a>
-    <a href="reviews.html" class="nav-item">
+    <div class="divider"></div>
+
+    <a href="../pages/Review.html" class="nav-item">
       <i class="fas fa-star"></i>
       <span>Reviews</span>
     </a>
+
     <a href="settings.html" class="nav-item">
       <i class="fas fa-cog"></i>
       <span>Settings</span>
@@ -560,8 +558,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   // Load tours function
+  const token = localStorage.getItem('userToken');
   function loadTours() {
     const tourList = document.getElementById('tourList');
+    const token = localStorage.getItem('userToken');
 
     tourList.innerHTML = '<div class="text-center p-4"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
 
@@ -569,6 +569,9 @@
       url: "http://localhost:8080/api/v1/tour",
       method: "GET",
       dataType: "json",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
       success: (res) => {
         const tours = res.data;
         if (tours.length === 0) {
@@ -727,6 +730,10 @@
     document.getElementById("tourId").value = "";
     document.getElementById("btn-save").textContent = "Save Tour";
     document.getElementById("imagePreviewContainer").style.display = "none";
+
+    // Set a flag to indicate this is a new tour
+    document.getElementById("tour-form").setAttribute("data-mode", "add");
+
     modal.style.display = "block";
 
     // Generate a new tour ID
@@ -749,9 +756,12 @@
     }
   }
 
-  // Save tour
+  // Handle form submission - now with separate handling for add and update
   $("#tour-form").on("submit", function(e) {
     e.preventDefault();
+
+    // Get the current mode (add or edit)
+    const mode = $(this).attr("data-mode");
 
     // Create FormData object
     const formData = new FormData(this);
@@ -759,12 +769,23 @@
     // Add the tour type
     formData.append("tourType", $("#tourType").val());
 
-    const isUpdate = $("#tourId").val().trim() !== "";
-    const method = isUpdate ? "PUT" : "POST";
+    if (mode === "edit") {
+      // Handle update (PUT)
+      updateTour(formData);
+    } else {
+      // Handle create (POST)
+      createTour(formData);
+    }
+  });
 
+  // Function to create a new tour
+  function createTour(formData) {
     $.ajax({
       url: "http://localhost:8080/api/v1/tour",
-      type: method,
+      type: "POST",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
       data: formData,
       contentType: false,
       processData: false,
@@ -772,36 +793,76 @@
         console.log("Success:", res);
 
         // Show success message
-        const successMsg = isUpdate ? "Tour updated successfully!" : "New tour added successfully!";
-        const alertHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
-          ${successMsg}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>`;
-
-        $(".main-content").prepend(alertHTML);
-
-        // Auto remove alert after 3 seconds
-        setTimeout(() => {
-          $(".alert").alert('close');
-        }, 3000);
+        showAlert("New tour added successfully!", "success");
 
         // Reset form and close modal
-        $("#tour-form")[0].reset();
-        $("#imagePreviewContainer").hide();
-        $("#tourId").val("");
-        $("#tourType").val("");
-        $("#btn-save").text("Save Tour");
-        modal.style.display = "none";
+        resetFormAndCloseModal();
 
         // Reload tour list
         loadTours();
       },
       error: function(err) {
-        console.error("Error:", err);
-        alert("Error saving tour data. Please try again.");
+        console.error("Error creating tour:", err);
+        showAlert("Error saving tour data. Please try again.", "danger");
       }
     });
-  });
+  }
+
+  // Function to update an existing tour
+  function updateTour(formData) {
+    const tourId = $("#tourId").val();
+
+    $.ajax({
+      url: `http://localhost:8080/api/v1/tour`,
+      type: "PUT",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function(res) {
+        console.log("Update Success:", res);
+
+        // Show success message
+        showAlert("Tour updated successfully!", "success");
+
+        // Reset form and close modal
+        resetFormAndCloseModal();
+
+        // Reload tour list
+        loadTours();
+      },
+      error: function(err) {
+        console.error("Error updating tour:", err);
+        showAlert("Error updating tour. Please try again.", "danger");
+      }
+    });
+  }
+
+  // Function to show alerts
+  function showAlert(message, type) {
+    const alertHTML = `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+      ${message}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>`;
+
+    $(".main-content").prepend(alertHTML);
+
+    // Auto remove alert after 3 seconds
+    setTimeout(() => {
+      $(".alert").alert('close');
+    }, 3000);
+  }
+
+  // Function to reset form and close modal
+  function resetFormAndCloseModal() {
+    $("#tour-form")[0].reset();
+    $("#imagePreviewContainer").hide();
+    $("#tourId").val("");
+    $("#tourType").val("");
+    modal.style.display = "none";
+  }
 
   // Load destination IDs for dropdown
   $("#load-destination-id").click((e) => {
@@ -812,6 +873,9 @@
     $.ajax({
       url: "http://localhost:8080/api/v1/destination",
       method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
       success: (res) => {
         $("#destination-dropdown").empty();
 
@@ -855,6 +919,9 @@
     $("#tourPrice").val(price);
     $("#btn-save").text("Update Tour");
 
+    // Set a flag to indicate this is an edit operation
+    document.getElementById("tour-form").setAttribute("data-mode", "edit");
+
     // Show image preview if available
     if (imageBase64) {
       $("#imagePreview").attr("src", "data:image/jpeg;base64," + imageBase64);
@@ -872,25 +939,17 @@
       $.ajax({
         url: `http://localhost:8080/api/v1/tour/delete/${id}`,
         method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
         success: (res) => {
           // Show success message
-          const alertHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">
-            Tour deleted successfully!
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-          </div>`;
-
-          $(".main-content").prepend(alertHTML);
-
-          // Auto remove alert after 3 seconds
-          setTimeout(() => {
-            $(".alert").alert('close');
-          }, 3000);
-
+          showAlert("Tour deleted successfully!", "success");
           loadTours();
         },
         error: (err) => {
           console.error(err);
-          alert("Error deleting tour. Please try again.");
+          showAlert("Error deleting tour. Please try again.", "danger");
         }
       });
     }

@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class PaymentDTO {
-    private String orderId;
+    private String id;
+    private String bookingId;
     private String hash;
     private String amount;
     private String firstName;

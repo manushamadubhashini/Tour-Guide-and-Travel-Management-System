@@ -35,4 +35,6 @@ public class User {
 //    private List<Review> reviewList=new ArrayList<>();
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Notification> notificationList=new ArrayList<>();
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    private List<Review> reviewList=new ArrayList<>();
 }

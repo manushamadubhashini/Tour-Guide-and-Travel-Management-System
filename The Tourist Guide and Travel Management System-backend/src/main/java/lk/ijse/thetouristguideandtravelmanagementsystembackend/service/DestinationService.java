@@ -59,8 +59,14 @@ public class DestinationService {
 
 
     public void delete(String id){
-        if (destinationRepo.existsById(id)){
-            destinationRepo.deleteById(id);
+        try {
+            if (destinationRepo.existsById(id)) {
+                destinationRepo.deleteById(id);
+                System.out.println("Deleted Successfully!");
+
+            }
+        }catch (RuntimeException e){
+            throw new RuntimeException("Not Deleted!");
         }
     }
     public void update(DestinationDto destinationDto){

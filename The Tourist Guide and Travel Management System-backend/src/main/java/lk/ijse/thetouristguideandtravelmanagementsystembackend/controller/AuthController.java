@@ -1,12 +1,10 @@
 package lk.ijse.thetouristguideandtravelmanagementsystembackend.controller;
 
-
 import lk.ijse.thetouristguideandtravelmanagementsystembackend.dto.AuthDTO;
 import lk.ijse.thetouristguideandtravelmanagementsystembackend.dto.ResponseDTO;
 import lk.ijse.thetouristguideandtravelmanagementsystembackend.dto.UserDto;
 import lk.ijse.thetouristguideandtravelmanagementsystembackend.service.UserService;
 import lk.ijse.thetouristguideandtravelmanagementsystembackend.util.JwtUtil;
-import lk.ijse.thetouristguideandtravelmanagementsystembackend.util.ResponseUtil;
 import lk.ijse.thetouristguideandtravelmanagementsystembackend.util.VarList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,14 +20,12 @@ public class AuthController {
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
-    private final ResponseDTO responseDTO;
 
     //constructor injection
-    public AuthController(JwtUtil jwtUtil, AuthenticationManager authenticationManager, UserService userService, ResponseDTO responseDTO) {
+    public AuthController(JwtUtil jwtUtil, AuthenticationManager authenticationManager, UserService userService) {
         this.jwtUtil = jwtUtil;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
-        this.responseDTO = responseDTO;
     }
 
     @PostMapping("/authenticate")
@@ -57,10 +53,10 @@ public class AuthController {
         AuthDTO authDTO = new AuthDTO();
         authDTO.setEmail(loadedUser.getEmail());
         authDTO.setToken(token);
+        authDTO.setUserId(loadedUser.getId());
+        authDTO.setRole(loadedUser.getRole());
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ResponseDTO(VarList.Created, "Success", authDTO));
     }
-
 }
-

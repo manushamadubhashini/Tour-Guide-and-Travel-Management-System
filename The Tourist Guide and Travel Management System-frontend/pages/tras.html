@@ -312,43 +312,41 @@
     <h2>TravelPro</h2>
   </div>
   <nav>
-    <a href="Dashboard.html" class="nav-item">
+    <a href="../pages/Dashbaord.html" class="nav-item">
       <i class="fas fa-th-large"></i>
       <span>Dashboard</span>
     </a>
-    <a href="tour.html" class="nav-item">
+    <a href="../pages/tour.html" class="nav-item">
       <i class="fas fa-map-marked-alt"></i>
       <span>Tours</span>
     </a>
-    <a href="guide.html" class="nav-item">
-      <i class="fas fa-users"></i>
-      <span>Guides</span>
+    <a href="../pages/booking.html" class="nav-item">
+      <i class="fas fa-calendar-check"></i>
+      <span>Bookings</span>
     </a>
-    <a href="transport.html" class="nav-item active">
+    <a href="../pages/tras.html" class="nav-item active">
       <i class="fas fa-shuttle-van"></i>
       <span>Transport</span>
     </a>
-    <a href="Accommodation.html" class="nav-item">
+    <a href="../pages/Accomodation.html" class="nav-item">
       <i class="fas fa-hotel"></i>
       <span>Accommodation</span>
     </a>
-    <a href="tourists.html" class="nav-item">
-      <i class="fas fa-user-friends"></i>
-      <span>Tourists</span>
-    </a>
-    <a href="destinations.html" class="nav-item">
+    <a href="../pages/destination.html" class="nav-item">
       <i class="fas fa-globe"></i>
       <span>Destinations</span>
     </a>
-    <div class="divider"></div>
-    <a href="notifications.html" class="nav-item">
-      <i class="fas fa-bell"></i>
-      <span>Notifications</span>
+    <a href="../pages/paymnetManage.html" class="nav-item ">
+      <i class="fas fa-credit-card"></i>
+      <span>Payments</span>
     </a>
-    <a href="reviews.html" class="nav-item">
+    <div class="divider"></div>
+
+    <a href="../pages/Review.html" class="nav-item">
       <i class="fas fa-star"></i>
       <span>Reviews</span>
     </a>
+
     <a href="settings.html" class="nav-item">
       <i class="fas fa-cog"></i>
       <span>Settings</span>
@@ -456,6 +454,15 @@
           </div>
 
           <div class="mb-3">
+            <label for="tourId" class="form-label">Tour ID</label>
+            <div class="input-group">
+              <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" id="load-tour-id">Select</button>
+              <ul class="dropdown-menu" id="tour-dropdown"></ul>
+              <input type="text" class="form-control" id="tourId" name="tourId" readonly>
+            </div>
+          </div>
+
+          <div class="mb-3">
             <label for="transportType" class="form-label">Transport Type</label>
             <div class="input-group">
               <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" id="loadTransportType">Select Type</button>
@@ -496,9 +503,43 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+  const token = localStorage.getItem('userToken');
+
+  // Load tours for dropdown
+  function loadTours() {
+    $.ajax({
+      url: "http://localhost:8080/api/v1/tours",
+      method: "GET",
+      dataType: "json",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      success: (res) => {
+        const tours = res.data;
+        const tourDropdown = document.getElementById('tourId');
+
+        // Clear previous options except the first one
+        $('#tourId').find('option:not(:first)').remove();
+
+        // Add tour options
+        tours.forEach(tour => {
+          const option = document.createElement('option');
+          option.value = tour.id;
+          option.textContent = `${tour.id} - ${tour.name}`;
+          tourDropdown.appendChild(option);
+        });
+      },
+      error: (err) => {
+        console.error('Error loading tours:', err);
+        alert("Failed to load tour options. Please try again.");
+      }
+    });
+  }
+
   // Load transports function
   function loadTransport() {
     const transportList = document.getElementById('transportList');
+    const token = localStorage.getItem('userToken');
 
     transportList.innerHTML = '<div class="text-center p-4"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
 
@@ -506,6 +547,9 @@
       url: "http://localhost:8080/api/v1/transport",
       method: "GET",
       dataType: "json",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
       success: (res) => {
         const transports = res.data;
         if (transports.length === 0) {
@@ -537,6 +581,7 @@
             <thead>
               <tr>
                 <th>ID</th>
+                <th>Tour ID</th>
                 <th>Type</th>
                 <th>Price per KM</th>
                 <th>Max Passengers</th>
@@ -555,13 +600,14 @@
           html += `
             <tr>
               <td>${transport.id}</td>
+              <td>${transport.tourId || 'N/A'}</td>
               <td><span class="badge ${badgeClass}">${transport.type}</span></td>
               <td>RS.${transport.pricePerKM}</td>
               <td>${transport.passengers}</td>
               <td>
                 <div class="d-flex">
                   <span class="action-btn btn-edit" style="background-color:#2196F3;color: white; padding: 5px 10px;border-radius: 4px;font-size: 12px"
-                    onclick="editTransport('${transport.id}', '${transport.type}', '${transport.pricePerKM}', '${transport.passengers}')">
+                    onclick="editTransport('${transport.id}', '${transport.tourId || ''}', '${transport.type}', '${transport.pricePerKM}', '${transport.passengers}')">
                     <i class="fas fa-edit"></i>
                   </span>
                   <span class="action-btn btn-delete" style="background-color: #F44336;color: white" onclick="deleteTransport('${transport.id}')">
@@ -584,9 +630,10 @@
     });
   }
 
-  // Load transports on page load
+  // Load transports and tours on page load
   $(document).ready(function() {
     loadTransport();
+    loadTours();
 
     // Search functionality
     $("#search-transport").on("keyup", function() {
@@ -609,6 +656,9 @@
     document.getElementById("transportId").value = "";
     document.getElementById("btn-save").textContent = "Save Transport";
     modal.style.display = "block";
+
+    // Load tours for the dropdown
+    loadTours();
 
     // Generate a new transport ID
     const newId = "TRAN" + Math.floor(Math.random() * 900 + 100);
@@ -642,6 +692,7 @@
     }
 
     const id = $("#transportId").val();
+    const tourId = $("#tourId").val();
     const transportType = $("#transportType").val();
     const pricePerKM = $("#pricePerKM").val();
     const passengers = $("#passengers").val();
@@ -650,16 +701,20 @@
 
     const json = {
       "id": id,
+      "tourId": tourId,
       "type": transportType,
       "pricePerKM": pricePerKM,
       "passengers": passengers
     }
 
-    const method = isUpdate ? "PUT" : "POST";
+    // const method = isUpdate ? "PUT" : "POST";
 
     $.ajax({
       url: "http://localhost:8080/api/v1/transport",
-      method: method,
+      method: "POST",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
       data: JSON.stringify(json),
       contentType: "application/json",
       success: (res) => {
@@ -700,10 +755,54 @@
     $("#transportType").val(type);
   }
 
+  $("#load-tour-id").click((e) => {
+    e.preventDefault();
+
+    $("#tour-dropdown").html('<li><div class="dropdown-item">Loading...</div></li>');
+
+    $.ajax({
+      url: "http://localhost:8080/api/v1/tour",
+      method: "GET",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      success: (res) => {
+        $("#tour-dropdown").empty();
+
+        if (!res.data || res.data.length === 0) {
+          $("#tour-dropdown").append('<li><div class="dropdown-item">No tour available</div></li>');
+          return;
+        }
+
+        res.data.forEach(tour => {
+          $("#tour-dropdown").append(`
+            <li><a class="dropdown-item" href="#" onclick="setTour('${tour.id}')">${tour.id} - ${tour.name || ''}</a></li>
+          `);
+        });
+      },
+      error: (err) => {
+        console.error(err);
+        $("#destination-dropdown").html('<li><div class="dropdown-item text-danger">Error loading tour</div></li>');
+      }
+    });
+  });
+
+
+  function setTour(tourId) {
+    $("#tourId").val(tourId);
+  }
+
   // Edit transport
-  function editTransport(id, type, pricePerKM, passengers) {
+  function editTransport(id, tourId, type, pricePerKM, passengers) {
     document.getElementById("modal-title").textContent = "Edit Transport";
     $("#transportId").val(id);
+
+    // Load tours first, then set the selected tour
+    loadTours();
+    setTimeout(() => {
+      $("#tourId").val(tourId);
+    }, 500);
+
     $("#transportType").val(type);
     $("#pricePerKM").val(pricePerKM);
     $("#passengers").val(passengers);
@@ -718,6 +817,9 @@
       $.ajax({
         url: `http://localhost:8080/api/v1/transport/delete/${id}`,
         method: "DELETE",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
         success: (res) => {
           // Show success message
           const alertHTML = `<div class="alert alert-success alert-dismissible fade show" role="alert">

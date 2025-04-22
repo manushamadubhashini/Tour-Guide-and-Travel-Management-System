@@ -38,8 +38,6 @@ public class Tour {
     @OneToMany(mappedBy = "tour",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Booking> bookingArrayList=new ArrayList<>();
     @OneToMany(mappedBy = "tour",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    private List<Review> reviewList=new ArrayList<>();
-    @OneToMany(mappedBy = "tour",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Accommodation> accommodationList=new ArrayList<>();
     @OneToMany(mappedBy = "tour",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Transport> transportList=new ArrayList<>();

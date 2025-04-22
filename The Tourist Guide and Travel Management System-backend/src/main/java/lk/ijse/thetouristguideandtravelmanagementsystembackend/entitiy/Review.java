@@ -15,8 +15,8 @@ public class Review {
     @Column(name = "review_id")
     private String id;
     @ManyToOne
-    @JoinColumn(name = "tour_id",nullable = false)
-    private Tour tour;
+    @JoinColumn(name = "user_id")
+    private User user;
     @Column(nullable = false,length = 400)
     private String comment;
     @Column(nullable = false)

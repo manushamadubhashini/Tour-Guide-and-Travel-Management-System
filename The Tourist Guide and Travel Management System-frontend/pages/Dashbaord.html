@@ -414,58 +414,53 @@
 
     <ul class="nav-menu">
       <li class="nav-item">
-        <a href="#" class="nav-link active">
-          <i class="fas fa-tachometer-alt"></i>
+        <a href="../pages/Dashbaord.html" class="nav-link active">
+          <i class="fas fa-th-large"></i>
           <span>Dashboard</span>
         </a>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="../pages/tour.html" class="nav-link">
           <i class="fas fa-map-marked-alt"></i>
           <span>Tours</span>
         </a>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="fas fa-hotel"></i>
-          <span>Accommodations</span>
+        <a href="../pages/booking.html" class="nav-link">
+          <i class="fas fa-calendar-check"></i>
+          <span>Bookings</span>
         </a>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="fas fa-user-friends"></i>
-          <span>Tourists</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="fas fa-compass"></i>
-          <span>Destinations</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="fas fa-bus"></i>
+        <a href="../pages/tras.html" class="nav-link">
+          <i class="fas fa-shuttle-van"></i>
           <span>Transport</span>
         </a>
       </li>
       <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="fas fa-user-tie"></i>
-          <span>Guides</span>
+        <a href="../pages/Accomodation.html" class="nav-link">
+          <i class="fas fa-hotel"></i>
+          <span>Accommodation</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="../pages/destination.html" class="nav-link">
+          <i class="fas fa-globe"></i>
+          <span>Destinations</span>
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a href="../pages/paymnetManage.html" class="nav-link">
+          <i class="fas fa-credit-card"></i>
+          <span>Payments</span>
         </a>
       </li>
 
       <div class="divider"></div>
 
       <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="fas fa-bell"></i>
-          <span>Notifications</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="../pages/Review.html" class="nav-link">
           <i class="fas fa-star"></i>
           <span>Reviews</span>
         </a>
@@ -485,11 +480,6 @@
       <div class="page-title">
         <h1>Admin Dashboard</h1>
         <p>Welcome back! Here's what's happening with your travel business</p>
-      </div>
-      <div class="header-actions">
-        <button class="btn btn-primary">
-          <i class="fas fa-plus"></i> Add New Tour
-        </button>
       </div>
     </div>
 
@@ -607,7 +597,7 @@
       <div class="section-header">
         <h2 class="section-title">Accommodations</h2>
         <button class="btn btn-primary">
-          <i class="fas fa-plus"></i> Add New
+          <i class="fas fa-eye"></i> View All
         </button>
       </div>
 
@@ -690,5 +680,430 @@
     </footer>
   </main>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Dashboard data population script for TravelPro Tourist Guide System
+
+  // Wait for DOM to be fully loaded
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize dashboard with data
+    initializeDashboard();
+
+    // Add event listeners to buttons
+    addEventListeners();
+  });
+
+  // Main function to initialize the dashboard with data
+  function initializeDashboard() {
+    // Load dashboard statistics
+    loadDashboardStats();
+
+    // Load tours data
+    loadToursData();
+
+    // Load accommodations data
+    loadAccommodationsData();
+
+    // Initialize charts
+    initializeCharts();
+  }
+
+  // Load statistics for dashboard widgets
+  function loadDashboardStats() {
+    // In a real application, this data would come from an API
+    const dashboardStats = {
+      activeTours: {
+        count: 12,
+        change: '+3%',
+        trend: 'positive' // or 'negative'
+      },
+      hotels: {
+        count: 3,
+        change: '+2 new',
+        trend: 'positive'
+      },
+      resorts: {
+        count: 5,
+        change: '+1',
+        trend: 'positive'
+      },
+      activeBookings: {
+        count: 28,
+        change: '+15%',
+        trend: 'positive'
+      }
+    };
+
+    // Update widget values
+    updateDashboardWidgets(dashboardStats);
+  }
+
+  // Update dashboard widgets with actual data
+  function updateDashboardWidgets(stats) {
+    // Active Tours
+    const toursWidget = document.querySelector('.icon-tours').closest('.widget');
+    toursWidget.querySelector('h3').textContent = stats.activeTours.count;
+    toursWidget.querySelector('.status-positive').textContent =
+      `${stats.activeTours.change} from last month`;
+
+    // Hotels
+    const hotelsWidget = document.querySelector('.icon-hotels').closest('.widget');
+    hotelsWidget.querySelector('h3').textContent = stats.hotels.count;
+    hotelsWidget.querySelector('.status-positive').textContent =
+      `${stats.hotels.change} this month`;
+
+    // Resorts
+    const resortsWidget = document.querySelector('.icon-resorts').closest('.widget');
+    resortsWidget.querySelector('h3').textContent = stats.resorts.count;
+    resortsWidget.querySelector('.status-positive').textContent =
+      `${stats.resorts.change} from last month`;
+
+    // Active Bookings
+    const bookingsWidget = document.querySelector('.icon-bookings').closest('.widget');
+    bookingsWidget.querySelector('h3').textContent = stats.activeBookings.count;
+    bookingsWidget.querySelector('.status-positive').textContent =
+      `${stats.activeBookings.change} from last month`;
+  }
+
+  // Load tours data
+  function loadToursData() {
+    // This would typically come from an API
+    const toursData = [
+      {
+        id: 'TOUR001',
+        name: 'Sigiriya Heritage Tour',
+        destination: 'Sigiriya',
+        startDate: 'Apr 10, 2025',
+        duration: '5 days',
+        travellers: 8,
+        status: 'Confirmed'
+      },
+      {
+        id: 'TOUR002',
+        name: 'Kandy Adventure',
+        destination: 'Kandy',
+        startDate: 'Apr 12, 2025',
+        duration: '7 days',
+        travellers: 1,
+        status: 'Confirmed'
+      },
+      {
+        id: 'TOUR003',
+        name: 'Colombo City Tour',
+        destination: 'Colombo',
+        startDate: 'Apr 15, 2025',
+        duration: '3 days',
+        travellers: 4,
+        status: 'Pending'
+      },
+      {
+        id: 'TOUR004',
+        name: 'Ella Rock Hike',
+        destination: 'Ella',
+        startDate: 'Apr 18, 2025',
+        duration: '2 days',
+        travellers: 6,
+        status: 'Completed'
+      },
+      {
+        id: 'TOUR005',
+        name: 'Galle Fort Experience',
+        destination: 'Galle',
+        startDate: 'Apr 20, 2025',
+        duration: '4 days',
+        travellers: 10,
+        status: 'Confirmed'
+      }
+    ];
+
+    // Populate tours table
+    populateToursTable(toursData);
+  }
+
+  // Populate tours table with data
+  function populateToursTable(tours) {
+    const toursTableBody = document.querySelector('.table-section:nth-of-type(1) .table tbody');
+
+    // Clear existing rows
+    toursTableBody.innerHTML = '';
+
+    // Add data rows
+    tours.forEach(tour => {
+      const row = document.createElement('tr');
+
+      // Get appropriate badge class based on status
+      let badgeClass = 'badge-primary';
+      if (tour.status === 'Pending') badgeClass = 'badge-info';
+      if (tour.status === 'Completed') badgeClass = 'badge-success';
+
+      row.innerHTML = `
+            <td>${tour.id}</td>
+            <td>${tour.name}</td>
+            <td>${tour.destination}</td>
+            <td>${tour.startDate}</td>
+            <td>${tour.duration}</td>
+            <td>${tour.travellers}</td>
+            <td><span class="badge ${badgeClass}">${tour.status}</span></td>
+            <td>
+                <button class="action-btn edit-btn" data-id="${tour.id}"><i class="fas fa-edit"></i></button>
+                <button class="action-btn delete-btn" data-id="${tour.id}"><i class="fas fa-trash"></i></button>
+            </td>
+        `;
+
+      toursTableBody.appendChild(row);
+    });
+  }
+
+  // Load accommodations data
+  function loadAccommodationsData() {
+    // This would typically come from an API
+    const accommodationsData = [
+      {
+        id: 'ACOM001',
+        name: 'Grand Hotel',
+        type: 'Hotel',
+        location: 'Kandy',
+        relatedTour: 'TOUR002',
+        price: 'RS.25000/night'
+      },
+      {
+        id: 'ACOM002',
+        name: 'Cinnamon Citadel',
+        type: 'Resort',
+        location: 'Kandy',
+        relatedTour: 'TOUR002',
+        price: 'RS.35000/night'
+      },
+      {
+        id: 'ACOM003',
+        name: 'Hilton Colombo',
+        type: 'Hotel',
+        location: 'Colombo',
+        relatedTour: 'TOUR003',
+        price: 'RS.40000/night'
+      },
+      {
+        id: 'ACOM004',
+        name: 'Ella Eco Lodge',
+        type: 'Eco Lodge',
+        location: 'Ella',
+        relatedTour: 'TOUR004',
+        price: 'RS.15000/night'
+      },
+      {
+        id: 'ACOM005',
+        name: 'Jetwing Lighthouse',
+        type: 'Resort',
+        location: 'Galle',
+        relatedTour: 'TOUR005',
+        price: 'RS.45000/night'
+      }
+    ];
+
+    // Populate accommodations table
+    populateAccommodationsTable(accommodationsData);
+  }
+
+  // Populate accommodations table with data
+  function populateAccommodationsTable(accommodations) {
+    const accommodationsTableBody = document.querySelector('.table-section:nth-of-type(2) .table tbody');
+
+    // Clear existing rows
+    accommodationsTableBody.innerHTML = '';
+
+    // Add data rows
+    accommodations.forEach(accommodation => {
+      const row = document.createElement('tr');
+
+      row.innerHTML = `
+            <td>${accommodation.id}</td>
+            <td>${accommodation.name}</td>
+            <td>${accommodation.type}</td>
+            <td>${accommodation.location}</td>
+            <td>${accommodation.relatedTour}</td>
+            <td>${accommodation.price}</td>
+            <td>
+                <button class="action-btn edit-btn" data-id="${accommodation.id}"><i class="fas fa-edit"></i></button>
+                <button class="action-btn delete-btn" data-id="${accommodation.id}"><i class="fas fa-trash"></i></button>
+            </td>
+        `;
+
+      accommodationsTableBody.appendChild(row);
+    });
+  }
+
+  // Initialize charts
+  function initializeCharts() {
+    // In a real application, you'd use a charting library like Chart.js here
+    // For now, we'll just replace the placeholders with text
+
+    const bookingsChartPlaceholder = document.querySelector('.charts .chart-container:nth-of-type(1) .chart-placeholder');
+    const revenueChartPlaceholder = document.querySelector('.charts .chart-container:nth-of-type(2) .chart-placeholder');
+
+    bookingsChartPlaceholder.innerHTML = `
+        <div style="text-align: center;">
+            <i class="fas fa-chart-line" style="font-size: 24px; margin-bottom: 10px;"></i>
+            <p>Monthly Booking Statistics</p>
+            <p style="margin-top: 10px; font-size: 14px; color: var(--text-secondary);">
+                (In a real application, a bookings chart would be displayed here)
+            </p>
+        </div>
+    `;
+
+    revenueChartPlaceholder.innerHTML = `
+        <div style="text-align: center;">
+            <i class="fas fa-chart-bar" style="font-size: 24px; margin-bottom: 10px;"></i>
+            <p>Monthly Revenue Data</p>
+            <p style="margin-top: 10px; font-size: 14px; color: var(--text-secondary);">
+                (In a real application, a revenue chart would be displayed here)
+            </p>
+        </div>
+    `;
+  }
+
+  // Add event listeners to buttons and other interactive elements
+  function addEventListeners() {
+    // Add Tour button
+    const addTourButton = document.querySelector('.header-actions .btn-primary');
+    addTourButton.addEventListener('click', function() {
+      alert('Add New Tour form would open here');
+    });
+
+    // View All Tours button
+    const viewAllToursButton = document.querySelector('.table-section:nth-of-type(1) .btn-primary');
+    viewAllToursButton.addEventListener('click', function() {
+      alert('Redirecting to All Tours page');
+    });
+
+    // Add New Accommodation button
+    const addAccommodationButton = document.querySelector('.table-section:nth-of-type(2) .btn-primary');
+    addAccommodationButton.addEventListener('click', function() {
+      alert('Add New Accommodation form would open here');
+    });
+
+    // Edit and Delete buttons for Tours
+    document.querySelectorAll('.table-section:nth-of-type(1) .table .edit-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const tourId = this.getAttribute('data-id');
+        alert(`Edit form for Tour ${tourId} would open here`);
+      });
+    });
+
+    document.querySelectorAll('.table-section:nth-of-type(1) .table .delete-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const tourId = this.getAttribute('data-id');
+        if (confirm(`Are you sure you want to delete Tour ${tourId}?`)) {
+          alert(`Tour ${tourId} has been deleted`);
+          // In a real app, you would remove the row and update the backend
+        }
+      });
+    });
+
+    // Edit and Delete buttons for Accommodations
+    document.querySelectorAll('.table-section:nth-of-type(2) .table .edit-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const accommodationId = this.getAttribute('data-id');
+        alert(`Edit form for Accommodation ${accommodationId} would open here`);
+      });
+    });
+
+    document.querySelectorAll('.table-section:nth-of-type(2) .table .delete-btn').forEach(button => {
+      button.addEventListener('click', function() {
+        const accommodationId = this.getAttribute('data-id');
+        if (confirm(`Are you sure you want to delete Accommodation ${accommodationId}?`)) {
+          alert(`Accommodation ${accommodationId} has been deleted`);
+          // In a real app, you would remove the row and update the backend
+        }
+      });
+    });
+
+    // Navigation menu items
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', function(e) {
+        if (!this.classList.contains('active')) {
+          e.preventDefault();
+
+          // Remove active class from all links
+          document.querySelectorAll('.nav-link').forEach(navLink => {
+            navLink.classList.remove('active');
+          });
+
+          // Add active class to clicked link
+          this.classList.add('active');
+
+          // In a real app, you would navigate to the corresponding page
+          const pageName = this.querySelector('span').textContent;
+          alert(`Navigating to ${pageName} page`);
+        }
+      });
+    });
+  }
+
+  // Function to add a new tour (could be called from a form submit handler)
+  function addNewTour(tourData) {
+    // Validate tour data
+    if (!tourData.name || !tourData.destination || !tourData.startDate) {
+      alert('Missing required tour information');
+      return false;
+    }
+
+    // In a real app, you would send this data to the backend
+    console.log('Adding new tour:', tourData);
+
+    // For demo purposes, we'll just add it to the table
+    const tours = [tourData];
+    populateToursTable(tours);
+
+    return true;
+  }
+
+  // Function to add a new accommodation (could be called from a form submit handler)
+  function addNewAccommodation(accommodationData) {
+    // Validate accommodation data
+    if (!accommodationData.name || !accommodationData.type || !accommodationData.location) {
+      alert('Missing required accommodation information');
+      return false;
+    }
+
+    // In a real app, you would send this data to the backend
+    console.log('Adding new accommodation:', accommodationData);
+
+    // For demo purposes, we'll just add it to the table
+    const accommodations = [accommodationData];
+    populateAccommodationsTable(accommodations);
+
+    return true;
+  }
+
+  // Example of how to use the add functions
+  // These would typically be called from form submit handlers
+  function exampleAddTour() {
+    const newTour = {
+      id: 'TOUR006',
+      name: 'Mirissa Whale Watching',
+      destination: 'Mirissa',
+      startDate: 'Apr 25, 2025',
+      duration: '3 days',
+      travellers: 12,
+      status: 'Confirmed'
+    };
+
+    addNewTour(newTour);
+  }
+
+  function exampleAddAccommodation() {
+    const newAccommodation = {
+      id: 'ACOM006',
+      name: 'Mirissa Bay Resort',
+      type: 'Resort',
+      location: 'Mirissa',
+      relatedTour: 'TOUR006',
+      price: 'RS.30000/night'
+    };
+
+    addNewAccommodation(newAccommodation);
+  }
+</script>
 </body>
 </html>

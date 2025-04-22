@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Tourist - Customer Reviews</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="" name="keywords">
+  <meta content="" name="description">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Web Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Icon Font Stylesheet -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Animate.css for animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+  <link href="../css/style.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #86B817;
+      --secondary: #69a614;
+      --light: #F1F8FF;
+      --dark: #0F172B;
+    }
+
+    body {
+      font-family: 'Heebo', sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    .text-primary {
+      color: var(--primary) !important;
+    }
+
+    .bg-primary {
+      background-color: var(--primary) !important;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .btn-primary:hover,
+    .btn-primary:active,
+    .btn-primary:focus {
+      background-color: var(--secondary) !important;
+      border-color: var(--secondary) !important;
+    }
+
+    /* Reviews section */
+    .reviews-section {
+      padding: 80px 0;
+    }
+
+    .review-card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+      overflow: hidden;
+      margin-bottom: 30px;
+      height: 100%;
+    }
+
+    .review-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    }
+
+    .review-card .card-header {
+      background-color: white;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      padding: 20px;
+    }
+    .stars-container i.fas {
+      color: #FFD700; /* Make sure this color is visible */
+    }
+
+    .review-card .card-body {
+      padding: 25px;
+    }
+
+    .rating-stars {
+      color: #FFD700;
+      font-size: 1.25rem;
+    }
+
+    .review-date {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+
+    .review-tour {
+      display: inline-block;
+      background-color: var(--light);
+      color: var(--primary);
+      padding: 5px 15px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+
+    /* Add review form */
+    .review-form-card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      margin-bottom: 30px;
+    }
+
+    .review-form-card .card-header {
+      background-color: var(--primary);
+      color: white;
+      padding: 20px;
+      border-radius: 15px 15px 0 0;
+    }
+
+    .review-form-card .card-body {
+      padding: 30px;
+    }
+
+    .stars-container {
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    .stars-container i {
+      color: #e0e0e0;
+      transition: color 0.2s;
+    }
+
+    .stars-container i.active {
+      color: #FFD700;
+    }
+
+    /* Filter section */
+    .filter-section {
+      margin-bottom: 40px;
+    }
+
+    .filter-btn {
+      border-radius: 50px;
+      padding: 8px 20px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #dee2e6;
+      color: #495057;
+      background-color: white;
+      transition: all 0.3s;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background-color: var(--primary);
+      border-color: var(--primary);
+      color: white;
+    }
+
+    /* Pagination */
+    .pagination .page-item .page-link {
+      border-radius: 50px;
+      margin: 0 5px;
+      color: var(--dark);
+      transition: all 0.3s;
+    }
+
+    .pagination .page-item.active .page-link {
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    /* Loading indicator */
+    .spinner-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 50px 0;
+    }
+
+    /* No reviews message */
+    .no-reviews {
+      text-align: center;
+      padding: 50px 0;
+    }
+
+    .no-reviews i {
+      font-size: 3rem;
+      color: #dee2e6;
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container-fluid bg-dark px-5 d-none d-lg-block">
+  <div class="row gx-0">
+    <div class="col-lg-8 text-center text-lg-start mb-2 mb-lg-0">
+      <div class="d-inline-flex align-items-center" style="height: 45px;">
+        <small class="me-3 text-light"><i class="fa fa-map-marker-alt me-2"></i>123 Street, Sri Lanka</small>
+        <small class="me-3 text-light"><i class="fa fa-phone-alt me-2"></i>+012 345 6789</small>
+        <small class="text-light"><i class="fa fa-envelope-open me-2"></i>info@example.com</small>
+      </div>
+    </div>
+    <div class="col-lg-4 text-center text-lg-end">
+      <div class="d-inline-flex align-items-center" style="height: 45px;">
+        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-twitter fw-normal"></i></a>
+        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-facebook-f fw-normal"></i></a>
+        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-linkedin-in fw-normal"></i></a>
+        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle me-2" href=""><i class="fab fa-instagram fw-normal"></i></a>
+        <a class="btn btn-sm btn-outline-light btn-sm-square rounded-circle" href=""><i class="fab fa-youtube fw-normal"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Topbar End -->
+
+
+<!-- Navbar & Hero Start -->
+<div class="container-fluid position-relative p-0">
+  <nav class="navbar navbar-expand-lg navbar-light px-4 px-lg-5 py-3 py-lg-0">
+    <a href="" class="navbar-brand p-0">
+      <h1 class="text-primary m-0"><i class="fa fa-map-marker-alt me-3"></i>Tourist</h1>
+      <!-- <img src="img/logo.png" alt="Logo"> -->
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+      <span class="fa fa-bars"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <div class="navbar-nav ms-auto py-0">
+        <a href="../pages/HomePage.html" class="nav-item nav-link">Home</a>
+        <a href="../pages/about.html" class="nav-item nav-link">About</a>
+        <a href="../pages/service.html" class="nav-item nav-link">Services</a>
+        <a href="../pages/tour-packge.html" class="nav-item nav-link">Packages</a>
+        <a href="../pages/reviewPage.html" class="nav-item nav-link active">Review</a>
+        <a href="../pages/contact.html" class="nav-item nav-link">Contact</a>
+      </div>
+      <a href="../pages/main.html" class="btn btn-primary rounded-pill py-2 px-4">Log Out</a>
+    </div>
+  </nav>
+
+  <div class="container-fluid bg-primary py-5 mb-5 hero-header">
+    <div class="container py-5">
+      <div class="row justify-content-center py-5">
+        <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
+          <h1 class="display-3 text-white animated slideInDown">Our Clients Say!!!</h1>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb justify-content-center">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Pages</a></li>
+              <li class="breadcrumb-item text-white active" aria-current="page">Packages</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Reviews Section -->
+<div class="container-xxl reviews-section">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-lg-12">
+        <div class="review-form-card animate__animated animate__fadeInUp">
+          <div class="card-header">
+            <h4 class="mb-0"><i class="fa fa-edit me-2"></i>Write a Review</h4>
+          </div>
+          <div class="card-body">
+            <form id="reviewForm">
+              <div class="mb-3">
+                <label for="name" class="form-label">Your Name</label>
+                <input type="text" class="form-control" id="name" name="touristName" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Rating</label>
+                <div class="stars-container mb-2">
+                  <i class="far fa-star" data-rating="1"></i>
+                  <i class="far fa-star" data-rating="2"></i>
+                  <i class="far fa-star" data-rating="3"></i>
+                  <i class="far fa-star" data-rating="4"></i>
+                  <i class="far fa-star" data-rating="5"></i>
+                </div>
+                <input type="hidden" id="rating" name="rating" value="0" required>
+              </div>
+              <div class="mb-4">
+                <label for="comment" class="form-label">Your Review</label>
+                <textarea class="form-control" id="comment" name="comment" rows="4" placeholder="Share your experience..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary py-3 px-5">
+                <i class="fa fa-paper-plane me-2"></i>Submit Review
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="row filter-section animate__animated animate__fadeIn">
+      <div class="col-lg-8">
+        <h5 class="mb-3">Filter by Rating:</h5>
+        <div class="mb-4">
+          <button class="filter-btn active" data-rating="all">All Reviews</button>
+          <button class="filter-btn" data-rating="5">
+            <i class="fas fa-star text-warning me-1"></i>5
+          </button>
+          <button class="filter-btn" data-rating="4">
+            <i class="fas fa-star text-warning me-1"></i>4
+          </button>
+          <button class="filter-btn" data-rating="3">
+            <i class="fas fa-star text-warning me-1"></i>3
+          </button>
+          <button class="filter-btn" data-rating="2">
+            <i class="fas fa-star text-warning me-1"></i>2
+          </button>
+          <button class="filter-btn" data-rating="1">
+            <i class="fas fa-star text-warning me-1"></i>1
+          </button>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="mb-3">
+          <label for="sortSelect" class="form-label">Sort By:</label>
+          <select class="form-select" id="sortSelect">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="highest">Highest Rated</option>
+            <option value="lowest">Lowest Rated</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div class="spinner-container" id="loadingSpinner">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Reviews Container -->
+    <div class="row" id="reviewsContainer"></div>
+
+    <!-- Pagination -->
+    <div class="row">
+      <div class="col-12">
+        <nav aria-label="Page navigation">
+          <ul class="pagination justify-content-center" id="pagination">
+            <!-- Pagination will be dynamically generated -->
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+  <div class="container py-5">
+    <div class="row g-5">
+      <div class="col-lg-3 col-md-6">
+        <h4 class="text-white mb-3">Company</h4>
+        <a class="btn btn-link" href="">About Us</a>
+        <a class="btn btn-link" href="">Contact Us</a>
+        <a class="btn btn-link" href="">Privacy Policy</a>
+        <a class="btn btn-link" href="">Terms & Condition</a>
+        <a class="btn btn-link" href="">FAQs & Help</a>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <h4 class="text-white mb-3">Contact</h4>
+        <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>123 Street, Sri Lanka</p>
+        <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+012 345 67890</p>
+        <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@example.com</p>
+        <div class="d-flex pt-2">
+          <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
+          <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
+          <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
+          <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <h4 class="text-white mb-3">Gallery</h4>
+        <div class="row g-2 pt-2">
+          <div class="col-4">
+            <img class="img-fluid bg-light p-1" src="../img/imge7.jpg" alt="">
+          </div>
+          <div class="col-4">
+            <img class="img-fluid bg-light p-1" src="../img/imge9.jpg" alt="">
+          </div>
+          <div class="col-4">
+            <img class="img-fluid bg-light p-1" src="../img/imge10.jpg" alt="">
+          </div>
+          <div class="col-4">
+            <img class="img-fluid bg-light p-1" src="../img/imge11.jpg" alt="">
+          </div>
+          <div class="col-4">
+            <img class="img-fluid bg-light p-1" src="../img/travle-image1.jpg" alt="">
+          </div>
+          <div class="col-4">
+            <img class="img-fluid bg-light p-1" src="../img/travel-image3.jpg" alt="">
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6">
+        <h4 class="text-white mb-3">Newsletter</h4>
+        <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
+        <div class="position-relative mx-auto" style="max-width: 400px;">
+          <input class="form-control border-primary w-100 py-3 ps-4 pe-5" type="text" placeholder="Your email">
+          <button type="button" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">SignUp</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="copyright">
+      <div class="row">
+        <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+          &copy; <a class="border-bottom" href="#">Your Site Name</a>, All Right Reserved.
+
+          Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a>
+        </div>
+        <div class="col-md-6 text-center text-md-end">
+          <div class="footer-menu">
+            <a href="">Home</a>
+            <a href="">Cookies</a>
+            <a href="">Help</a>
+            <a href="">FQAs</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="position-fixed top-0 end-0 p-3" style="z-index: 11">
+  <div id="reviewToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-success text-white">
+      <i class="fas fa-check-circle me-2"></i>
+      <strong class="me-auto">Success</strong>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body">
+      Your review has been submitted successfully!
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Custom JavaScript -->
+<script>
+  // Variables
+  const token = localStorage.getItem('userToken');
+  let currentPage = 1;
+  const itemsPerPage = 6;
+  let currentFilter = 'all';
+  let currentSort = 'newest';
+  let allReviews = [];
+
+  // Initialize the page
+  $(document).ready(function() {
+    initialize();
+  });
+
+  function initialize() {
+    // Load reviews
+    loadReviews();
+
+    // Set up event listeners
+    setupEventListeners();
+  }
+
+  function loadReviews() {
+    $('#loadingSpinner').show();
+    $('#reviewsContainer').empty();
+
+    fetch('http://localhost:8080/api/v1/review',{
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.data) {
+          allReviews = data.data;
+          displayReviews(filterAndSortReviews(allReviews));
+          updatePagination(Math.ceil(allReviews.length / itemsPerPage));
+        } else {
+          // Fallback to dummy data if API returns empty
+          allReviews = generateDummyReviews();
+          displayReviews(filterAndSortReviews(allReviews));
+          updatePagination(Math.ceil(allReviews.length / itemsPerPage));
+        }
+      })
+      .catch(error => {
+        console.error('Error loading reviews:', error);
+        // Fallback to dummy data in case of error
+        allReviews = generateDummyReviews();
+        displayReviews(filterAndSortReviews(allReviews));
+        updatePagination(Math.ceil(allReviews.length / itemsPerPage));
+      })
+      .finally(() => {
+        $('#loadingSpinner').hide();
+      });
+  }
+
+  function generateDummyReviews() {
+    const tourNames = [
+      'Exotic Thailand Adventure',
+      'Paradise Bali Tour',
+      'Magnificent Europe Experience',
+      'Historic Rome & Florence Trip',
+      'Scenic Swiss Alps Journey'
+    ];
+
+    const comments = [
+      'Absolutely amazing experience! The guides were knowledgeable and friendly.',
+      'Beautiful locations and well-organized tour. Highly recommend!',
+      'The trip exceeded my expectations. Would definitely book again.',
+      'Great value for money. The accommodations were excellent.',
+      'An unforgettable journey with breathtaking views and cultural experiences.',
+      'The tour was good but could have been better organized.',
+      'Decent trip but had some issues with transportation.',
+      'Not worth the price. The activities were underwhelming.',
+      'Had a wonderful time. The tour guide was exceptional!',
+      'Fantastic trip! Perfect balance of activities and free time.'
+    ];
+
+    const names = [
+      'John Smith', 'Emma Wilson', 'Michael Brown', 'Sarah Davis',
+      'James Miller', 'Lisa Anderson', 'Robert Johnson', 'Jennifer Taylor',
+      'David Williams', 'Jessica Jones', 'Thomas White', 'Mary Robinson'
+    ];
+
+    const dummyReviews = [];
+
+    // Generate 15 dummy reviews
+    for (let i = 0; i < 15; i++) {
+      const rating = Math.floor(Math.random() * 5) + 1;
+      const tourIndex = Math.floor(Math.random() * tourNames.length);
+      const commentIndex = Math.floor(Math.random() * comments.length);
+      const nameIndex = Math.floor(Math.random() * names.length);
+
+      // Generate a random date within the last 3 months
+      const now = new Date();
+      const pastDate = new Date(now.setMonth(now.getMonth() - Math.floor(Math.random() * 3)));
+
+      dummyReviews.push({
+        id: 'REV' + (i + 1).toString().padStart(3, '0'),
+        rating: rating,
+        comment: comments[commentIndex],
+        tour_name: tourNames[tourIndex],
+        tourist_name: names[nameIndex],
+        user_id: 'USER' + (nameIndex + 1).toString().padStart(3, '0'),
+        date: pastDate.toISOString()
+      });
+    }
+
+    return dummyReviews;
+  }
+
+  function filterAndSortReviews(reviews) {
+    // Apply rating filter
+    let filteredReviews = reviews;
+    if (currentFilter !== 'all') {
+      filteredReviews = reviews.filter(review => review.rating == currentFilter);
+    }
+
+    // Apply sorting
+    filteredReviews.sort((a, b) => {
+      switch (currentSort) {
+        case 'newest':
+          return new Date(b.date || Date.now()) - new Date(a.date || Date.now());
+        case 'oldest':
+          return new Date(a.date || Date.now()) - new Date(b.date || Date.now());
+        case 'highest':
+          return b.rating - a.rating;
+        case 'lowest':
+          return a.rating - b.rating;
+        default:
+          return 0;
+      }
+    });
+
+    // Paginate
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return filteredReviews.slice(startIndex, endIndex);
+  }
+
+  function displayReviews(reviews) {
+    const reviewsContainer = $('#reviewsContainer');
+    reviewsContainer.empty();
+
+    if (reviews.length === 0) {
+      reviewsContainer.html(`
+      <div class="col-12 no-reviews">
+        <i class="far fa-comment-dots"></i>
+        <h4>No Reviews Found</h4>
+        <p>Be the first to share your experience!</p>
+      </div>
+    `);
+      return;
+    }
+
+    reviews.forEach(review => {
+      const ratingStars = generateRatingStars(review.rating);
+      const reviewDate = formatDate(review.date || new Date());
+
+      const reviewCard = `
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="review-card animate__animated animate__fadeIn">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">${review.tourist_name || review.touristName}</h5>
+            <div class="review-date">
+              <i class="far fa-calendar-alt me-1"></i>${reviewDate}
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="rating-stars mb-3">${ratingStars}</div>
+            <p class="mb-3">${review.comment}</p>
+            <div class="review-tour">
+              <i class="fas fa-map-marker-alt me-1"></i>${review.tour_name || 'General Review'}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+      reviewsContainer.append(reviewCard);
+    });
+  }
+
+  function generateRatingStars(rating) {
+    rating = parseInt(rating);
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+      if (i <= rating) {
+        stars += '<i class="fas fa-star"></i>';
+      } else {
+        stars += '<i class="far fa-star"></i>';
+      }
+    }
+    return stars;
+  }
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  }
+
+  function updatePagination(totalPages) {
+    const pagination = $('#pagination');
+    pagination.empty();
+
+    if (totalPages <= 1) {
+      pagination.hide();
+      return;
+    }
+
+    pagination.show();
+
+    // Previous button
+    pagination.append(`
+    <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+      <a class="page-link" href="#" data-page="${currentPage - 1}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+  `);
+
+    // Page numbers
+    for (let i = 1; i <= totalPages; i++) {
+      pagination.append(`
+      <li class="page-item ${currentPage === i ? 'active' : ''}">
+        <a class="page-link" href="#" data-page="${i}">${i}</a>
+      </li>
+    `);
+    }
+
+    // Next button
+    pagination.append(`
+    <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+      <a class="page-link" href="#" data-page="${currentPage + 1}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  `);
+  }
+
+  function setupEventListeners() {
+    // Rating stars
+    $('.stars-container i').on('click', function() {
+      const rating = $(this).data('rating');
+      $('#rating').val(rating);
+      $('.stars-container i').removeClass('fas').addClass('far');
+      $(this).prevAll().addBack().removeClass('far').addClass('fas');
+    });
+
+    // Filter buttons
+    $('.filter-btn').on('click', function() {
+      $('.filter-btn').removeClass('active');
+      $(this).addClass('active');
+      currentFilter = $(this).data('rating');
+      currentPage = 1;
+      displayReviews(filterAndSortReviews(allReviews));
+      updatePagination(Math.ceil(filterAndSortReviews(allReviews).length / itemsPerPage));
+    });
+
+    // Sort dropdown
+    $('#sortSelect').on('change', function() {
+      currentSort = $(this).val();
+      displayReviews(filterAndSortReviews(allReviews));
+    });
+
+    // Pagination
+    $(document).on('click', '.page-link', function(e) {
+      e.preventDefault();
+      const page = $(this).data('page');
+      if (page && page !== currentPage) {
+        currentPage = page;
+        displayReviews(filterAndSortReviews(allReviews));
+        updatePagination(Math.ceil(filterAndSortReviews(allReviews).length / itemsPerPage));
+        window.scrollTo({
+          top: $('.reviews-section').offset().top - 100,
+          behavior: 'smooth'
+        });
+      }
+    });
+
+    // Review form submission
+    $('#reviewForm').on('submit', function(e) {
+      e.preventDefault();
+
+      const name = $('#name').val();
+      const rating = $('#rating').val();
+      const comment = $('#comment').val();
+
+      if (!rating || rating === '0') {
+        alert('Please select a rating');
+        return;
+      }
+
+      const reviewData = {
+        id: 'REV' + Date.now().toString().substring(6),
+        touristName: name,
+        rating: rating,
+        comment: comment,
+        userId: 'U009'
+      };
+
+      // Send to API
+      fetch('http://localhost:8080/api/v1/review', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reviewData)
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Add the new review to the list
+          if (data && data.data) {
+            // Add the current date to the review
+            data.data.date = new Date().toISOString();
+
+            // Add the review to the list
+            allReviews.unshift(data.data);
+
+            // Reset the form
+            $('#reviewForm')[0].reset();
+            $('.stars-container i').removeClass('fas').addClass('far');
+            $('#rating').val(0);
+
+            // Show the toast
+            const toast = new bootstrap.Toast(document.getElementById('reviewToast'));
+            toast.show();
+
+            // Refresh the reviews display
+            currentPage = 1;
+            displayReviews(filterAndSortReviews(allReviews));
+            updatePagination(Math.ceil(filterAndSortReviews(allReviews).length / itemsPerPage));
+          }
+        })
+        .catch(error => {
+          console.error('Error submitting review:', error);
+          alert('There was an error submitting your review. Please try again.');
+        });
+    });
+  }
+</script>
+</body>
+</html>

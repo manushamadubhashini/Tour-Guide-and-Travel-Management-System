@@ -1,8 +1,6 @@
 package lk.ijse.thetouristguideandtravelmanagementsystembackend.entitiy;
 
 import jakarta.persistence.*;
-import lk.ijse.thetouristguideandtravelmanagementsystembackend.entitiy.enums.PaymentMethod;
-import lk.ijse.thetouristguideandtravelmanagementsystembackend.entitiy.enums.PaymentStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,8 +17,9 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "order_id", nullable = false)
-    private String orderId;
+    @OneToOne
+    @JoinColumn(name = "booking_id",nullable = false)
+    private Booking booking;
 
     @Column(name = "first_name")
     private String firstName;
@@ -48,6 +47,7 @@ public class Payment {
 
     @Column(name = "receiver_id")
     private Long receiverId;
+
 
     @PrePersist
     protected void onCreate() {

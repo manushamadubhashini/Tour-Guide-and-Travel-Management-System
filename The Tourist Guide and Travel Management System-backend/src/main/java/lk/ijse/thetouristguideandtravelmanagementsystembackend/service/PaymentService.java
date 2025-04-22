@@ -9,6 +9,8 @@ import lk.ijse.thetouristguideandtravelmanagementsystembackend.repo.BookingRepo;
 import lk.ijse.thetouristguideandtravelmanagementsystembackend.repo.PaymentRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,12 +30,21 @@ public class PaymentService {
 
     @Autowired
     private PaymentRepo paymentRepository;
+    @Autowired
+    private BookingRepo bookingRepo;
+    @Autowired
+    private ModelMapper modelMapper;
+
 
     private final String merchantSecret = "MzI2NTk1NTM2MDExMDY3MzA5ODAyNDY4NDU1NzIxMTE5NTIwODAw"; // Replace with your actual merchant secret
     private final String merchantId = "1230021";
 
-    public PaymentDTO calculateHash(double amount) {
-        String orderID = Long.toString(System.currentTimeMillis());
+    // Change the method signature to accept the bookingId parameter
+    public PaymentDTO calculateHash(double amount, String bookingId) {
+        // Use the provided bookingId if it exists, otherwise generate a timestamp-based ID
+        String orderID = (bookingId != null && !bookingId.isEmpty()) ?
+                bookingId : Long.toString(System.currentTimeMillis());
+
         DecimalFormat df = new DecimalFormat("0.00");
         String amountFormatted = df.format(amount);
         String currency = "LKR";
@@ -41,7 +52,7 @@ public class PaymentService {
         String hash = getMd5(merchantId + orderID + amountFormatted + currency + getMd5(merchantSecret));
 
         PaymentDTO paymentDTO = new PaymentDTO();
-        paymentDTO.setOrderId(orderID);
+        paymentDTO.setBookingId(orderID);
         paymentDTO.setHash(hash);
         paymentDTO.setAmount(amountFormatted);
 
@@ -65,21 +76,18 @@ public class PaymentService {
 
     public Payment savePayment(PaymentDTO paymentDTO) {
         Payment payment = new Payment();
-        payment.setOrderId(paymentDTO.getOrderId());
-        payment.setFirstName(paymentDTO.getFirstName());
-        payment.setLastName(paymentDTO.getLastName());
-        payment.setEmail(paymentDTO.getEmail());
+        Booking booking=bookingRepo.findById(paymentDTO.getBookingId())
+                        .orElseThrow(() -> new RuntimeException("Invvalid booking Id"));
+        payment.setBooking(booking);
         payment.setPaymentTitle(paymentDTO.getPaymentTitle());
         payment.setAmount(Double.parseDouble(paymentDTO.getAmount()));
         payment.setStatus(paymentDTO.getStatus());
-        payment.setSenderId(paymentDTO.getSenderId());
-        payment.setReceiverId(paymentDTO.getReceiverId());
 
         return paymentRepository.save(payment);
     }
 
-    public Payment getPaymentByOrderId(String orderId) {
-        return paymentRepository.findByOrderId(orderId);
+    public Payment getPaymentByBookingId(String bookingId) {
+        return paymentRepository.findByBookingId(bookingId);
     }
 
     public List<Payment> getPaymentsBySenderId(Long senderId) {
@@ -90,8 +98,8 @@ public class PaymentService {
         return paymentRepository.findByReceiverId(receiverId);
     }
 
-    public List<Payment> getAllPayments() {
-        return paymentRepository.findAll();
+    public List<PaymentDTO> getAllPayments() {
+        return modelMapper.map(paymentRepository.findAll(),new TypeToken<List<PaymentDTO>>(){}.getType());
     }
     public Payment updatePayment(Payment payment) {
         return paymentRepository.save(payment);

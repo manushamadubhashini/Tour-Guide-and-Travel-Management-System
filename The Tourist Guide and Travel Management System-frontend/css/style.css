@@ -63,11 +63,12 @@ body {
 
 /* Hero header */
 .hero-header {
-  background: linear-gradient(rgba(15, 23, 43, .7), rgba(15, 23, 43, .7)), url(../img/car.jpg);
+  background: linear-gradient(rgba(15, 23, 43, .7), rgba(15, 23, 43, .7)), url(../img/pexels-olly-3289167.jpg);
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
+  object-fit: cover;
 }
 
 .breadcrumb-item a {
@@ -420,4 +421,7 @@ body {
   margin-right: 0;
   padding-right: 0;
   border-right: none;
+}
+.process-card {
+  border-color: #8BC34A !important;
 }

@@ -20,7 +20,7 @@ public class AccommodationController {
         accommodationService.save(accommodationDto);
         return new ResponseUtil(201,"Accommodation is Saved",accommodationDto);
     }
-    @PreAuthorize("hasAnyRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil getAll(){
         return new ResponseUtil(200,"Accommodation is load",accommodationService.getAll());

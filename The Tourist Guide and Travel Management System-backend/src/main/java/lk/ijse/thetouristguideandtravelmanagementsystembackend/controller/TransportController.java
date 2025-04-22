@@ -6,6 +6,7 @@ import lk.ijse.thetouristguideandtravelmanagementsystembackend.service.Transport
 import lk.ijse.thetouristguideandtravelmanagementsystembackend.util.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
@@ -17,11 +18,14 @@ public class TransportController {
     @Autowired
     private TransportService transportService;
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil save(@RequestBody TransportDto transportDto){
         transportService.save(transportDto);
         return new ResponseUtil(201,"Accommodation is Saved",transportDto);
     }
+
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil getAll(){
         return new ResponseUtil(200,"Accommodation is load",transportService.getAll());
@@ -31,12 +35,14 @@ public class TransportController {
         transportService.delete(id);
         return new ResponseUtil(200,"Accommodation is deleted",id);
     }
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping
     public ResponseUtil update(@RequestBody TransportDto transportDto){
         transportService.update(transportDto);
         return new ResponseUtil(200,"Accommodation is updated",transportDto);
 
     }
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping(path = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseUtil findByTourId(@PathVariable(value = "id") String id){
         return new ResponseUtil(200,"Transport is load",transportService.findByTourId(id));

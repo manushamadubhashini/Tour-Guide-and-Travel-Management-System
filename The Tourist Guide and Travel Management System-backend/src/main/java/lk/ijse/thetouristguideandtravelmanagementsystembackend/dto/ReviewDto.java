@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class ReviewDto {
     private String id;
-    private String tourId;
+    private String userId;
     private String comment;
     private String rating;
     private String touristName;
