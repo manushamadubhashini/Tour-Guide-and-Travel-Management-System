@@ -1,4 +1,4 @@
-# 🌍 Tourist Guide and Travel Management System
+# 🌍  Travel Management System
 
 <div align="center">
   
@@ -84,10 +84,9 @@ tourist-guide-system/
 │   │   │   ├── config/         # JWT config, security settings
 │   │   │   ├── controller/     # REST endpoints
 │   │   │   ├── dto/            # Data transfer objects
-│   │   │   ├── exception/      # Custom exceptions
-│   │   │   ├── model/          # Entity classes
+│   │   │   ├── advicer/        # exception handler
+│   │   │   ├── entity/         # Entity classes
 │   │   │   ├── repository/     # Data access layer
-│   │   │   ├── security/       # Authentication & authorization
 │   │   │   ├── service/        # Business logic
 │   │   │   └── util/           # Helper classes
 │   │   └── resources/
@@ -122,13 +121,14 @@ Our application implements a robust JWT-based authentication flow:
 
 The system exposes RESTful endpoints organized by domain:
 
-- `/api/auth/*` - Authentication and user management
-- `/api/destinations/*` - Destination information and search
-- `/api/accommodations/*` - Accommodation listing and booking
-- `/api/tours/*` - Tour information and reservations
-- `/api/guides/*` - Guide profiles and availability
-- `/api/transportation/*` - Transport options and bookings
-- `/api/reviews/*` - Customer feedback and ratings
+- `/api/v1/auth/*` - Authentication and user management
+- `/api/V1/destinations/*` - Destination information and search
+- `/api/v1/accommodations/*` - Accommodation information and search
+- `/api/v1/tours/*` - Tour information and search
+- `/api/v1/transport/*` - Transport information and search
+- `/api/v1/reviews/*` - Customer feedback and ratings
+- `/api/v1/booking/*` - booking
+- `/api/v1/paymnet/*` - paymnet
 
 ## 🚀 Getting Started
 
@@ -142,8 +142,8 @@ The system exposes RESTful endpoints organized by domain:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/yourusername/tourist-guide-system.git
-   cd tourist-guide-system
+   git clone https://github.com/manushamadubhashini/Tour-Guide-and-Travel-Management-System.git
+   cd Tour-Guide-and-Travel-Management-System
    ```
 
 2. **Configure application properties:**
