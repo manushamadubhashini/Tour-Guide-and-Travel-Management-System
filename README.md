@@ -198,7 +198,7 @@ java -jar target/tourist-guide-system-1.0.0.jar
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Tourist Dashboard
+## Tourist User Interface
 
  ![Image](https://github.com/user-attachments/assets/e19d9dcf-14ec-4d7b-8b07-08117c70778b)
  
@@ -219,16 +219,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 
 ![Image](https://github.com/user-attachments/assets/b1905dc8-f384-4c4a-a0bd-d2a141e8d20a)
-
-![Image](https://github.com/user-attachments/assets/8feaf26e-5108-4555-a947-f7b6d1464b44)
-![Image](https://github.com/user-attachments/assets/5d41ea55-65ab-4267-a97f-20785c633ded)
-![Image](https://github.com/user-attachments/assets/5c34eea5-c9b7-409f-89e2-2af0d53190c0)
-![Image](https://github.com/user-attachments/assets/0524fef7-f303-42a0-8e12-cb1ca1f5737e)
-![Image](https://github.com/user-attachments/assets/4a6df9d2-1369-4153-9337-d0a58516af90)
-![Image](https://github.com/user-attachments/assets/9068f7a4-2f08-46f6-86a8-cefbd59abd7e)
-
-![Image](https://github.com/user-attachments/assets/cedb6b7c-80db-4faa-b6e8-a017a0d312f7)
-
 
 
 ![Image](https://github.com/user-attachments/assets/996bd8d3-f3a8-475b-a30c-6f25031dc074)
@@ -252,8 +242,24 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ![Image](https://github.com/user-attachments/assets/ef46a00c-d6ec-4e7b-9ccb-b6f21a0d4a45)
 
 
-![Image](https://github.com/user-attachments/assets/9ffb6d1f-58d9-42e3-9bd9-1081a2598a17)
+![Image](https://github.com/user-attachments/assets/cedb6b7c-80db-4faa-b6e8-a017a0d312f7)
 
 
-![Image](https://github.com/user-attachments/assets/525bfd22-a589-4947-85b2-5e21639ee42c)
+## Admin User Interface
+
+![Image](https://github.com/user-attachments/assets/462f377f-ed07-406e-a5dd-3771ce6e821a)
+
+![Image](https://github.com/user-attachments/assets/b6e895ba-4b2c-4d75-bc47-0ab16ed27df8)
+
+![Image](https://github.com/user-attachments/assets/ccb082a0-b557-4ff5-a41b-a781b1ccd535)
+
+![Image](https://github.com/user-attachments/assets/d8aea458-430a-45a0-bcd2-77ee87079e65)
+
+![Image](https://github.com/user-attachments/assets/a8c03d93-0935-463b-9974-5d411705201c)
+
+![Image](https://github.com/user-attachments/assets/c2276743-4085-48ca-9004-ef0ee423fba7)
+
+
+
+
 
