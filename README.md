@@ -191,8 +191,57 @@ java -jar target/tourist-guide-system-1.0.0.jar
 1. Fork the repository
 2. Create your feature branch: `git checkout -b feature/amazing-feature`
 3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push to branch: `git push origin feature/amazing-feature`
-5. Open a pull request
+
+## Tourist Dashboard
+
+ ![Image](https://github.com/user-attachments/assets/e19d9dcf-14ec-4d7b-8b07-08117c70778b)
+ 
+
+![Image](https://github.com/user-attachments/assets/fad10c3c-5843-4dbc-af29-b2f82d21409a)
+
+
+![Image](https://github.com/user-attachments/assets/f90d8264-4f02-463a-bb3a-d6a819308139)
+
+
+![Image](https://github.com/user-attachments/assets/8df84ae7-035d-4b38-99fd-d09d9c6a09fb)
+
+
+![Image](https://github.com/user-attachments/assets/db59295e-a6b1-4146-873a-8495bf5b75ac)
+
+
+![Image](https://github.com/user-attachments/assets/b282ad94-c0f5-4d9f-80ca-6bc506c7a842)
+
+
+![Image](https://github.com/user-attachments/assets/b1905dc8-f384-4c4a-a0bd-d2a141e8d20a)
+
+
+![Image](https://github.com/user-attachments/assets/996bd8d3-f3a8-475b-a30c-6f25031dc074)
+
+
+![Image](https://github.com/user-attachments/assets/003f9701-aa13-4d6d-98e9-f678b7ff67bf)
+
+
+![Image](https://github.com/user-attachments/assets/c9ebb89d-10fa-443f-bcaa-723ff249cbb1)
+
+
+![Image](https://github.com/user-attachments/assets/9910c7b7-ce3d-4305-861c-bf86b44fb2de)
+
+
+![Image](https://github.com/user-attachments/assets/07df806e-c250-4fa9-a6a5-1fd5f75197dc)
+
+
+![Image](https://github.com/user-attachments/assets/9f141867-db18-4282-91ae-8851fb085436)
+
+
+![Image](https://github.com/user-attachments/assets/ef46a00c-d6ec-4e7b-9ccb-b6f21a0d4a45)
+
+
+![Image](https://github.com/user-attachments/assets/9ffb6d1f-58d9-42e3-9bd9-1081a2598a17)
+
+
+![Image](https://github.com/user-attachments/assets/525bfd22-a589-4947-85b2-5e21639ee42c)
+5. Push to branch: `git push origin feature/amazing-feature`
+6. Open a pull request
 
 ## 📄 License
 
