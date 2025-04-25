@@ -244,6 +244,8 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ![Image](https://github.com/user-attachments/assets/cedb6b7c-80db-4faa-b6e8-a017a0d312f7)
 
+![Image](https://github.com/user-attachments/assets/87e1c971-b73c-4898-b423-49a98d4d7ad1)
+
 
 ## Admin User Interface
 
